@@ -1,0 +1,6136 @@
+{
+  "categories": {
+    "1": {
+      "id": 1,
+      "icon_url": "",
+      "name": {
+        "uz": "Suyultiruvchi",
+        "ru": "Разбавитель",
+        "en": "Thinner"
+      }
+    },
+    "2": {
+      "id": 2,
+      "icon_url": "",
+      "name": {
+        "uz": "\"Oskar\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"Оскар\" 2,4 кг",
+        "en": "\"Oscar\" Paint 2.4 kg"
+      }
+    },
+    "3": {
+      "id": 3,
+      "icon_url": "",
+      "name": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "4": {
+      "id": 4,
+      "icon_url": "",
+      "name": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "5": {
+      "id": 5,
+      "icon_url": "",
+      "name": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "6": {
+      "id": 6,
+      "icon_url": "",
+      "name": {
+        "uz": "Suvli bo'yoq \"OSCAR DELUXE\"",
+        "ru": "Водная краска \"OSCAR DELUXE\"",
+        "en": "Water-based Paint \"OSCAR DELUXE\""
+      }
+    },
+    "7": {
+      "id": 7,
+      "icon_url": "",
+      "name": {
+        "uz": "Lak",
+        "ru": "Лак",
+        "en": "Varnish"
+      }
+    },
+    "8": {
+      "id": 8,
+      "icon_url": "",
+      "name": {
+        "uz": "Bitum lak",
+        "ru": "Битум лак",
+        "en": "Bitumen varnish"
+      }
+    },
+    "9": {
+      "id": 9,
+      "icon_url": "",
+      "name": {
+        "uz": "Travertin lak",
+        "ru": "Травертин лак",
+        "en": "Travertine varnish"
+      }
+    },
+    "10": {
+      "id": 10,
+      "icon_url": "",
+      "name": {
+        "uz": "Olifa",
+        "ru": "Олифа",
+        "en": "Linseed oil (Olifa)"
+      }
+    },
+    "11": {
+      "id": 11,
+      "icon_url": "",
+      "name": {
+        "uz": "To'rli PVX burchak",
+        "ru": "Угол ПВХ с сеткой",
+        "en": "PVC corner with mesh"
+      }
+    },
+    "12": {
+      "id": 12,
+      "icon_url": "",
+      "name": {
+        "uz": "Shpatlyovka 0.350 kg",
+        "ru": "Шпатлёвка 0.350кг",
+        "en": "Putty 0.350 kg"
+      }
+    },
+    "13": {
+      "id": 13,
+      "icon_url": "",
+      "name": {
+        "uz": "Shpatlyovka 0.800 kg",
+        "ru": "Шпатлёвка 0.800кг",
+        "en": "Putty 0.800 kg"
+      }
+    },
+    "14": {
+      "id": 14,
+      "icon_url": "",
+      "name": {
+        "uz": "Shpatlyovka 1.300 kg",
+        "ru": "Шпатлёвка 1.300кг",
+        "en": "Putty 1.300 kg"
+      }
+    },
+    "15": {
+      "id": 15,
+      "icon_url": "",
+      "name": {
+        "uz": "Fuga 1 kg",
+        "ru": "Фуга 1кг",
+        "en": "Grout 1 kg"
+      }
+    },
+    "16": {
+      "id": 16,
+      "icon_url": "",
+      "name": {
+        "uz": "Fuga 4 kg",
+        "ru": "Фуга 4кг",
+        "en": "Grout 4 kg"
+      }
+    },
+    "17": {
+      "id": 17,
+      "icon_url": "",
+      "name": {
+        "uz": "Antimoroz",
+        "ru": "Антимороз",
+        "en": "Anti-frost"
+      }
+    },
+    "18": {
+      "id": 18,
+      "icon_url": "",
+      "name": {
+        "uz": "Betonokontakt",
+        "ru": "Бетоноконтакт",
+        "en": "Concrete contact primer"
+      }
+    },
+    "19": {
+      "id": 19,
+      "icon_url": "",
+      "name": {
+        "uz": "Suyuq shisha",
+        "ru": "Жидкое стекло",
+        "en": "Liquid glass"
+      }
+    },
+    "20": {
+      "id": 20,
+      "icon_url": "",
+      "name": {
+        "uz": "Shpatel (devor qog'ozi uchun)",
+        "ru": "Шпатель обойный",
+        "en": "Wallpaper spatula"
+      }
+    },
+    "21": {
+      "id": 21,
+      "icon_url": "",
+      "name": {
+        "uz": "Klin/Zажим (Bolt/Gayka)",
+        "ru": "Клин/зажим (Болт/Гайка)",
+        "en": "Wedge/Clamp (Bolt/Nut)"
+      }
+    },
+    "22": {
+      "id": 22,
+      "icon_url": "",
+      "name": {
+        "uz": "Emulsiya",
+        "ru": "Эмульсия",
+        "en": "Emulsion"
+      }
+    },
+    "23": {
+      "id": 23,
+      "icon_url": "",
+      "name": {
+        "uz": "Skotch folga",
+        "ru": "Скотч фольга",
+        "en": "Foil tape"
+      }
+    },
+    "24": {
+      "id": 24,
+      "icon_url": "",
+      "name": {
+        "uz": "Ikki tomonlama skotch",
+        "ru": "Двусторонний скотч",
+        "en": "Double-sided tape"
+      }
+    },
+    "25": {
+      "id": 25,
+      "icon_url": "",
+      "name": {
+        "uz": "SACA ikki tomonlama skotch",
+        "ru": "SACA двусторонний скотч",
+        "en": "SACA double-sided tape"
+      }
+    },
+    "26": {
+      "id": 26,
+      "icon_url": "",
+      "name": {
+        "uz": "M3 ikki tomonlama skotch (qizil)",
+        "ru": "М3 двусторонный скотч (красный)",
+        "en": "M3 double-sided tape (red)"
+      }
+    },
+    "27": {
+      "id": 27,
+      "icon_url": "",
+      "name": {
+        "uz": "Ikki tomonlama matolik lenta",
+        "ru": "Двусторонняя тканевая лента",
+        "en": "Double-sided fabric tape"
+      }
+    },
+    "28": {
+      "id": 28,
+      "icon_url": "",
+      "name": {
+        "uz": "Skotch WASHI (NEW)",
+        "ru": "Скотч WASHI (NEW)",
+        "en": "WASHI tape (NEW)"
+      }
+    },
+    "29": {
+      "id": 29,
+      "icon_url": "",
+      "name": {
+        "uz": "Choklar uchun qog'oz lenta",
+        "ru": "Стык лента бумажная",
+        "en": "Paper joint tape"
+      }
+    },
+    "30": {
+      "id": 30,
+      "icon_url": "",
+      "name": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "31": {
+      "id": 31,
+      "icon_url": "",
+      "name": {
+        "uz": "Bo'yoqchi skotch (AQSH)",
+        "ru": "Скотч молярный США",
+        "en": "Painter's tape (USA)"
+      }
+    },
+    "32": {
+      "id": 32,
+      "icon_url": "",
+      "name": {
+        "uz": "Bo'yoqchi skotch sellofan",
+        "ru": "Молярный скотч целофан",
+        "en": "Painter's tape cellophane"
+      }
+    },
+    "33": {
+      "id": 33,
+      "icon_url": "",
+      "name": {
+        "uz": "Signal lenta",
+        "ru": "Сигнальная лента",
+        "en": "Warning tape"
+      }
+    },
+    "34": {
+      "id": 34,
+      "icon_url": "",
+      "name": {
+        "uz": "MDF ikki komponentli yelim",
+        "ru": "Клей МДФ двухкомпонентный",
+        "en": "Two-component MDF glue"
+      }
+    },
+    "35": {
+      "id": 35,
+      "icon_url": "",
+      "name": {
+        "uz": "Serpyanka",
+        "ru": "Серпянка",
+        "en": "Fiberglass mesh tape (Serpyanka)"
+      }
+    },
+    "36": {
+      "id": 36,
+      "icon_url": "",
+      "name": {
+        "uz": "Gruntovka",
+        "ru": "Грунтовка",
+        "en": "Primer"
+      }
+    },
+    "37": {
+      "id": 37,
+      "icon_url": "",
+      "name": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "38": {
+      "id": 38,
+      "icon_url": "",
+      "name": {
+        "uz": "Turli mahsulotlar",
+        "ru": "Разные",
+        "en": "Miscellaneous"
+      }
+    },
+    "39": {
+      "id": 39,
+      "icon_url": "",
+      "name": {
+        "uz": "Suyuq mixlar/Tomchi yelim",
+        "ru": "Жидкие гвозди/Томчи клей",
+        "en": "Liquid nails/Mounting glue"
+      }
+    },
+    "40": {
+      "id": 40,
+      "icon_url": "",
+      "name": {
+        "uz": "Valik tayoq",
+        "ru": "Валик палка",
+        "en": "Roller handle"
+      }
+    },
+    "41": {
+      "id": 41,
+      "icon_url": "",
+      "name": {
+        "uz": "Valik (qop)",
+        "ru": "Валик (мешок)",
+        "en": "Roller (bag pack)"
+      }
+    },
+    "42": {
+      "id": 42,
+      "icon_url": "",
+      "name": {
+        "uz": "Valik (karobka)",
+        "ru": "Валик (коробка)",
+        "en": "Roller (box pack)"
+      }
+    },
+    "43": {
+      "id": 43,
+      "icon_url": "",
+      "name": {
+        "uz": "Valik OSCAR DELUXE",
+        "ru": "Валик OSCAR DELUXE",
+        "en": "Roller OSCAR DELUXE"
+      }
+    },
+    "44": {
+      "id": 44,
+      "icon_url": "",
+      "name": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "45": {
+      "id": 45,
+      "icon_url": "",
+      "name": {
+        "uz": "Lak uchun shchyotka",
+        "ru": "Щётка для лака",
+        "en": "Brush for varnish"
+      }
+    },
+    "46": {
+      "id": 46,
+      "icon_url": "",
+      "name": {
+        "uz": "Shchyotka (yog'och)",
+        "ru": "Щётка (деревянная)",
+        "en": "Brush (wooden)"
+      }
+    },
+    "47": {
+      "id": 47,
+      "icon_url": "",
+      "name": {
+        "uz": "Shchyotka (plastik)",
+        "ru": "Щётка (пластиковая)",
+        "en": "Brush (plastic)"
+      }
+    },
+    "48": {
+      "id": 48,
+      "icon_url": "",
+      "name": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "49": {
+      "id": 49,
+      "icon_url": "",
+      "name": {
+        "uz": "Andava qum qog'oz",
+        "ru": "Андава шлифовальная сетка",
+        "en": "Andava sanding mesh"
+      }
+    },
+    "50": {
+      "id": 50,
+      "icon_url": "",
+      "name": {
+        "uz": "Krestiklar",
+        "ru": "Крестики",
+        "en": "Tile spacers (crosses)"
+      }
+    },
+    "51": {
+      "id": 51,
+      "icon_url": "",
+      "name": {
+        "uz": "Nafis bo'yoqchi skotch Asos",
+        "ru": "Деликатный малярный скотч Асос",
+        "en": "Delicate painter's tape Asos"
+      }
+    },
+    "52": {
+      "id": 52,
+      "icon_url": "",
+      "name": {
+        "uz": "Issiqqa chidamli aerozol Asos",
+        "ru": "Аэрозоль термостойкая Асос",
+        "en": "Heat-resistant spray Asos"
+      }
+    },
+    "53": {
+      "id": 53,
+      "icon_url": "",
+      "name": {
+        "uz": "Devor qog'ozi yelimi Asos",
+        "ru": "Обойный клей Асос",
+        "en": "Wallpaper glue Asos"
+      }
+    },
+    "54": {
+      "id": 54,
+      "icon_url": "",
+      "name": {
+        "uz": "Turli mahsulotlar Asos",
+        "ru": "Разные Асос",
+        "en": "Miscellaneous Asos"
+      }
+    }
+  },
+  "products": {
+    "1": {
+      "id": 1,
+      "image": "",
+      "pricePiece": 0.3,
+      "priceBox": 9,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Suyultiruvchi 0,5 (380ml)",
+        "ru": "Разбавитель 0,5 (380мл)",
+        "en": "Thinner 0,5 (380ml)"
+      },
+      "category": {
+        "uz": "Suyultiruvchi",
+        "ru": "Разбавитель",
+        "en": "Thinner"
+      }
+    },
+    "2": {
+      "id": 2,
+      "image": "",
+      "pricePiece": 0.32,
+      "priceBox": 6.4,
+      "boxCapacity": 20,
+      "name": {
+        "uz": "Suyultiruvchi 0,6 (414ml)",
+        "ru": "Разбавитель 0,6 (414мл)",
+        "en": "Thinner 0,6 (414ml)"
+      },
+      "category": {
+        "uz": "Suyultiruvchi",
+        "ru": "Разбавитель",
+        "en": "Thinner"
+      }
+    },
+    "3": {
+      "id": 3,
+      "image": "",
+      "pricePiece": 0.36,
+      "priceBox": 5.4,
+      "boxCapacity": 15,
+      "name": {
+        "uz": "Suyultiruvchi 0,7 (520ml)",
+        "ru": "Разбавитель 0,7 (520мл)",
+        "en": "Thinner 0,7 (520ml)"
+      },
+      "category": {
+        "uz": "Suyultiruvchi",
+        "ru": "Разбавитель",
+        "en": "Thinner"
+      }
+    },
+    "4": {
+      "id": 4,
+      "image": "",
+      "pricePiece": 0.46,
+      "priceBox": 6.9,
+      "boxCapacity": 15,
+      "name": {
+        "uz": "Suyultiruvchi 0,9 (697ml)",
+        "ru": "Разбавитель 0,9 (697мл)",
+        "en": "Thinner 0,9 (697ml)"
+      },
+      "category": {
+        "uz": "Suyultiruvchi",
+        "ru": "Разбавитель",
+        "en": "Thinner"
+      }
+    },
+    "5": {
+      "id": 5,
+      "image": "",
+      "pricePiece": 0.62,
+      "priceBox": 12.4,
+      "boxCapacity": 20,
+      "name": {
+        "uz": "Suyultiruvchi 1,0 (907ml)",
+        "ru": "Разбавитель 1,0 (907мл)",
+        "en": "Thinner 1,0 (907ml)"
+      },
+      "category": {
+        "uz": "Suyultiruvchi",
+        "ru": "Разбавитель",
+        "en": "Thinner"
+      }
+    },
+    "6": {
+      "id": 6,
+      "image": "",
+      "pricePiece": 1.9,
+      "priceBox": 5.7,
+      "boxCapacity": 3,
+      "name": {
+        "uz": "Suyultiruvchi 3,5l",
+        "ru": "Разбавитель 3,5л",
+        "en": "Thinner 3,5l"
+      },
+      "category": {
+        "uz": "Suyultiruvchi",
+        "ru": "Разбавитель",
+        "en": "Thinner"
+      }
+    },
+    "7": {
+      "id": 7,
+      "image": "",
+      "pricePiece": 4.8,
+      "priceBox": 4.8,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Suyultiruvchi 10l",
+        "ru": "Разбавитель 10л",
+        "en": "Thinner 10l"
+      },
+      "category": {
+        "uz": "Suyultiruvchi",
+        "ru": "Разбавитель",
+        "en": "Thinner"
+      }
+    },
+    "8": {
+      "id": 8,
+      "image": "",
+      "pricePiece": 1.55,
+      "priceBox": 23.25,
+      "boxCapacity": 15,
+      "name": {
+        "uz": "Suyultiruvchi Bordo",
+        "ru": "Разбавитель Бордо",
+        "en": "Thinner Bordeaux"
+      },
+      "category": {
+        "uz": "Suyultiruvchi",
+        "ru": "Разбавитель",
+        "en": "Thinner"
+      }
+    },
+    "9": {
+      "id": 9,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Oskar emali bordo rang 2.4kg",
+        "ru": "Эмаль Оскар бардовая 2.4кг",
+        "en": "Oscar enamel burgundy 2.4kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"Оскар\" 2,4 кг",
+        "en": "\"Oscar\" Paint 2.4 kg"
+      }
+    },
+    "10": {
+      "id": 10,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Oskar emali oq 2.4kg",
+        "ru": "Эмаль Оскар белая 2.4кг",
+        "en": "Oscar enamel white 2.4kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"Оскар\" 2,4 кг",
+        "en": "\"Oscar\" Paint 2.4 kg"
+      }
+    },
+    "11": {
+      "id": 11,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Oskar emali moviy 2.4kg",
+        "ru": "Эмаль Оскар голубая 2.4кг",
+        "en": "Oscar enamel light blue 2.4kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"Оскар\" 2,4 кг",
+        "en": "\"Oscar\" Paint 2.4 kg"
+      }
+    },
+    "12": {
+      "id": 12,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Oskar emali sariq 2.4kg",
+        "ru": "Эмаль Оскар желтая 2.4кг",
+        "en": "Oscar enamel yellow 2.4kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"Оскар\" 2,4 кг",
+        "en": "\"Oscar\" Paint 2.4 kg"
+      }
+    },
+    "13": {
+      "id": 13,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Oskar emali och yashil 2.4kg",
+        "ru": "Эмаль Оскар салатовая 2.4кг",
+        "en": "Oscar enamel lime green 2.4kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"Оскар\" 2,4 кг",
+        "en": "\"Oscar\" Paint 2.4 kg"
+      }
+    },
+    "14": {
+      "id": 14,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Oskar emali qizil 2.4kg",
+        "ru": "Эмаль Оскар красная 2.4кг",
+        "en": "Oscar enamel red 2.4kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"Оскар\" 2,4 кг",
+        "en": "\"Oscar\" Paint 2.4 kg"
+      }
+    },
+    "15": {
+      "id": 15,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Oskar emali kulrang 2.4kg",
+        "ru": "Эмаль Оскар серая 2.4кг",
+        "en": "Oscar enamel grey 2.4kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"Оскар\" 2,4 кг",
+        "en": "\"Oscar\" Paint 2.4 kg"
+      }
+    },
+    "16": {
+      "id": 16,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Oskar emali to'q ko'k 2.4kg",
+        "ru": "Эмаль Оскар темно-синяя 2.4кг",
+        "en": "Oscar enamel dark blue 2.4kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"Оскар\" 2,4 кг",
+        "en": "\"Oscar\" Paint 2.4 kg"
+      }
+    },
+    "17": {
+      "id": 17,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Oskar emali qora 2.4kg",
+        "ru": "Эмаль Оскар черная 2.4кг",
+        "en": "Oscar enamel black 2.4kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"Оскар\" 2,4 кг",
+        "en": "\"Oscar\" Paint 2.4 kg"
+      }
+    },
+    "18": {
+      "id": 18,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Oskar emali sariq-jigarrang 2.4kg",
+        "ru": "Эмаль Оскар желто-коричневая 2.4кг",
+        "en": "Oscar enamel yellow-brown 2.4kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"Оскар\" 2,4 кг",
+        "en": "\"Oscar\" Paint 2.4 kg"
+      }
+    },
+    "19": {
+      "id": 19,
+      "image": "",
+      "pricePiece": 6.7,
+      "priceBox": 40.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Oskar emali shokolad 2.4kg",
+        "ru": "Эмаль Оскар чоко 2.4кг",
+        "en": "Oscar enamel choco 2.4kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"Оскар\" 2,4 кг",
+        "en": "\"Oscar\" Paint 2.4 kg"
+      }
+    },
+    "20": {
+      "id": 20,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Oskar emali bordo rang 0.7kg",
+        "ru": "Эмаль Оскар бардовая 0.7кг",
+        "en": "Oscar enamel burgundy 0.7kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "21": {
+      "id": 21,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Oskar emali oq 0.7kg",
+        "ru": "Эмаль Оскар белая 0.7кг",
+        "en": "Oscar enamel white 0.7kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "22": {
+      "id": 22,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Oskar emali moviy 0.7kg",
+        "ru": "Эмаль Оскар голубая 0.7кг",
+        "en": "Oscar enamel light blue 0.7kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "23": {
+      "id": 23,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Oskar emali sariq 0.7kg",
+        "ru": "Эмаль Оскар желтая 0.7кг",
+        "en": "Oscar enamel yellow 0.7kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "24": {
+      "id": 24,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Oskar emali och yashil 0.7kg",
+        "ru": "Эмаль Оскар салатовая 0.7кг",
+        "en": "Oscar enamel lime green 0.7kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "25": {
+      "id": 25,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Oskar emali qizil 0.7kg",
+        "ru": "Эмаль Оскар красная 0.7кг",
+        "en": "Oscar enamel red 0.7kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "26": {
+      "id": 26,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Oskar emali kulrang 0.7kg",
+        "ru": "Эмаль Оскар серая 0.7кг",
+        "en": "Oscar enamel grey 0.7kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "27": {
+      "id": 27,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Oskar emali to'q ko'k 0.7kg",
+        "ru": "Эмаль Оскар темно-синяя 0.7кг",
+        "en": "Oscar enamel dark blue 0.7kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "28": {
+      "id": 28,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Oskar emali qora 0.7kg",
+        "ru": "Эмаль Оскар черная 0.7кг",
+        "en": "Oscar enamel black 0.7kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "29": {
+      "id": 29,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Oskar emali sariq-jigarrang 0.7kg",
+        "ru": "Эмаль Оскар желто-коричневая 0.7кг",
+        "en": "Oscar enamel yellow-brown 0.7kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "30": {
+      "id": 30,
+      "image": "",
+      "pricePiece": 2.35,
+      "priceBox": 28.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Oskar emali shokolad 0.7kg",
+        "ru": "Эмаль Оскар чоко 0.7кг",
+        "en": "Oscar enamel choco 0.7kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "31": {
+      "id": 31,
+      "image": "",
+      "pricePiece": 2.35,
+      "priceBox": 28.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Universal emali qora 0.7kg",
+        "ru": "Эмаль Универсал черная 0.7кг",
+        "en": "Universal enamel black 0.7kg"
+      },
+      "category": {
+        "uz": "\"Oskar\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"Оскар\" 0.7 кг",
+        "en": "\"Oscar\" Paint 0.7 kg"
+      }
+    },
+    "32": {
+      "id": 32,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "X-tra emali bordo rang 2.4kg",
+        "ru": "Эмаль X-tra бардовая 2.4кг",
+        "en": "X-tra enamel burgundy 2.4kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "33": {
+      "id": 33,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "X-tra emali oq 2.4kg",
+        "ru": "Эмаль X-tra белая 2.4кг",
+        "en": "X-tra enamel white 2.4kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "34": {
+      "id": 34,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "X-tra emali moviy 2.4kg",
+        "ru": "Эмаль X-tra голубая 2.4кг",
+        "en": "X-tra enamel light blue 2.4kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "35": {
+      "id": 35,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "X-tra emali sariq 2.4kg",
+        "ru": "Эмаль X-tra желтая 2.4кг",
+        "en": "X-tra enamel yellow 2.4kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "36": {
+      "id": 36,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "X-tra emali och yashil 2.4kg",
+        "ru": "Эмаль X-tra салатовая 2.4кг",
+        "en": "X-tra enamel lime green 2.4kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "37": {
+      "id": 37,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "X-tra emali qizil 2.4kg",
+        "ru": "Эмаль X-tra красная 2.4кг",
+        "en": "X-tra enamel red 2.4kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "38": {
+      "id": 38,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "X-tra emali pol (qizil-jigarrang) 2.4kg",
+        "ru": "Эмаль X-tra половая (крас-корич) 2.4кг",
+        "en": "X-tra enamel floor (red-brown) 2.4kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "39": {
+      "id": 39,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "X-tra emali kulrang 2.4kg",
+        "ru": "Эмаль X-tra серая 2.4кг",
+        "en": "X-tra enamel grey 2.4kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "40": {
+      "id": 40,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "X-tra emali to'q ko'k 2.4kg",
+        "ru": "Эмаль X-tra темно-синяя 2.4кг",
+        "en": "X-tra enamel dark blue 2.4kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "41": {
+      "id": 41,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "X-tra emali qora 2.4kg",
+        "ru": "Эмаль X-tra черная 2.4кг",
+        "en": "X-tra enamel black 2.4kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "42": {
+      "id": 42,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "X-tra emali shokolad 2.4kg",
+        "ru": "Эмаль X-tra чоко 2.4кг",
+        "en": "X-tra enamel choco 2.4kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "43": {
+      "id": 43,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 22.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "X-tra emali yashil 2.4kg",
+        "ru": "Эмаль X-tra зелёная 2.4кг",
+        "en": "X-tra enamel green 2.4kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 2.4 kg",
+        "ru": "Краска \"X-tra\" 2.4 кг",
+        "en": "\"X-tra\" Paint 2.4 kg"
+      }
+    },
+    "44": {
+      "id": 44,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "X-tra emali qora 0.7kg",
+        "ru": "Эмаль X-tra черная 0.7кг",
+        "en": "X-tra enamel black 0.7kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "45": {
+      "id": 45,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "X-tra emali shokolad 0.7kg",
+        "ru": "Эмаль X-tra чоко 0.7кг",
+        "en": "X-tra enamel choco 0.7kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "46": {
+      "id": 46,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "X-tra emali yashil 0.7kg",
+        "ru": "Эмаль X-tra зелёная 0.7кг",
+        "en": "X-tra enamel green 0.7kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "47": {
+      "id": 47,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "X-tra emali bordo rang 0.7kg",
+        "ru": "Эмаль X-tra бардовая 0.7кг",
+        "en": "X-tra enamel burgundy 0.7kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "48": {
+      "id": 48,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "X-tra emali oq 0.7kg",
+        "ru": "Эмаль X-tra белая 0.7кг",
+        "en": "X-tra enamel white 0.7kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "49": {
+      "id": 49,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "X-tra emali moviy 0.7kg",
+        "ru": "Эмаль X-tra голубая 0.7кг",
+        "en": "X-tra enamel light blue 0.7kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "50": {
+      "id": 50,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "X-tra emali sariq 0.7kg",
+        "ru": "Эмаль X-tra желтая 0.7кг",
+        "en": "X-tra enamel yellow 0.7kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "51": {
+      "id": 51,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "X-tra emali och yashil 0.7kg",
+        "ru": "Эмаль X-tra салатовая 0.7кг",
+        "en": "X-tra enamel lime green 0.7kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "52": {
+      "id": 52,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "X-tra emali qizil 0.7kg",
+        "ru": "Эмаль X-tra красная 0.7кг",
+        "en": "X-tra enamel red 0.7kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "53": {
+      "id": 53,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "X-tra emali pol (qizil-jigarrang) 0.7kg",
+        "ru": "Эмаль X-tra половая (крас-корич) 0.7кг",
+        "en": "X-tra enamel floor (red-brown) 0.7kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "54": {
+      "id": 54,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "X-tra emali kulrang 0.7kg",
+        "ru": "Эмаль X-tra серая 0.7кг",
+        "en": "X-tra enamel grey 0.7kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "55": {
+      "id": 55,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "X-tra emali to'q ko'k 0.7kg",
+        "ru": "Эмаль X-tra темно-синяя 0.7кг",
+        "en": "X-tra enamel dark blue 0.7kg"
+      },
+      "category": {
+        "uz": "\"X-tra\" bo'yog'i 0.7 kg",
+        "ru": "Краска \"X-tra\" 0.7 кг",
+        "en": "\"X-tra\" Paint 0.7 kg"
+      }
+    },
+    "56": {
+      "id": 56,
+      "image": "",
+      "pricePiece": 6.9,
+      "priceBox": 27.6,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "OSCAR DELUXE oq",
+        "ru": "OSCAR DELUXE белая",
+        "en": "OSCAR DELUXE white"
+      },
+      "category": {
+        "uz": "Suvli bo'yoq \"OSCAR DELUXE\"",
+        "ru": "Водная краска \"OSCAR DELUXE\"",
+        "en": "Water-based Paint \"OSCAR DELUXE\""
+      }
+    },
+    "57": {
+      "id": 57,
+      "image": "",
+      "pricePiece": 6.9,
+      "priceBox": 27.6,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "OSCAR DELUXE sariq",
+        "ru": "OSCAR DELUXE желтая",
+        "en": "OSCAR DELUXE yellow"
+      },
+      "category": {
+        "uz": "Suvli bo'yoq \"OSCAR DELUXE\"",
+        "ru": "Водная краска \"OSCAR DELUXE\"",
+        "en": "Water-based Paint \"OSCAR DELUXE\""
+      }
+    },
+    "58": {
+      "id": 58,
+      "image": "",
+      "pricePiece": 6.9,
+      "priceBox": 27.6,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "OSCAR DELUXE qizil",
+        "ru": "OSCAR DELUXE красная",
+        "en": "OSCAR DELUXE red"
+      },
+      "category": {
+        "uz": "Suvli bo'yoq \"OSCAR DELUXE\"",
+        "ru": "Водная краска \"OSCAR DELUXE\"",
+        "en": "Water-based Paint \"OSCAR DELUXE\""
+      }
+    },
+    "59": {
+      "id": 59,
+      "image": "",
+      "pricePiece": 6.35,
+      "priceBox": 25.4,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "OSCAR DELUXE moviy",
+        "ru": "OSCAR DELUXE голубая",
+        "en": "OSCAR DELUXE light blue"
+      },
+      "category": {
+        "uz": "Suvli bo'yoq \"OSCAR DELUXE\"",
+        "ru": "Водная краска \"OSCAR DELUXE\"",
+        "en": "Water-based Paint \"OSCAR DELUXE\""
+      }
+    },
+    "60": {
+      "id": 60,
+      "image": "",
+      "pricePiece": 6.35,
+      "priceBox": 25.4,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "OSCAR DELUXE yashil",
+        "ru": "OSCAR DELUXE зеленая",
+        "en": "OSCAR DELUXE green"
+      },
+      "category": {
+        "uz": "Suvli bo'yoq \"OSCAR DELUXE\"",
+        "ru": "Водная краска \"OSCAR DELUXE\"",
+        "en": "Water-based Paint \"OSCAR DELUXE\""
+      }
+    },
+    "61": {
+      "id": 61,
+      "image": "",
+      "pricePiece": 6.35,
+      "priceBox": 25.4,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "OSCAR DELUXE pol rang",
+        "ru": "OSCAR DELUXE половая",
+        "en": "OSCAR DELUXE floor"
+      },
+      "category": {
+        "uz": "Suvli bo'yoq \"OSCAR DELUXE\"",
+        "ru": "Водная краска \"OSCAR DELUXE\"",
+        "en": "Water-based Paint \"OSCAR DELUXE\""
+      }
+    },
+    "62": {
+      "id": 62,
+      "image": "",
+      "pricePiece": 6.35,
+      "priceBox": 25.4,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "OSCAR DELUXE kulrang",
+        "ru": "OSCAR DELUXE серая",
+        "en": "OSCAR DELUXE grey"
+      },
+      "category": {
+        "uz": "Suvli bo'yoq \"OSCAR DELUXE\"",
+        "ru": "Водная краска \"OSCAR DELUXE\"",
+        "en": "Water-based Paint \"OSCAR DELUXE\""
+      }
+    },
+    "63": {
+      "id": 63,
+      "image": "",
+      "pricePiece": 6.35,
+      "priceBox": 25.4,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "OSCAR DELUXE ko'k",
+        "ru": "OSCAR DELUXE синяя",
+        "en": "OSCAR DELUXE blue"
+      },
+      "category": {
+        "uz": "Suvli bo'yoq \"OSCAR DELUXE\"",
+        "ru": "Водная краска \"OSCAR DELUXE\"",
+        "en": "Water-based Paint \"OSCAR DELUXE\""
+      }
+    },
+    "64": {
+      "id": 64,
+      "image": "",
+      "pricePiece": 6.35,
+      "priceBox": 25.4,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "OSCAR DELUXE qora",
+        "ru": "OSCAR DELUXE черная",
+        "en": "OSCAR DELUXE black"
+      },
+      "category": {
+        "uz": "Suvli bo'yoq \"OSCAR DELUXE\"",
+        "ru": "Водная краска \"OSCAR DELUXE\"",
+        "en": "Water-based Paint \"OSCAR DELUXE\""
+      }
+    },
+    "65": {
+      "id": 65,
+      "image": "",
+      "pricePiece": 6.35,
+      "priceBox": 25.4,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "OSCAR DELUXE shokolad rang",
+        "ru": "OSCAR DELUXE шоколадная",
+        "en": "OSCAR DELUXE chocolate"
+      },
+      "category": {
+        "uz": "Suvli bo'yoq \"OSCAR DELUXE\"",
+        "ru": "Водная краска \"OSCAR DELUXE\"",
+        "en": "Water-based Paint \"OSCAR DELUXE\""
+      }
+    },
+    "66": {
+      "id": 66,
+      "image": "",
+      "pricePiece": 1.15,
+      "priceBox": 34.5,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Universal lak 0,5",
+        "ru": "ЛАК Универсал 0,5",
+        "en": "Universal varnish 0,5"
+      },
+      "category": {
+        "uz": "Lak",
+        "ru": "Лак",
+        "en": "Varnish"
+      }
+    },
+    "67": {
+      "id": 67,
+      "image": "",
+      "pricePiece": 1.55,
+      "priceBox": 23.25,
+      "boxCapacity": 15,
+      "name": {
+        "uz": "Universal lak 0,7",
+        "ru": "ЛАК Универсал 0,7",
+        "en": "Universal varnish 0,7"
+      },
+      "category": {
+        "uz": "Lak",
+        "ru": "Лак",
+        "en": "Varnish"
+      }
+    },
+    "68": {
+      "id": 68,
+      "image": "",
+      "pricePiece": 2.05,
+      "priceBox": 24.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Lak 0,8 j/b (temir banka)",
+        "ru": "ЛАК 0,8 ж/б",
+        "en": "Varnish 0,8 metal can"
+      },
+      "category": {
+        "uz": "Lak",
+        "ru": "Лак",
+        "en": "Varnish"
+      }
+    },
+    "69": {
+      "id": 69,
+      "image": "",
+      "pricePiece": 2.6,
+      "priceBox": 31.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Oskar Yaxta laki 0,8 j/b (temir banka)",
+        "ru": "Лак Оскар Яхт. 0,8 ж/б",
+        "en": "Oscar Yacht varnish 0,8 metal can"
+      },
+      "category": {
+        "uz": "Lak",
+        "ru": "Лак",
+        "en": "Varnish"
+      }
+    },
+    "70": {
+      "id": 70,
+      "image": "",
+      "pricePiece": 6,
+      "priceBox": 24,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "Oskar Yaxta laki 2,5 j/b (temir banka)",
+        "ru": "Лак Оскар Яхт. 2,5 ж/б",
+        "en": "Oscar Yacht varnish 2,5 metal can"
+      },
+      "category": {
+        "uz": "Lak",
+        "ru": "Лак",
+        "en": "Varnish"
+      }
+    },
+    "71": {
+      "id": 71,
+      "image": "",
+      "pricePiece": 5.5,
+      "priceBox": 22,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "Ekstra lak 2,5 j/b (temir banka)",
+        "ru": "Лак Экстра 2,5 ж/б",
+        "en": "Extra varnish 2,5 metal can"
+      },
+      "category": {
+        "uz": "Lak",
+        "ru": "Лак",
+        "en": "Varnish"
+      }
+    },
+    "72": {
+      "id": 72,
+      "image": "",
+      "pricePiece": 0.5,
+      "priceBox": 7.5,
+      "boxCapacity": 15,
+      "name": {
+        "uz": "Bitum lak 0,7l",
+        "ru": "Битум лак 0,7л",
+        "en": "Bitumen varnish 0,7l"
+      },
+      "category": {
+        "uz": "Bitum lak",
+        "ru": "Битум лак",
+        "en": "Bitumen varnish"
+      }
+    },
+    "73": {
+      "id": 73,
+      "image": "",
+      "pricePiece": 4.5,
+      "priceBox": 13.5,
+      "boxCapacity": 3,
+      "name": {
+        "uz": "Bitum lak 4l",
+        "ru": "Битум лак 4л",
+        "en": "Bitumen varnish 4l"
+      },
+      "category": {
+        "uz": "Bitum lak",
+        "ru": "Битум лак",
+        "en": "Bitumen varnish"
+      }
+    },
+    "74": {
+      "id": 74,
+      "image": "",
+      "pricePiece": 5,
+      "priceBox": 10,
+      "boxCapacity": 2,
+      "name": {
+        "uz": "Travertin lak 2,5kg",
+        "ru": "Травертин Лак 2,5 кг",
+        "en": "Travertine varnish 2,5kg"
+      },
+      "category": {
+        "uz": "Travertin lak",
+        "ru": "Травертин лак",
+        "en": "Travertine varnish"
+      }
+    },
+    "75": {
+      "id": 75,
+      "image": "",
+      "pricePiece": 8.95,
+      "priceBox": 8.95,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Travertin lak 5kg",
+        "ru": "Травертин Лак 5 кг",
+        "en": "Travertine varnish 5kg"
+      },
+      "category": {
+        "uz": "Travertin lak",
+        "ru": "Травертин лак",
+        "en": "Travertine varnish"
+      }
+    },
+    "76": {
+      "id": 76,
+      "image": "",
+      "pricePiece": 16.5,
+      "priceBox": 16.5,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Travertin lak 10kg",
+        "ru": "Травертин Лак 10 кг",
+        "en": "Travertine varnish 10kg"
+      },
+      "category": {
+        "uz": "Travertin lak",
+        "ru": "Травертин лак",
+        "en": "Travertine varnish"
+      }
+    },
+    "77": {
+      "id": 77,
+      "image": "",
+      "pricePiece": 7,
+      "priceBox": 21,
+      "boxCapacity": 3,
+      "name": {
+        "uz": "Olifa (bochka)",
+        "ru": "Олифа (бочка)",
+        "en": "Linseed oil (barrel)"
+      },
+      "category": {
+        "uz": "Olifa",
+        "ru": "Олифа",
+        "en": "Linseed oil (Olifa)"
+      }
+    },
+    "78": {
+      "id": 78,
+      "image": "",
+      "pricePiece": 5.5,
+      "priceBox": 16.5,
+      "boxCapacity": 3,
+      "name": {
+        "uz": "Olifa 2l",
+        "ru": "Олифа 2 л",
+        "en": "Linseed oil 2l"
+      },
+      "category": {
+        "uz": "Olifa",
+        "ru": "Олифа",
+        "en": "Linseed oil (Olifa)"
+      }
+    },
+    "79": {
+      "id": 79,
+      "image": "",
+      "pricePiece": 1.3,
+      "priceBox": 19.5,
+      "boxCapacity": 15,
+      "name": {
+        "uz": "Olifa 0,7",
+        "ru": "Олифа 0,7",
+        "en": "Linseed oil 0,7"
+      },
+      "category": {
+        "uz": "Olifa",
+        "ru": "Олифа",
+        "en": "Linseed oil (Olifa)"
+      }
+    },
+    "80": {
+      "id": 80,
+      "image": "",
+      "pricePiece": 2.1,
+      "priceBox": 31.5,
+      "boxCapacity": 15,
+      "name": {
+        "uz": "BORDO olifa",
+        "ru": "Олиф BORDO",
+        "en": "BORDO linseed oil"
+      },
+      "category": {
+        "uz": "Olifa",
+        "ru": "Олифа",
+        "en": "Linseed oil (Olifa)"
+      }
+    },
+    "81": {
+      "id": 81,
+      "image": "",
+      "pricePiece": 0.51,
+      "priceBox": 51,
+      "boxCapacity": 100,
+      "name": {
+        "uz": "Serpyanka burchak 2.0m",
+        "ru": "Угол серпянка 2.0м",
+        "en": "Mesh corner tape 2.0m"
+      },
+      "category": {
+        "uz": "To'rli PVX burchak",
+        "ru": "Угол ПВХ с сеткой",
+        "en": "PVC corner with mesh"
+      }
+    },
+    "82": {
+      "id": 82,
+      "image": "",
+      "pricePiece": 0.58,
+      "priceBox": 58,
+      "boxCapacity": 100,
+      "name": {
+        "uz": "Serpyanka burchak 2.4m",
+        "ru": "Угол серпянка 2.4м",
+        "en": "Mesh corner tape 2.4m"
+      },
+      "category": {
+        "uz": "To'rli PVX burchak",
+        "ru": "Угол ПВХ с сеткой",
+        "en": "PVC corner with mesh"
+      }
+    },
+    "83": {
+      "id": 83,
+      "image": "",
+      "pricePiece": 0.7,
+      "priceBox": 70,
+      "boxCapacity": 100,
+      "name": {
+        "uz": "Serpyanka burchak 2.7m",
+        "ru": "Угол серпянка 2.7м",
+        "en": "Mesh corner tape 2.7m"
+      },
+      "category": {
+        "uz": "To'rli PVX burchak",
+        "ru": "Угол ПВХ с сеткой",
+        "en": "PVC corner with mesh"
+      }
+    },
+    "84": {
+      "id": 84,
+      "image": "",
+      "pricePiece": 0.42,
+      "priceBox": 5.04,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Shpatlyovka oq 0,350kg",
+        "ru": "Шпатлёвка белая 0,350кг",
+        "en": "Putty white 0,350kg"
+      },
+      "category": {
+        "uz": "Shpatlyovka 0.350 kg",
+        "ru": "Шпатлёвка 0.350кг",
+        "en": "Putty 0.350 kg"
+      }
+    },
+    "85": {
+      "id": 85,
+      "image": "",
+      "pricePiece": 0.42,
+      "priceBox": 5.04,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Shpatlyovka dub (eman) 0,350kg",
+        "ru": "Шпатлёвка дуб 0,350кг",
+        "en": "Putty oak 0,350kg"
+      },
+      "category": {
+        "uz": "Shpatlyovka 0.350 kg",
+        "ru": "Шпатлёвка 0.350кг",
+        "en": "Putty 0.350 kg"
+      }
+    },
+    "86": {
+      "id": 86,
+      "image": "",
+      "pricePiece": 0.42,
+      "priceBox": 5.04,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Shpatlyovka yong'oq 0,350kg",
+        "ru": "Шпатлёвка орех 0,350кг",
+        "en": "Putty walnut 0,350kg"
+      },
+      "category": {
+        "uz": "Shpatlyovka 0.350 kg",
+        "ru": "Шпатлёвка 0.350кг",
+        "en": "Putty 0.350 kg"
+      }
+    },
+    "87": {
+      "id": 87,
+      "image": "",
+      "pricePiece": 0.42,
+      "priceBox": 5.04,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Shpatlyovka qarag'ay 0,350kg",
+        "ru": "Шпатлёвка сосна 0,350кг",
+        "en": "Putty pine 0,350kg"
+      },
+      "category": {
+        "uz": "Shpatlyovka 0.350 kg",
+        "ru": "Шпатлёвка 0.350кг",
+        "en": "Putty 0.350 kg"
+      }
+    },
+    "88": {
+      "id": 88,
+      "image": "",
+      "pricePiece": 0.67,
+      "priceBox": 5.36,
+      "boxCapacity": 8,
+      "name": {
+        "uz": "Shpatlyovka oq 0,800kg",
+        "ru": "Шпатлёвка белая 0,800кг",
+        "en": "Putty white 0,800kg"
+      },
+      "category": {
+        "uz": "Shpatlyovka 0.800 kg",
+        "ru": "Шпатлёвка 0.800кг",
+        "en": "Putty 0.800 kg"
+      }
+    },
+    "89": {
+      "id": 89,
+      "image": "",
+      "pricePiece": 0.67,
+      "priceBox": 5.36,
+      "boxCapacity": 8,
+      "name": {
+        "uz": "Shpatlyovka dub (eman) 0,800kg",
+        "ru": "Шпатлёвка дуб 0,800кг",
+        "en": "Putty oak 0,800kg"
+      },
+      "category": {
+        "uz": "Shpatlyovka 0.800 kg",
+        "ru": "Шпатлёвка 0.800кг",
+        "en": "Putty 0.800 kg"
+      }
+    },
+    "90": {
+      "id": 90,
+      "image": "",
+      "pricePiece": 0.67,
+      "priceBox": 5.36,
+      "boxCapacity": 8,
+      "name": {
+        "uz": "Shpatlyovka yong'oq 0,800kg",
+        "ru": "Шпатлёвка орех 0,800кг",
+        "en": "Putty walnut 0,800kg"
+      },
+      "category": {
+        "uz": "Shpatlyovka 0.800 kg",
+        "ru": "Шпатлёвка 0.800кг",
+        "en": "Putty 0.800 kg"
+      }
+    },
+    "91": {
+      "id": 91,
+      "image": "",
+      "pricePiece": 0.67,
+      "priceBox": 5.36,
+      "boxCapacity": 8,
+      "name": {
+        "uz": "Shpatlyovka qarag'ay 0,800kg",
+        "ru": "Шпатлёвка сосна 0,800кг",
+        "en": "Putty pine 0,800kg"
+      },
+      "category": {
+        "uz": "Shpatlyovka 0.800 kg",
+        "ru": "Шпатлёвка 0.800кг",
+        "en": "Putty 0.800 kg"
+      }
+    },
+    "92": {
+      "id": 92,
+      "image": "",
+      "pricePiece": 1.05,
+      "priceBox": 4.2,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "Shpatlyovka oq 1,300kg",
+        "ru": "Шпатлёвка белая 1,300кг",
+        "en": "Putty white 1,300kg"
+      },
+      "category": {
+        "uz": "Shpatlyovka 1.300 kg",
+        "ru": "Шпатлёвка 1.300кг",
+        "en": "Putty 1.300 kg"
+      }
+    },
+    "93": {
+      "id": 93,
+      "image": "",
+      "pricePiece": 1.05,
+      "priceBox": 4.2,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "Shpatlyovka dub (eman) 1,300kg",
+        "ru": "Шпатлёвка дуб 1,300кг",
+        "en": "Putty oak 1,300kg"
+      },
+      "category": {
+        "uz": "Shpatlyovka 1.300 kg",
+        "ru": "Шпатлёвка 1.300кг",
+        "en": "Putty 1.300 kg"
+      }
+    },
+    "94": {
+      "id": 94,
+      "image": "",
+      "pricePiece": 1.05,
+      "priceBox": 4.2,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "Shpatlyovka yong'oq 1,300kg",
+        "ru": "Шпатлёвка орех 1,300кг",
+        "en": "Putty walnut 1,300kg"
+      },
+      "category": {
+        "uz": "Shpatlyovka 1.300 kg",
+        "ru": "Шпатлёвка 1.300кг",
+        "en": "Putty 1.300 kg"
+      }
+    },
+    "95": {
+      "id": 95,
+      "image": "",
+      "pricePiece": 1.05,
+      "priceBox": 4.2,
+      "boxCapacity": 4,
+      "name": {
+        "uz": "Shpatlyovka qarag'ay 1,300kg",
+        "ru": "Шпатлёвка сосна 1,300кг",
+        "en": "Putty pine 1,300kg"
+      },
+      "category": {
+        "uz": "Shpatlyovka 1.300 kg",
+        "ru": "Шпатлёвка 1.300кг",
+        "en": "Putty 1.300 kg"
+      }
+    },
+    "96": {
+      "id": 96,
+      "image": "",
+      "pricePiece": 0.68,
+      "priceBox": 8.16,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Choklar uchun fuga oq 1kg",
+        "ru": "Фуга для швов белая 1кг",
+        "en": "Joint grout white 1kg"
+      },
+      "category": {
+        "uz": "Fuga 1 kg",
+        "ru": "Фуга 1кг",
+        "en": "Grout 1 kg"
+      }
+    },
+    "97": {
+      "id": 97,
+      "image": "",
+      "pricePiece": 1.2,
+      "priceBox": 14.4,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Choklar uchun fuga qora 0.8kg",
+        "ru": "Фуга для швов черная 0.8кг",
+        "en": "Joint grout black 0.8kg"
+      },
+      "category": {
+        "uz": "Fuga 1 kg",
+        "ru": "Фуга 1кг",
+        "en": "Grout 1 kg"
+      }
+    },
+    "98": {
+      "id": 98,
+      "image": "",
+      "pricePiece": 1.38,
+      "priceBox": 16.56,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Choklar uchun fuga qizil-jigarrang 1kg",
+        "ru": "Фуга для швов красная-коричневая 1кг",
+        "en": "Joint grout red-brown 1kg"
+      },
+      "category": {
+        "uz": "Fuga 1 kg",
+        "ru": "Фуга 1кг",
+        "en": "Grout 1 kg"
+      }
+    },
+    "99": {
+      "id": 99,
+      "image": "",
+      "pricePiece": 1.38,
+      "priceBox": 16.56,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Choklar uchun fuga kulrang 1kg",
+        "ru": "Фуга для швов серая 1кг",
+        "en": "Joint grout grey 1kg"
+      },
+      "category": {
+        "uz": "Fuga 1 kg",
+        "ru": "Фуга 1кг",
+        "en": "Grout 1 kg"
+      }
+    },
+    "100": {
+      "id": 100,
+      "image": "",
+      "pricePiece": 1.38,
+      "priceBox": 16.56,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Choklar uchun fuga shokolad 1kg",
+        "ru": "Фуга для швов чоко 1кг",
+        "en": "Joint grout choco 1kg"
+      },
+      "category": {
+        "uz": "Fuga 1 kg",
+        "ru": "Фуга 1кг",
+        "en": "Grout 1 kg"
+      }
+    },
+    "101": {
+      "id": 101,
+      "image": "",
+      "pricePiece": 2.1,
+      "priceBox": 6.3,
+      "boxCapacity": 3,
+      "name": {
+        "uz": "Choklar uchun fuga oq 4kg",
+        "ru": "Фуга для швов белая 4кг",
+        "en": "Joint grout white 4kg"
+      },
+      "category": {
+        "uz": "Fuga 4 kg",
+        "ru": "Фуга 4кг",
+        "en": "Grout 4 kg"
+      }
+    },
+    "102": {
+      "id": 102,
+      "image": "",
+      "pricePiece": 3.65,
+      "priceBox": 10.95,
+      "boxCapacity": 3,
+      "name": {
+        "uz": "Choklar uchun fuga qora 3.5kg",
+        "ru": "Фуга для швов черная 3.5кг",
+        "en": "Joint grout black 3.5kg"
+      },
+      "category": {
+        "uz": "Fuga 4 kg",
+        "ru": "Фуга 4кг",
+        "en": "Grout 4 kg"
+      }
+    },
+    "103": {
+      "id": 103,
+      "image": "",
+      "pricePiece": 4.6,
+      "priceBox": 13.8,
+      "boxCapacity": 3,
+      "name": {
+        "uz": "Choklar uchun fuga qizil-jigarrang 4kg",
+        "ru": "Фуга для швов красная-коричневая 4кг",
+        "en": "Joint grout red-brown 4kg"
+      },
+      "category": {
+        "uz": "Fuga 4 kg",
+        "ru": "Фуга 4кг",
+        "en": "Grout 4 kg"
+      }
+    },
+    "104": {
+      "id": 104,
+      "image": "",
+      "pricePiece": 4.6,
+      "priceBox": 13.8,
+      "boxCapacity": 3,
+      "name": {
+        "uz": "Choklar uchun fuga kulrang 4kg",
+        "ru": "Фуга для швов серая 4кг",
+        "en": "Joint grout grey 4kg"
+      },
+      "category": {
+        "uz": "Fuga 4 kg",
+        "ru": "Фуга 4кг",
+        "en": "Grout 4 kg"
+      }
+    },
+    "105": {
+      "id": 105,
+      "image": "",
+      "pricePiece": 4.6,
+      "priceBox": 13.8,
+      "boxCapacity": 3,
+      "name": {
+        "uz": "Choklar uchun fuga shokolad 4kg",
+        "ru": "Фуга для швов чоко 4кг",
+        "en": "Joint grout choco 4kg"
+      },
+      "category": {
+        "uz": "Fuga 4 kg",
+        "ru": "Фуга 4кг",
+        "en": "Grout 4 kg"
+      }
+    },
+    "106": {
+      "id": 106,
+      "image": "",
+      "pricePiece": 0.7,
+      "priceBox": 2.1,
+      "boxCapacity": 3,
+      "name": {
+        "uz": "Antimoroz (sovuqqa qarshi) 4l",
+        "ru": "Антимороз 4л",
+        "en": "Anti-frost additive 4l"
+      },
+      "category": {
+        "uz": "Antimoroz",
+        "ru": "Антимороз",
+        "en": "Anti-frost"
+      }
+    },
+    "107": {
+      "id": 107,
+      "image": "",
+      "pricePiece": 1.9,
+      "priceBox": 1.9,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Antimoroz (sovuqqa qarshi) 12kg",
+        "ru": "Антимороз 12кг",
+        "en": "Anti-frost additive 12kg"
+      },
+      "category": {
+        "uz": "Antimoroz",
+        "ru": "Антимороз",
+        "en": "Anti-frost"
+      }
+    },
+    "108": {
+      "id": 108,
+      "image": "",
+      "pricePiece": 17.5,
+      "priceBox": 17.5,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Antimoroz (sovuqqa qarshi) 12kg (kalsiy nitrat)",
+        "ru": "Антимороз 12кг (Нитрат кальция)",
+        "en": "Anti-frost additive 12kg (calcium nitrate)"
+      },
+      "category": {
+        "uz": "Antimoroz",
+        "ru": "Антимороз",
+        "en": "Anti-frost"
+      }
+    },
+    "109": {
+      "id": 109,
+      "image": "",
+      "pricePiece": 3.3,
+      "priceBox": 3.3,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Antimoroz (sovuqqa qarshi) 20kg",
+        "ru": "Антимороз 20кг",
+        "en": "Anti-frost additive 20kg"
+      },
+      "category": {
+        "uz": "Antimoroz",
+        "ru": "Антимороз",
+        "en": "Anti-frost"
+      }
+    },
+    "110": {
+      "id": 110,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 5.6,
+      "boxCapacity": 2,
+      "name": {
+        "uz": "Betonokontakt 4kg",
+        "ru": "Бетоноконтакт 4кг",
+        "en": "Concrete contact primer 4kg"
+      },
+      "category": {
+        "uz": "Betonokontakt",
+        "ru": "Бетоноконтакт",
+        "en": "Concrete contact primer"
+      }
+    },
+    "111": {
+      "id": 111,
+      "image": "",
+      "pricePiece": 7.8,
+      "priceBox": 7.8,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Betonokontakt 12kg",
+        "ru": "Бетоноконтакт 12кг",
+        "en": "Concrete contact primer 12kg"
+      },
+      "category": {
+        "uz": "Betonokontakt",
+        "ru": "Бетоноконтакт",
+        "en": "Concrete contact primer"
+      }
+    },
+    "112": {
+      "id": 112,
+      "image": "",
+      "pricePiece": 0.54,
+      "priceBox": 8.1,
+      "boxCapacity": 15,
+      "name": {
+        "uz": "Suyuq shisha 0,7",
+        "ru": "Жидкое стекло 0,7",
+        "en": "Liquid glass 0,7"
+      },
+      "category": {
+        "uz": "Suyuq shisha",
+        "ru": "Жидкое стекло",
+        "en": "Liquid glass"
+      }
+    },
+    "113": {
+      "id": 113,
+      "image": "",
+      "pricePiece": 2.3,
+      "priceBox": 4.6,
+      "boxCapacity": 2,
+      "name": {
+        "uz": "Suyuq shisha 4 l (blok)",
+        "ru": "Жидкий 4 л /блок",
+        "en": "Liquid glass 4 l (block pack)"
+      },
+      "category": {
+        "uz": "Suyuq shisha",
+        "ru": "Жидкое стекло",
+        "en": "Liquid glass"
+      }
+    },
+    "114": {
+      "id": 114,
+      "image": "",
+      "pricePiece": 0.77,
+      "priceBox": 7.7,
+      "boxCapacity": 10,
+      "name": {
+        "uz": "Suyuq shisha 1l",
+        "ru": "Жидкое стекло 1л",
+        "en": "Liquid glass 1l"
+      },
+      "category": {
+        "uz": "Suyuq shisha",
+        "ru": "Жидкое стекло",
+        "en": "Liquid glass"
+      }
+    },
+    "115": {
+      "id": 115,
+      "image": "",
+      "pricePiece": 2.4,
+      "priceBox": 4.8,
+      "boxCapacity": 2,
+      "name": {
+        "uz": "Suyuq shisha 4 l (karobka)",
+        "ru": "Жидкий 4 л /каробка",
+        "en": "Liquid glass 4 l (box pack)"
+      },
+      "category": {
+        "uz": "Suyuq shisha",
+        "ru": "Жидкое стекло",
+        "en": "Liquid glass"
+      }
+    },
+    "116": {
+      "id": 116,
+      "image": "",
+      "pricePiece": 0.15,
+      "priceBox": 30,
+      "boxCapacity": 200,
+      "name": {
+        "uz": "Katta devor qog'ozi shpateli",
+        "ru": "Шпатель обойный большой",
+        "en": "Large wallpaper spatula"
+      },
+      "category": {
+        "uz": "Shpatel (devor qog'ozi uchun)",
+        "ru": "Шпатель обойный",
+        "en": "Wallpaper spatula"
+      }
+    },
+    "117": {
+      "id": 117,
+      "image": "",
+      "pricePiece": 0.13,
+      "priceBox": 32.5,
+      "boxCapacity": 250,
+      "name": {
+        "uz": "Kichik devor qog'ozi shpateli",
+        "ru": "Шпатель обойный маленький",
+        "en": "Small wallpaper spatula"
+      },
+      "category": {
+        "uz": "Shpatel (devor qog'ozi uchun)",
+        "ru": "Шпатель обойный",
+        "en": "Wallpaper spatula"
+      }
+    },
+    "118": {
+      "id": 118,
+      "image": "",
+      "pricePiece": 2,
+      "priceBox": 24,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Klin (gayka) 1mm",
+        "ru": "Клин (Гайка) 1мм",
+        "en": "Wedge (nut) 1mm"
+      },
+      "category": {
+        "uz": "Klin/Zажим (Bolt/Gayka)",
+        "ru": "Клин/зажим (Болт/Гайка)",
+        "en": "Wedge/Clamp (Bolt/Nut)"
+      }
+    },
+    "119": {
+      "id": 119,
+      "image": "",
+      "pricePiece": 2.35,
+      "priceBox": 28.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Zajim (bolt) 1mm",
+        "ru": "Зажим (Болт) 1мм",
+        "en": "Clamp (bolt) 1mm"
+      },
+      "category": {
+        "uz": "Klin/Zажим (Bolt/Gayka)",
+        "ru": "Клин/зажим (Болт/Гайка)",
+        "en": "Wedge/Clamp (Bolt/Nut)"
+      }
+    },
+    "120": {
+      "id": 120,
+      "image": "",
+      "pricePiece": 2.6,
+      "priceBox": 5.2,
+      "boxCapacity": 2,
+      "name": {
+        "uz": "UNIVERSAL emulsiyasi 4kg ichki",
+        "ru": "Эмульсия UNIVERSAL 4 кг внутр",
+        "en": "UNIVERSAL emulsion 4kg interior"
+      },
+      "category": {
+        "uz": "Emulsiya",
+        "ru": "Эмульсия",
+        "en": "Emulsion"
+      }
+    },
+    "121": {
+      "id": 121,
+      "image": "",
+      "pricePiece": 2.65,
+      "priceBox": 5.3,
+      "boxCapacity": 2,
+      "name": {
+        "uz": "UNIVERSAL emulsiyasi 4kg fasad",
+        "ru": "Эмульсия UNIVERSAL 4 кг фасад",
+        "en": "UNIVERSAL emulsion 4kg facade"
+      },
+      "category": {
+        "uz": "Emulsiya",
+        "ru": "Эмульсия",
+        "en": "Emulsion"
+      }
+    },
+    "122": {
+      "id": 122,
+      "image": "",
+      "pricePiece": 8,
+      "priceBox": 8,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "UNIVERSAL emulsiyasi 14kg ichki",
+        "ru": "Эмульсия UNIVERSAL 14 кг внутр",
+        "en": "UNIVERSAL emulsion 14kg interior"
+      },
+      "category": {
+        "uz": "Emulsiya",
+        "ru": "Эмульсия",
+        "en": "Emulsion"
+      }
+    },
+    "123": {
+      "id": 123,
+      "image": "",
+      "pricePiece": 8.2,
+      "priceBox": 8.2,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "UNIVERSAL emulsiyasi 14kg fasad",
+        "ru": "Эмульсия UNIVERSAL 14 кг фасад",
+        "en": "UNIVERSAL emulsion 14kg facade"
+      },
+      "category": {
+        "uz": "Emulsiya",
+        "ru": "Эмульсия",
+        "en": "Emulsion"
+      }
+    },
+    "124": {
+      "id": 124,
+      "image": "",
+      "pricePiece": 5.1,
+      "priceBox": 5.1,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Oskar emulsiyasi ichki 7kg",
+        "ru": "Эмульсия Оскар внр 7кг",
+        "en": "Oscar emulsion interior 7kg"
+      },
+      "category": {
+        "uz": "Emulsiya",
+        "ru": "Эмульсия",
+        "en": "Emulsion"
+      }
+    },
+    "125": {
+      "id": 125,
+      "image": "",
+      "pricePiece": 5.3,
+      "priceBox": 5.3,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Oskar emulsiyasi fasad 7kg",
+        "ru": "Эмульсия Оскар фасад 7кг",
+        "en": "Oscar emulsion facade 7kg"
+      },
+      "category": {
+        "uz": "Emulsiya",
+        "ru": "Эмульсия",
+        "en": "Emulsion"
+      }
+    },
+    "126": {
+      "id": 126,
+      "image": "",
+      "pricePiece": 6.5,
+      "priceBox": 6.5,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Oskar emulsiyasi ichki 10kg",
+        "ru": "Эмульсия Оскар внр 10кг",
+        "en": "Oscar emulsion interior 10kg"
+      },
+      "category": {
+        "uz": "Emulsiya",
+        "ru": "Эмульсия",
+        "en": "Emulsion"
+      }
+    },
+    "127": {
+      "id": 127,
+      "image": "",
+      "pricePiece": 6.8,
+      "priceBox": 6.8,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Oskar emulsiyasi fasad 10kg",
+        "ru": "Эмульсия Оскар фасад 10кг",
+        "en": "Oscar emulsion facade 10kg"
+      },
+      "category": {
+        "uz": "Emulsiya",
+        "ru": "Эмульсия",
+        "en": "Emulsion"
+      }
+    },
+    "128": {
+      "id": 128,
+      "image": "",
+      "pricePiece": 12.35,
+      "priceBox": 12.35,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Oskar emulsiyasi ichki 20kg",
+        "ru": "Эмульсия Оскар вн. 20кг",
+        "en": "Oscar emulsion interior 20kg"
+      },
+      "category": {
+        "uz": "Emulsiya",
+        "ru": "Эмульсия",
+        "en": "Emulsion"
+      }
+    },
+    "129": {
+      "id": 129,
+      "image": "",
+      "pricePiece": 13,
+      "priceBox": 13,
+      "boxCapacity": 1,
+      "name": {
+        "uz": "Oskar emulsiyasi fasad 20kg",
+        "ru": "Эмульсия Оскар фас. 20кг",
+        "en": "Oscar emulsion facade 20kg"
+      },
+      "category": {
+        "uz": "Emulsiya",
+        "ru": "Эмульсия",
+        "en": "Emulsion"
+      }
+    },
+    "130": {
+      "id": 130,
+      "image": "",
+      "pricePiece": 1.5,
+      "priceBox": 54,
+      "boxCapacity": 36,
+      "name": {
+        "uz": "Shisha tola folga 4.8cm",
+        "ru": "Фольга стекловолоконная 4.8см",
+        "en": "Fiberglass foil tape 4.8cm"
+      },
+      "category": {
+        "uz": "Skotch folga",
+        "ru": "Скотч фольга",
+        "en": "Foil tape"
+      }
+    },
+    "131": {
+      "id": 131,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 50.4,
+      "boxCapacity": 18,
+      "name": {
+        "uz": "Shisha tola folga 9.6cm",
+        "ru": "Фольга стекловолоконная 9.6см",
+        "en": "Fiberglass foil tape 9.6cm"
+      },
+      "category": {
+        "uz": "Skotch folga",
+        "ru": "Скотч фольга",
+        "en": "Foil tape"
+      }
+    },
+    "132": {
+      "id": 132,
+      "image": "",
+      "pricePiece": 0.85,
+      "priceBox": 51,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Alyuminiy folga 22m",
+        "ru": "Фольга алюминиевый 22м",
+        "en": "Aluminum foil tape 22m"
+      },
+      "category": {
+        "uz": "Skotch folga",
+        "ru": "Скотч фольга",
+        "en": "Foil tape"
+      }
+    },
+    "133": {
+      "id": 133,
+      "image": "",
+      "pricePiece": 0.65,
+      "priceBox": 39,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Alyuminiy folga 16m qog'ozli",
+        "ru": "Фольга алюминиевый 16м с бум.",
+        "en": "Aluminum foil tape 16m with paper"
+      },
+      "category": {
+        "uz": "Skotch folga",
+        "ru": "Скотч фольга",
+        "en": "Foil tape"
+      }
+    },
+    "134": {
+      "id": 134,
+      "image": "",
+      "pricePiece": 0.08,
+      "priceBox": 21.12,
+      "boxCapacity": 264,
+      "name": {
+        "uz": "Ikki tomonlama skotch 1,0 x 10",
+        "ru": "Двусторонний скотч 1,0 х 10",
+        "en": "Double-sided tape 1,0 x 10"
+      },
+      "category": {
+        "uz": "Ikki tomonlama skotch",
+        "ru": "Двусторонний скотч",
+        "en": "Double-sided tape"
+      }
+    },
+    "135": {
+      "id": 135,
+      "image": "",
+      "pricePiece": 0.01,
+      "priceBox": 1.8,
+      "boxCapacity": 180,
+      "name": {
+        "uz": "Ikki tomonlama skotch 1,5 x 10",
+        "ru": "Двусторонний скотч 1,5 х 10",
+        "en": "Double-sided tape 1,5 x 10"
+      },
+      "category": {
+        "uz": "Ikki tomonlama skotch",
+        "ru": "Двусторонний скотч",
+        "en": "Double-sided tape"
+      }
+    },
+    "136": {
+      "id": 136,
+      "image": "",
+      "pricePiece": 0.17,
+      "priceBox": 22.44,
+      "boxCapacity": 132,
+      "name": {
+        "uz": "Ikki tomonlama skotch 2,0 x 10",
+        "ru": "Двусторонний скотч 2,0 х 10",
+        "en": "Double-sided tape 2,0 x 10"
+      },
+      "category": {
+        "uz": "Ikki tomonlama skotch",
+        "ru": "Двусторонний скотч",
+        "en": "Double-sided tape"
+      }
+    },
+    "137": {
+      "id": 137,
+      "image": "",
+      "pricePiece": 0.37,
+      "priceBox": 22.2,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Ikki tomonlama skotch 4,4 x 10",
+        "ru": "Двусторонний скотч 4,4 х 10",
+        "en": "Double-sided tape 4,4 x 10"
+      },
+      "category": {
+        "uz": "Ikki tomonlama skotch",
+        "ru": "Двусторонний скотч",
+        "en": "Double-sided tape"
+      }
+    },
+    "138": {
+      "id": 138,
+      "image": "",
+      "pricePiece": 0.15,
+      "priceBox": 27,
+      "boxCapacity": 180,
+      "name": {
+        "uz": "SACA ikki tomonlama skotch 10mm x 5",
+        "ru": "SACA двусторонный скотч 10 мм х 5",
+        "en": "SACA double-sided tape 10mm x 5"
+      },
+      "category": {
+        "uz": "SACA ikki tomonlama skotch",
+        "ru": "SACA двусторонний скотч",
+        "en": "SACA double-sided tape"
+      }
+    },
+    "139": {
+      "id": 139,
+      "image": "",
+      "pricePiece": 0.2,
+      "priceBox": 32,
+      "boxCapacity": 160,
+      "name": {
+        "uz": "SACA ikki tomonlama skotch 12mm x 5",
+        "ru": "SACA двусторонный скотч 12 мм х 5",
+        "en": "SACA double-sided tape 12mm x 5"
+      },
+      "category": {
+        "uz": "SACA ikki tomonlama skotch",
+        "ru": "SACA двусторонний скотч",
+        "en": "SACA double-sided tape"
+      }
+    },
+    "140": {
+      "id": 140,
+      "image": "",
+      "pricePiece": 0.26,
+      "priceBox": 33.8,
+      "boxCapacity": 130,
+      "name": {
+        "uz": "SACA ikki tomonlama skotch 15mm x 5",
+        "ru": "SACA двусторонный скотч 15 мм х 5",
+        "en": "SACA double-sided tape 15mm x 5"
+      },
+      "category": {
+        "uz": "SACA ikki tomonlama skotch",
+        "ru": "SACA двусторонний скотч",
+        "en": "SACA double-sided tape"
+      }
+    },
+    "141": {
+      "id": 141,
+      "image": "",
+      "pricePiece": 0.36,
+      "priceBox": 36,
+      "boxCapacity": 100,
+      "name": {
+        "uz": "SACA ikki tomonlama skotch 22mm x 5",
+        "ru": "SACA двусторонный скотч 22 мм х 5",
+        "en": "SACA double-sided tape 22mm x 5"
+      },
+      "category": {
+        "uz": "SACA ikki tomonlama skotch",
+        "ru": "SACA двусторонний скотч",
+        "en": "SACA double-sided tape"
+      }
+    },
+    "142": {
+      "id": 142,
+      "image": "",
+      "pricePiece": 0.56,
+      "priceBox": 44.8,
+      "boxCapacity": 80,
+      "name": {
+        "uz": "SACA ikki tomonlama skotch 30mm x 5",
+        "ru": "SACA двусторонный скотч 30 мм х 5",
+        "en": "SACA double-sided tape 30mm x 5"
+      },
+      "category": {
+        "uz": "SACA ikki tomonlama skotch",
+        "ru": "SACA двусторонний скотч",
+        "en": "SACA double-sided tape"
+      }
+    },
+    "143": {
+      "id": 143,
+      "image": "",
+      "pricePiece": 0.66,
+      "priceBox": 39.6,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "SACA ikki tomonlama skotch 40mm x 5",
+        "ru": "SACA двусторонный скотч 40 мм х 5",
+        "en": "SACA double-sided tape 40mm x 5"
+      },
+      "category": {
+        "uz": "SACA ikki tomonlama skotch",
+        "ru": "SACA двусторонний скотч",
+        "en": "SACA double-sided tape"
+      }
+    },
+    "144": {
+      "id": 144,
+      "image": "",
+      "pricePiece": 0.76,
+      "priceBox": 38,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "SACA ikki tomonlama skotch 50mm x 5",
+        "ru": "SACA двусторонный скотч 50 мм х 5",
+        "en": "SACA double-sided tape 50mm x 5"
+      },
+      "category": {
+        "uz": "SACA ikki tomonlama skotch",
+        "ru": "SACA двусторонний скотч",
+        "en": "SACA double-sided tape"
+      }
+    },
+    "145": {
+      "id": 145,
+      "image": "",
+      "pricePiece": 0.14,
+      "priceBox": 30.8,
+      "boxCapacity": 220,
+      "name": {
+        "uz": "M3 ikki tomonlama skotch 0,8mm x 1,5m",
+        "ru": "М3 двусторонный скотч 0,8мм х 1,5м",
+        "en": "M3 double-sided tape 0,8mm x 1,5m"
+      },
+      "category": {
+        "uz": "M3 ikki tomonlama skotch (qizil)",
+        "ru": "М3 двусторонный скотч (красный)",
+        "en": "M3 double-sided tape (red)"
+      }
+    },
+    "146": {
+      "id": 146,
+      "image": "",
+      "pricePiece": 0.17,
+      "priceBox": 51,
+      "boxCapacity": 300,
+      "name": {
+        "uz": "M3 ikki tomonlama skotch 10mm x 1,5m",
+        "ru": "М3 двусторонный скотч 10мм х 1,5м",
+        "en": "M3 double-sided tape 10mm x 1,5m"
+      },
+      "category": {
+        "uz": "M3 ikki tomonlama skotch (qizil)",
+        "ru": "М3 двусторонный скотч (красный)",
+        "en": "M3 double-sided tape (red)"
+      }
+    },
+    "147": {
+      "id": 147,
+      "image": "",
+      "pricePiece": 0.2,
+      "priceBox": 22,
+      "boxCapacity": 110,
+      "name": {
+        "uz": "M3 ikki tomonlama skotch 15mm x 1,5m",
+        "ru": "М3 двусторонный скотч 15мм х 1,5м",
+        "en": "M3 double-sided tape 15mm x 1,5m"
+      },
+      "category": {
+        "uz": "M3 ikki tomonlama skotch (qizil)",
+        "ru": "М3 двусторонный скотч (красный)",
+        "en": "M3 double-sided tape (red)"
+      }
+    },
+    "148": {
+      "id": 148,
+      "image": "",
+      "pricePiece": 0.24,
+      "priceBox": 20.4,
+      "boxCapacity": 85,
+      "name": {
+        "uz": "M3 ikki tomonlama skotch 20mm x 1,5m",
+        "ru": "М3 двусторонный скотч 20мм х 1,5м",
+        "en": "M3 double-sided tape 20mm x 1,5m"
+      },
+      "category": {
+        "uz": "M3 ikki tomonlama skotch (qizil)",
+        "ru": "М3 двусторонный скотч (красный)",
+        "en": "M3 double-sided tape (red)"
+      }
+    },
+    "149": {
+      "id": 149,
+      "image": "",
+      "pricePiece": 0.35,
+      "priceBox": 17.5,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "M3 ikki tomonlama skotch 30mm x 1,5m",
+        "ru": "М3 двусторонный скотч 30мм х 1,5м",
+        "en": "M3 double-sided tape 30mm x 1,5m"
+      },
+      "category": {
+        "uz": "M3 ikki tomonlama skotch (qizil)",
+        "ru": "М3 двусторонный скотч (красный)",
+        "en": "M3 double-sided tape (red)"
+      }
+    },
+    "150": {
+      "id": 150,
+      "image": "",
+      "pricePiece": 0.48,
+      "priceBox": 21.6,
+      "boxCapacity": 45,
+      "name": {
+        "uz": "M3 ikki tomonlama skotch 40mm x 1,5m",
+        "ru": "М3 двусторонный скотч 40мм х 1,5м",
+        "en": "M3 double-sided tape 40mm x 1,5m"
+      },
+      "category": {
+        "uz": "M3 ikki tomonlama skotch (qizil)",
+        "ru": "М3 двусторонный скотч (красный)",
+        "en": "M3 double-sided tape (red)"
+      }
+    },
+    "151": {
+      "id": 151,
+      "image": "",
+      "pricePiece": 0.25,
+      "priceBox": 75,
+      "boxCapacity": 300,
+      "name": {
+        "uz": "M3 ikki tomonlama skotch 10mm x 3,0m",
+        "ru": "М3 двусторонный скотч 10мм х 3,0м",
+        "en": "M3 double-sided tape 10mm x 3,0m"
+      },
+      "category": {
+        "uz": "M3 ikki tomonlama skotch (qizil)",
+        "ru": "М3 двусторонный скотч (красный)",
+        "en": "M3 double-sided tape (red)"
+      }
+    },
+    "152": {
+      "id": 152,
+      "image": "",
+      "pricePiece": 0.38,
+      "priceBox": 32.3,
+      "boxCapacity": 85,
+      "name": {
+        "uz": "M3 ikki tomonlama skotch 20mm x 3,0m",
+        "ru": "М3 двусторонный скотч 20мм х 3,0м",
+        "en": "M3 double-sided tape 20mm x 3,0m"
+      },
+      "category": {
+        "uz": "M3 ikki tomonlama skotch (qizil)",
+        "ru": "М3 двусторонный скотч (красный)",
+        "en": "M3 double-sided tape (red)"
+      }
+    },
+    "153": {
+      "id": 153,
+      "image": "",
+      "pricePiece": 0.52,
+      "priceBox": 26,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "M3 ikki tomonlama skotch 30mm x 3,0m",
+        "ru": "М3 двусторонный скотч 30мм х 3,0м",
+        "en": "M3 double-sided tape 30mm x 3,0m"
+      },
+      "category": {
+        "uz": "M3 ikki tomonlama skotch (qizil)",
+        "ru": "М3 двусторонный скотч (красный)",
+        "en": "M3 double-sided tape (red)"
+      }
+    },
+    "154": {
+      "id": 154,
+      "image": "",
+      "pricePiece": 0.68,
+      "priceBox": 30.6,
+      "boxCapacity": 45,
+      "name": {
+        "uz": "M3 ikki tomonlama skotch 40mm x 3,0m",
+        "ru": "М3 двусторонный скотч 40мм х 3,0м",
+        "en": "M3 double-sided tape 40mm x 3,0m"
+      },
+      "category": {
+        "uz": "M3 ikki tomonlama skotch (qizil)",
+        "ru": "М3 двусторонный скотч (красный)",
+        "en": "M3 double-sided tape (red)"
+      }
+    },
+    "155": {
+      "id": 155,
+      "image": "",
+      "pricePiece": 0.55,
+      "priceBox": 22,
+      "boxCapacity": 40,
+      "name": {
+        "uz": "Ikki tomonlama matolik lenta 2 x 10",
+        "ru": "Двусторонняя тканевая лента 2 х 10",
+        "en": "Double-sided fabric tape 2 x 10"
+      },
+      "category": {
+        "uz": "Ikki tomonlama matolik lenta",
+        "ru": "Двусторонняя тканевая лента",
+        "en": "Double-sided fabric tape"
+      }
+    },
+    "156": {
+      "id": 156,
+      "image": "",
+      "pricePiece": 0.95,
+      "priceBox": 19,
+      "boxCapacity": 20,
+      "name": {
+        "uz": "Ikki tomonlama matolik lenta 4 x 10",
+        "ru": "Двусторонняя тканевая лента 4 х 10",
+        "en": "Double-sided fabric tape 4 x 10"
+      },
+      "category": {
+        "uz": "Ikki tomonlama matolik lenta",
+        "ru": "Двусторонняя тканевая лента",
+        "en": "Double-sided fabric tape"
+      }
+    },
+    "157": {
+      "id": 157,
+      "image": "",
+      "pricePiece": 0.29,
+      "priceBox": 97.44,
+      "boxCapacity": 336,
+      "name": {
+        "uz": "WASHI skotch 2.5cm x 10m",
+        "ru": "Скотч WASHI 2.5см х 10м",
+        "en": "WASHI tape 2.5cm x 10m"
+      },
+      "category": {
+        "uz": "Skotch WASHI (NEW)",
+        "ru": "Скотч WASHI (NEW)",
+        "en": "WASHI tape (NEW)"
+      }
+    },
+    "158": {
+      "id": 158,
+      "image": "",
+      "pricePiece": 0.52,
+      "priceBox": 87.36,
+      "boxCapacity": 168,
+      "name": {
+        "uz": "WASHI skotch 5.0cm x 10m",
+        "ru": "Скотч WASHI 5.0см х 10м",
+        "en": "WASHI tape 5.0cm x 10m"
+      },
+      "category": {
+        "uz": "Skotch WASHI (NEW)",
+        "ru": "Скотч WASHI (NEW)",
+        "en": "WASHI tape (NEW)"
+      }
+    },
+    "159": {
+      "id": 159,
+      "image": "",
+      "pricePiece": 0.7,
+      "priceBox": 21,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Choklar uchun lenta 45 to'q rang",
+        "ru": "Стык Лента 45 тёмная",
+        "en": "Joint tape 45 dark"
+      },
+      "category": {
+        "uz": "Choklar uchun qog'oz lenta",
+        "ru": "Стык лента бумажная",
+        "en": "Paper joint tape"
+      }
+    },
+    "160": {
+      "id": 160,
+      "image": "",
+      "pricePiece": 0.75,
+      "priceBox": 22.5,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Choklar uchun lenta 45 oq",
+        "ru": "Стык Лента 45 белая",
+        "en": "Joint tape 45 white"
+      },
+      "category": {
+        "uz": "Choklar uchun qog'oz lenta",
+        "ru": "Стык лента бумажная",
+        "en": "Paper joint tape"
+      }
+    },
+    "161": {
+      "id": 161,
+      "image": "",
+      "pricePiece": 1.12,
+      "priceBox": 11.2,
+      "boxCapacity": 10,
+      "name": {
+        "uz": "Choklar uchun lenta 90 to'q rang",
+        "ru": "Стык Лента 90 тёмная",
+        "en": "Joint tape 90 dark"
+      },
+      "category": {
+        "uz": "Choklar uchun qog'oz lenta",
+        "ru": "Стык лента бумажная",
+        "en": "Paper joint tape"
+      }
+    },
+    "162": {
+      "id": 162,
+      "image": "",
+      "pricePiece": 1.24,
+      "priceBox": 12.4,
+      "boxCapacity": 10,
+      "name": {
+        "uz": "Choklar uchun lenta 90 oq",
+        "ru": "Стык Лента 90 белая",
+        "en": "Joint tape 90 white"
+      },
+      "category": {
+        "uz": "Choklar uchun qog'oz lenta",
+        "ru": "Стык лента бумажная",
+        "en": "Paper joint tape"
+      }
+    },
+    "163": {
+      "id": 163,
+      "image": "",
+      "pricePiece": 0.55,
+      "priceBox": 16.5,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Choklar uchun lenta 45 (qog'oz)",
+        "ru": "Стык Лента 45 (бумажная)",
+        "en": "Joint tape 45 (paper)"
+      },
+      "category": {
+        "uz": "Choklar uchun qog'oz lenta",
+        "ru": "Стык лента бумажная",
+        "en": "Paper joint tape"
+      }
+    },
+    "164": {
+      "id": 164,
+      "image": "",
+      "pricePiece": 1.05,
+      "priceBox": 10.5,
+      "boxCapacity": 10,
+      "name": {
+        "uz": "Choklar uchun lenta 90 (qog'oz)",
+        "ru": "Стык Лента 90 (бумажная)",
+        "en": "Joint tape 90 (paper)"
+      },
+      "category": {
+        "uz": "Choklar uchun qog'oz lenta",
+        "ru": "Стык лента бумажная",
+        "en": "Paper joint tape"
+      }
+    },
+    "165": {
+      "id": 165,
+      "image": "",
+      "pricePiece": 0.22,
+      "priceBox": 15.84,
+      "boxCapacity": 72,
+      "name": {
+        "uz": "Bo'yoqchi skotch 4,5 x 10",
+        "ru": "Скотч молярный 4,5 х 10",
+        "en": "Painter's tape 4,5 x 10"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "166": {
+      "id": 166,
+      "image": "",
+      "pricePiece": 0.3,
+      "priceBox": 21.6,
+      "boxCapacity": 72,
+      "name": {
+        "uz": "Bo'yoqchi skotch 4,5 x 15",
+        "ru": "Скотч молярный 4,5 х 15",
+        "en": "Painter's tape 4,5 x 15"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "167": {
+      "id": 167,
+      "image": "",
+      "pricePiece": 0.34,
+      "priceBox": 24.48,
+      "boxCapacity": 72,
+      "name": {
+        "uz": "Bo'yoqchi skotch 4,5 x 20",
+        "ru": "Скотч молярный 4,5 х 20",
+        "en": "Painter's tape 4,5 x 20"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "168": {
+      "id": 168,
+      "image": "",
+      "pricePiece": 0.42,
+      "priceBox": 30.24,
+      "boxCapacity": 72,
+      "name": {
+        "uz": "Bo'yoqchi skotch 4,5 x 25",
+        "ru": "Скотч молярный 4,5 х 25",
+        "en": "Painter's tape 4,5 x 25"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "169": {
+      "id": 169,
+      "image": "",
+      "pricePiece": 0.51,
+      "priceBox": 36.72,
+      "boxCapacity": 72,
+      "name": {
+        "uz": "Bo'yoqchi skotch 4,5 x 30",
+        "ru": "Скотч молярный 4,5 х 30",
+        "en": "Painter's tape 4,5 x 30"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "170": {
+      "id": 170,
+      "image": "",
+      "pricePiece": 0.64,
+      "priceBox": 46.08,
+      "boxCapacity": 72,
+      "name": {
+        "uz": "Bo'yoqchi skotch 4,5 x 40",
+        "ru": "Скотч молярный 4,5 х 40",
+        "en": "Painter's tape 4,5 x 40"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "171": {
+      "id": 171,
+      "image": "",
+      "pricePiece": 0.76,
+      "priceBox": 45.6,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Bo'yoqchi skotch 4.8 x 40",
+        "ru": "Скотч молярный 4.8 х 40",
+        "en": "Painter's tape 4.8 x 40"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "172": {
+      "id": 172,
+      "image": "",
+      "pricePiece": 1.1,
+      "priceBox": 66,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Bo'yoqchi skotch 5.0 x 50",
+        "ru": "Скотч молярный 5.0 х 50",
+        "en": "Painter's tape 5.0 x 50"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "173": {
+      "id": 173,
+      "image": "",
+      "pricePiece": 0.56,
+      "priceBox": 26.88,
+      "boxCapacity": 48,
+      "name": {
+        "uz": "Bo'yoqchi skotch 6.0 x 20",
+        "ru": "Скотч молярный 6.0 х 20",
+        "en": "Painter's tape 6.0 x 20"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "174": {
+      "id": 174,
+      "image": "",
+      "pricePiece": 1.06,
+      "priceBox": 50.88,
+      "boxCapacity": 48,
+      "name": {
+        "uz": "Bo'yoqchi skotch 6.0 x 40",
+        "ru": "Скотч молярный 6.0 х 40",
+        "en": "Painter's tape 6.0 x 40"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "175": {
+      "id": 175,
+      "image": "",
+      "pricePiece": 0.72,
+      "priceBox": 25.92,
+      "boxCapacity": 36,
+      "name": {
+        "uz": "Bo'yoqchi skotch 8.0 x 20",
+        "ru": "Скотч молярный 8.0 х 20",
+        "en": "Painter's tape 8.0 x 20"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "176": {
+      "id": 176,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 48.6,
+      "boxCapacity": 36,
+      "name": {
+        "uz": "Bo'yoqchi skotch 8.0 x 40",
+        "ru": "Скотч молярный 8.0 х 40",
+        "en": "Painter's tape 8.0 x 40"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "177": {
+      "id": 177,
+      "image": "",
+      "pricePiece": 2.06,
+      "priceBox": 49.44,
+      "boxCapacity": 24,
+      "name": {
+        "uz": "Bo'yoqchi skotch 12.0 x 40",
+        "ru": "Скотч молярный 12.0 х 40",
+        "en": "Painter's tape 12.0 x 40"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch",
+        "ru": "Скотч молярный",
+        "en": "Painter's tape"
+      }
+    },
+    "178": {
+      "id": 178,
+      "image": "",
+      "pricePiece": 27,
+      "priceBox": 16200,
+      "boxCapacity": 600,
+      "name": {
+        "uz": "Bo'yoqchi skotch 0,6 (AQSH)",
+        "ru": "Скотч молярный 0,6 (США)",
+        "en": "Painter's tape 0,6 (USA)"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch (AQSH)",
+        "ru": "Скотч молярный США",
+        "en": "Painter's tape (USA)"
+      }
+    },
+    "179": {
+      "id": 179,
+      "image": "",
+      "pricePiece": 27,
+      "priceBox": 11988,
+      "boxCapacity": 444,
+      "name": {
+        "uz": "Bo'yoqchi skotch 0,8 (AQSH)",
+        "ru": "Скотч молярный 0,8 (США)",
+        "en": "Painter's tape 0,8 (USA)"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch (AQSH)",
+        "ru": "Скотч молярный США",
+        "en": "Painter's tape (USA)"
+      }
+    },
+    "180": {
+      "id": 180,
+      "image": "",
+      "pricePiece": 27,
+      "priceBox": 9720,
+      "boxCapacity": 360,
+      "name": {
+        "uz": "Bo'yoqchi skotch 1,0 (AQSH)",
+        "ru": "Скотч молярный 1,0 (США)",
+        "en": "Painter's tape 1,0 (USA)"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch (AQSH)",
+        "ru": "Скотч молярный США",
+        "en": "Painter's tape (USA)"
+      }
+    },
+    "181": {
+      "id": 181,
+      "image": "",
+      "pricePiece": 27,
+      "priceBox": 6480,
+      "boxCapacity": 240,
+      "name": {
+        "uz": "Bo'yoqchi skotch 1,5 (AQSH)",
+        "ru": "Скотч молярный 1,5 (США)",
+        "en": "Painter's tape 1,5 (USA)"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch (AQSH)",
+        "ru": "Скотч молярный США",
+        "en": "Painter's tape (USA)"
+      }
+    },
+    "182": {
+      "id": 182,
+      "image": "",
+      "pricePiece": 27,
+      "priceBox": 4860,
+      "boxCapacity": 180,
+      "name": {
+        "uz": "Bo'yoqchi skotch 2,0 (AQSH)",
+        "ru": "Скотч молярный 2,0 (США)",
+        "en": "Painter's tape 2,0 (USA)"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch (AQSH)",
+        "ru": "Скотч молярный США",
+        "en": "Painter's tape (USA)"
+      }
+    },
+    "183": {
+      "id": 183,
+      "image": "",
+      "pricePiece": 27,
+      "priceBox": 3240,
+      "boxCapacity": 120,
+      "name": {
+        "uz": "Bo'yoqchi skotch 3,0 (AQSH)",
+        "ru": "Скотч молярный 3,0 (США)",
+        "en": "Painter's tape 3,0 (USA)"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch (AQSH)",
+        "ru": "Скотч молярный США",
+        "en": "Painter's tape (USA)"
+      }
+    },
+    "184": {
+      "id": 184,
+      "image": "",
+      "pricePiece": 27,
+      "priceBox": 2592,
+      "boxCapacity": 96,
+      "name": {
+        "uz": "Bo'yoqchi skotch 4,0 (AQSH)",
+        "ru": "Скотч молярный 4,0 (США)",
+        "en": "Painter's tape 4,0 (USA)"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch (AQSH)",
+        "ru": "Скотч молярный США",
+        "en": "Painter's tape (USA)"
+      }
+    },
+    "185": {
+      "id": 185,
+      "image": "",
+      "pricePiece": 27,
+      "priceBox": 1944,
+      "boxCapacity": 72,
+      "name": {
+        "uz": "Bo'yoqchi skotch 5,0 (AQSH)",
+        "ru": "Скотч молярный 5,0 (США)",
+        "en": "Painter's tape 5,0 (USA)"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch (AQSH)",
+        "ru": "Скотч молярный США",
+        "en": "Painter's tape (USA)"
+      }
+    },
+    "186": {
+      "id": 186,
+      "image": "",
+      "pricePiece": 0.9,
+      "priceBox": 54,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Bo'yoqchi skotch 55 x 20 (sellofan)",
+        "ru": "Молярный скотч 55 х 20 (цел.)",
+        "en": "Painter's tape 55 x 20 (cellophane)"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch sellofan",
+        "ru": "Молярный скотч целофан",
+        "en": "Painter's tape cellophane"
+      }
+    },
+    "187": {
+      "id": 187,
+      "image": "",
+      "pricePiece": 1.5,
+      "priceBox": 45,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Bo'yoqchi skotch 150 x 20 (sellofan)",
+        "ru": "Молярный скотч 150 х 20 (цел.)",
+        "en": "Painter's tape 150 x 20 (cellophane)"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch sellofan",
+        "ru": "Молярный скотч целофан",
+        "en": "Painter's tape cellophane"
+      }
+    },
+    "188": {
+      "id": 188,
+      "image": "",
+      "pricePiece": 1.6,
+      "priceBox": 48,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Bo'yoqchi skotch 240 x 10 (sellofan)",
+        "ru": "Молярный скотч 240 х 10 (цел.)",
+        "en": "Painter's tape 240 x 10 (cellophane)"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch sellofan",
+        "ru": "Молярный скотч целофан",
+        "en": "Painter's tape cellophane"
+      }
+    },
+    "189": {
+      "id": 189,
+      "image": "",
+      "pricePiece": 0.9,
+      "priceBox": 90,
+      "boxCapacity": 100,
+      "name": {
+        "uz": "Xitoy sellofan skotch 55 x 20",
+        "ru": "Китай целофан скотч 55 х 20",
+        "en": "China cellophane tape 55 x 20"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch sellofan",
+        "ru": "Молярный скотч целофан",
+        "en": "Painter's tape cellophane"
+      }
+    },
+    "190": {
+      "id": 190,
+      "image": "",
+      "pricePiece": 1.3,
+      "priceBox": 65,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Xitoy sellofan skotch 110 x 20",
+        "ru": "Китай целофан скотч 110 х 20",
+        "en": "China cellophane tape 110 x 20"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch sellofan",
+        "ru": "Молярный скотч целофан",
+        "en": "Painter's tape cellophane"
+      }
+    },
+    "191": {
+      "id": 191,
+      "image": "",
+      "pricePiece": 1.5,
+      "priceBox": 75,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Xitoy sellofan skotch 150 x 20",
+        "ru": "Китай целофан скотч 150 х 20",
+        "en": "China cellophane tape 150 x 20"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch sellofan",
+        "ru": "Молярный скотч целофан",
+        "en": "Painter's tape cellophane"
+      }
+    },
+    "192": {
+      "id": 192,
+      "image": "",
+      "pricePiece": 1.65,
+      "priceBox": 82.5,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Xitoy sellofan skotch 180 x 20",
+        "ru": "Китай целофан скотч 180 х 20",
+        "en": "China cellophane tape 180 x 20"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch sellofan",
+        "ru": "Молярный скотч целофан",
+        "en": "Painter's tape cellophane"
+      }
+    },
+    "193": {
+      "id": 193,
+      "image": "",
+      "pricePiece": 2.05,
+      "priceBox": 61.5,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Xitoy sellofan skotch 240 x 20",
+        "ru": "Китай целофан скотч 240 х 20",
+        "en": "China cellophane tape 240 x 20"
+      },
+      "category": {
+        "uz": "Bo'yoqchi skotch sellofan",
+        "ru": "Молярный скотч целофан",
+        "en": "Painter's tape cellophane"
+      }
+    },
+    "194": {
+      "id": 194,
+      "image": "",
+      "pricePiece": 0.85,
+      "priceBox": 13.6,
+      "boxCapacity": 16,
+      "name": {
+        "uz": "Signal lenta kichik (5cm)",
+        "ru": "Сигнальная лента маленький (5см)",
+        "en": "Warning tape small (5cm)"
+      },
+      "category": {
+        "uz": "Signal lenta",
+        "ru": "Сигнальная лента",
+        "en": "Warning tape"
+      }
+    },
+    "195": {
+      "id": 195,
+      "image": "",
+      "pricePiece": 1.35,
+      "priceBox": 16.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Signal lenta katta (STOP)",
+        "ru": "Сигнальная лента большой (STOP)",
+        "en": "Warning tape large (STOP)"
+      },
+      "category": {
+        "uz": "Signal lenta",
+        "ru": "Сигнальная лента",
+        "en": "Warning tape"
+      }
+    },
+    "196": {
+      "id": 196,
+      "image": "",
+      "pricePiece": 1.95,
+      "priceBox": 35.1,
+      "boxCapacity": 18,
+      "name": {
+        "uz": "Signal lenta katta (8cm)",
+        "ru": "Сигнальная лента большой (8см)",
+        "en": "Warning tape large (8cm)"
+      },
+      "category": {
+        "uz": "Signal lenta",
+        "ru": "Сигнальная лента",
+        "en": "Warning tape"
+      }
+    },
+    "197": {
+      "id": 197,
+      "image": "",
+      "pricePiece": 3.7,
+      "priceBox": 88.8,
+      "boxCapacity": 24,
+      "name": {
+        "uz": "DUAFIX MDF yelimi 500ml",
+        "ru": "Клей МДФ DUAFIX 500мл",
+        "en": "DUAFIX MDF glue 500ml"
+      },
+      "category": {
+        "uz": "MDF ikki komponentli yelim",
+        "ru": "Клей МДФ двухкомпонентный",
+        "en": "Two-component MDF glue"
+      }
+    },
+    "198": {
+      "id": 198,
+      "image": "",
+      "pricePiece": 3.2,
+      "priceBox": 76.8,
+      "boxCapacity": 24,
+      "name": {
+        "uz": "DUAFIX MDF yelimi 400ml",
+        "ru": "Клей МДФ DUAFIX 400мл",
+        "en": "DUAFIX MDF glue 400ml"
+      },
+      "category": {
+        "uz": "MDF ikki komponentli yelim",
+        "ru": "Клей МДФ двухкомпонентный",
+        "en": "Two-component MDF glue"
+      }
+    },
+    "199": {
+      "id": 199,
+      "image": "",
+      "pricePiece": 1.6,
+      "priceBox": 38.4,
+      "boxCapacity": 24,
+      "name": {
+        "uz": "DUAFIX MDF yelimi 200ml",
+        "ru": "Клей МДФ DUAFIX 200мл",
+        "en": "DUAFIX MDF glue 200ml"
+      },
+      "category": {
+        "uz": "MDF ikki komponentli yelim",
+        "ru": "Клей МДФ двухкомпонентный",
+        "en": "Two-component MDF glue"
+      }
+    },
+    "200": {
+      "id": 200,
+      "image": "",
+      "pricePiece": 0.18,
+      "priceBox": 10.8,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Serpyanka (to'r lenta) 25",
+        "ru": "Серпянка 25",
+        "en": "Fiberglass mesh tape 25"
+      },
+      "category": {
+        "uz": "Serpyanka",
+        "ru": "Серпянка",
+        "en": "Fiberglass mesh tape (Serpyanka)"
+      }
+    },
+    "201": {
+      "id": 201,
+      "image": "",
+      "pricePiece": 0.24,
+      "priceBox": 18,
+      "boxCapacity": 75,
+      "name": {
+        "uz": "Serpyanka (to'r lenta) 45",
+        "ru": "Серпянка 45",
+        "en": "Fiberglass mesh tape 45"
+      },
+      "category": {
+        "uz": "Serpyanka",
+        "ru": "Серпянка",
+        "en": "Fiberglass mesh tape (Serpyanka)"
+      }
+    },
+    "202": {
+      "id": 202,
+      "image": "",
+      "pricePiece": 0.27,
+      "priceBox": 10.8,
+      "boxCapacity": 40,
+      "name": {
+        "uz": "Serpyanka (to'r lenta) 90",
+        "ru": "Серпянка 90",
+        "en": "Fiberglass mesh tape 90"
+      },
+      "category": {
+        "uz": "Serpyanka",
+        "ru": "Серпянка",
+        "en": "Fiberglass mesh tape (Serpyanka)"
+      }
+    },
+    "203": {
+      "id": 203,
+      "image": "",
+      "pricePiece": 0.7,
+      "priceBox": 31.5,
+      "boxCapacity": 45,
+      "name": {
+        "uz": "Serpyanka (to'r lenta) 90/10",
+        "ru": "Серпянка 90/10",
+        "en": "Fiberglass mesh tape 90/10"
+      },
+      "category": {
+        "uz": "Serpyanka",
+        "ru": "Серпянка",
+        "en": "Fiberglass mesh tape (Serpyanka)"
+      }
+    },
+    "204": {
+      "id": 204,
+      "image": "",
+      "pricePiece": 1.15,
+      "priceBox": 11.5,
+      "boxCapacity": 10,
+      "name": {
+        "uz": "Serpyanka (to'r lenta) 4cm x 90m",
+        "ru": "Серпянка 4см х 90м",
+        "en": "Fiberglass mesh tape 4cm x 90m"
+      },
+      "category": {
+        "uz": "Serpyanka",
+        "ru": "Серпянка",
+        "en": "Fiberglass mesh tape (Serpyanka)"
+      }
+    },
+    "205": {
+      "id": 205,
+      "image": "",
+      "pricePiece": 2.7,
+      "priceBox": 16.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Serpyanka (to'r lenta) 1m x 10m (5 x 5mm)",
+        "ru": "Серпянка 1м х 10м (5 х 5мм)",
+        "en": "Fiberglass mesh tape 1m x 10m (5 x 5mm)"
+      },
+      "category": {
+        "uz": "Serpyanka",
+        "ru": "Серпянка",
+        "en": "Fiberglass mesh tape (Serpyanka)"
+      }
+    },
+    "206": {
+      "id": 206,
+      "image": "",
+      "pricePiece": 0.9,
+      "priceBox": 5.4,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Universal gruntovka (1x1) 1l",
+        "ru": "Грунтовка Универсал (1х1) 1 л",
+        "en": "Universal primer (1x1) 1l"
+      },
+      "category": {
+        "uz": "Gruntovka",
+        "ru": "Грунтовка",
+        "en": "Primer"
+      }
+    },
+    "207": {
+      "id": 207,
+      "image": "",
+      "pricePiece": 1.2,
+      "priceBox": 7.2,
+      "boxCapacity": 6,
+      "name": {
+        "uz": "Veromaks gruntovka (1x7) 1l",
+        "ru": "Грунтовка Веромакс (1х7) 1 л",
+        "en": "Veromax primer (1x7) 1l"
+      },
+      "category": {
+        "uz": "Gruntovka",
+        "ru": "Грунтовка",
+        "en": "Primer"
+      }
+    },
+    "208": {
+      "id": 208,
+      "image": "",
+      "pricePiece": 2.7,
+      "priceBox": 5.4,
+      "boxCapacity": 2,
+      "name": {
+        "uz": "Veromaks gruntovka 5l",
+        "ru": "Грунтовка Веромакс 5 л",
+        "en": "Veromax primer 5l"
+      },
+      "category": {
+        "uz": "Gruntovka",
+        "ru": "Грунтовка",
+        "en": "Primer"
+      }
+    },
+    "209": {
+      "id": 209,
+      "image": "",
+      "pricePiece": 2.6,
+      "priceBox": 7.8,
+      "boxCapacity": 3,
+      "name": {
+        "uz": "Veromaks gruntovka 3l",
+        "ru": "Грунтовка Веромакс 3 л",
+        "en": "Veromax primer 3l"
+      },
+      "category": {
+        "uz": "Gruntovka",
+        "ru": "Грунтовка",
+        "en": "Primer"
+      }
+    },
+    "210": {
+      "id": 210,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "01 Duafix fuga 2x Bright and white",
+        "ru": "01 Фуга Дуафикс 2х Bright and white",
+        "en": "01 Duafix grout 2x Bright and white"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "211": {
+      "id": 211,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "02 Duafix fuga 2x Mist and rain ash",
+        "ru": "02 Фуга Дуафикс 2х Mist and rain ash",
+        "en": "02 Duafix grout 2x Mist and rain ash"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "212": {
+      "id": 212,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "03 Duafix fuga 2x Space grey",
+        "ru": "03 Фуга Дуафикс 2х Space grey",
+        "en": "03 Duafix grout 2x Space grey"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "213": {
+      "id": 213,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "04 Duafix fuga 2x Khaki grey",
+        "ru": "04 Фуга Дуафикс 2х Khaki grey",
+        "en": "04 Duafix grout 2x Khaki grey"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "214": {
+      "id": 214,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "05 Duafix fuga 2x Smoky grey",
+        "ru": "05 Фуга Дуафикс 2х Smoky grey",
+        "en": "05 Duafix grout 2x Smoky grey"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "215": {
+      "id": 215,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "06 Duafix fuga 2x Galactic grey",
+        "ru": "06 Фуга Дуафикс 2х Galactic grey",
+        "en": "06 Duafix grout 2x Galactic grey"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "216": {
+      "id": 216,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "07 Duafix fuga 2x Quartz ash",
+        "ru": "07 Фуга Дуафикс 2х Quartz ash",
+        "en": "07 Duafix grout 2x Quartz ash"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "217": {
+      "id": 217,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "08 Duafix fuga 2x Titanium ash",
+        "ru": "08 Фуга Дуафикс 2х Titanium ash",
+        "en": "08 Duafix grout 2x Titanium ash"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "218": {
+      "id": 218,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "09 Duafix fuga 2x Light ash",
+        "ru": "09 Фуга Дуафикс 2х Light ash",
+        "en": "09 Duafix grout 2x Light ash"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "219": {
+      "id": 219,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "10 Duafix fuga 2x Silver gray",
+        "ru": "10 Фуга Дуафикс 2х Silver gray",
+        "en": "10 Duafix grout 2x Silver gray"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "220": {
+      "id": 220,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "11 Duafix fuga 2x Deep space silver",
+        "ru": "11 Фуга Дуафикс 2х Deep space silver",
+        "en": "11 Duafix grout 2x Deep space silver"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "221": {
+      "id": 221,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "12 Duafix fuga 2x Metal ash",
+        "ru": "12 Фуга Дуафикс 2х Metal ash",
+        "en": "12 Duafix grout 2x Metal ash"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "222": {
+      "id": 222,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "13 Duafix fuga 2x Beige",
+        "ru": "13 Фуга Дуафикс 2х Beige",
+        "en": "13 Duafix grout 2x Beige"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "223": {
+      "id": 223,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "14 Duafix fuga 2x Evaporated milk coffe",
+        "ru": "14 Фуга Дуафикс 2х Evaporated milk coffe",
+        "en": "14 Duafix grout 2x Evaporated milk coffe"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "224": {
+      "id": 224,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "15 Duafix fuga 2x Light coffe colour",
+        "ru": "15 Фуга Дуафикс 2х Light coffe colour",
+        "en": "15 Duafix grout 2x Light coffe colour"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "225": {
+      "id": 225,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "16 Duafix fuga 2x Champagne gold",
+        "ru": "16 Фуга Дуафикс 2х Champagne gold",
+        "en": "16 Duafix grout 2x Champagne gold"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "226": {
+      "id": 226,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "17 Duafix fuga 2x Shining gold",
+        "ru": "17 Фуга Дуафикс 2х Shining gold",
+        "en": "17 Duafix grout 2x Shining gold"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "227": {
+      "id": 227,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "18 Duafix fuga 2x Noble Silver",
+        "ru": "18 Фуга Дуафикс 2х Noble Silver",
+        "en": "18 Duafix grout 2x Noble Silver"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "228": {
+      "id": 228,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "19 Duafix fuga 2x Noble gold",
+        "ru": "19 Фуга Дуафикс 2х Noble gold",
+        "en": "19 Duafix grout 2x Noble gold"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "229": {
+      "id": 229,
+      "image": "",
+      "pricePiece": 2.8,
+      "priceBox": 33.6,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "20 Duafix fuga 2x Pearl black",
+        "ru": "20 Фуга Дуафикс 2х Pearl black",
+        "en": "20 Duafix grout 2x Pearl black"
+      },
+      "category": {
+        "uz": "Duafix",
+        "ru": "Duafix",
+        "en": "Duafix"
+      }
+    },
+    "230": {
+      "id": 230,
+      "image": "",
+      "pricePiece": 0.06,
+      "priceBox": 18,
+      "boxCapacity": 300,
+      "name": {
+        "uz": "Rozetka uchun ramka",
+        "ru": "Рамки для розеток",
+        "en": "Socket frame"
+      },
+      "category": {
+        "uz": "Turli mahsulotlar",
+        "ru": "Разные",
+        "en": "Miscellaneous"
+      }
+    },
+    "231": {
+      "id": 231,
+      "image": "",
+      "pricePiece": 0.33,
+      "priceBox": 8.25,
+      "boxCapacity": 25,
+      "name": {
+        "uz": "Bo'yoqchi krujkasi",
+        "ru": "Малярная кружка",
+        "en": "Painter's mug"
+      },
+      "category": {
+        "uz": "Turli mahsulotlar",
+        "ru": "Разные",
+        "en": "Miscellaneous"
+      }
+    },
+    "232": {
+      "id": 232,
+      "image": "",
+      "pricePiece": 0.2,
+      "priceBox": 10,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Valik uchun panjara",
+        "ru": "Решетка для валиков",
+        "en": "Roller grid"
+      },
+      "category": {
+        "uz": "Turli mahsulotlar",
+        "ru": "Разные",
+        "en": "Miscellaneous"
+      }
+    },
+    "233": {
+      "id": 233,
+      "image": "",
+      "pricePiece": 0.88,
+      "priceBox": 56.32,
+      "boxCapacity": 64,
+      "name": {
+        "uz": "To'plam: latok/valik/pichoq (kichik)",
+        "ru": "Набор латок/валик/нож (мал.)",
+        "en": "Set: tray/roller/knife (small)"
+      },
+      "category": {
+        "uz": "Turli mahsulotlar",
+        "ru": "Разные",
+        "en": "Miscellaneous"
+      }
+    },
+    "234": {
+      "id": 234,
+      "image": "",
+      "pricePiece": 1.2,
+      "priceBox": 28.8,
+      "boxCapacity": 24,
+      "name": {
+        "uz": "DUAFIX suyuq mixlari",
+        "ru": "Жидкие гвозди DUAFIX",
+        "en": "DUAFIX liquid nails"
+      },
+      "category": {
+        "uz": "Suyuq mixlar/Tomchi yelim",
+        "ru": "Жидкие гвозди/Томчи клей",
+        "en": "Liquid nails/Mounting glue"
+      }
+    },
+    "235": {
+      "id": 235,
+      "image": "",
+      "pricePiece": 1.5,
+      "priceBox": 36,
+      "boxCapacity": 24,
+      "name": {
+        "uz": "Duafix montaj yelimi FIX",
+        "ru": "Duafix томчи клей монтажный FIX",
+        "en": "Duafix mounting glue FIX"
+      },
+      "category": {
+        "uz": "Suyuq mixlar/Tomchi yelim",
+        "ru": "Жидкие гвозди/Томчи клей",
+        "en": "Liquid nails/Mounting glue"
+      }
+    },
+    "236": {
+      "id": 236,
+      "image": "",
+      "pricePiece": 1.3,
+      "priceBox": 78,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Valik tayoqchasi 2m (metall)",
+        "ru": "Валик палка 2м (металл)",
+        "en": "Roller handle 2m (metal)"
+      },
+      "category": {
+        "uz": "Valik tayoq",
+        "ru": "Валик палка",
+        "en": "Roller handle"
+      }
+    },
+    "237": {
+      "id": 237,
+      "image": "",
+      "pricePiece": 1.65,
+      "priceBox": 49.5,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Valik tayoqchasi 3m (metall)",
+        "ru": "Валик палка 3м (металл)",
+        "en": "Roller handle 3m (metal)"
+      },
+      "category": {
+        "uz": "Valik tayoq",
+        "ru": "Валик палка",
+        "en": "Roller handle"
+      }
+    },
+    "238": {
+      "id": 238,
+      "image": "",
+      "pricePiece": 1.25,
+      "priceBox": 125,
+      "boxCapacity": 100,
+      "name": {
+        "uz": "Valik tayoqchasi 1m (zanglamaydigan po'lat)",
+        "ru": "Валик палка 1м (нержавейка)",
+        "en": "Roller handle 1m (stainless steel)"
+      },
+      "category": {
+        "uz": "Valik tayoq",
+        "ru": "Валик палка",
+        "en": "Roller handle"
+      }
+    },
+    "239": {
+      "id": 239,
+      "image": "",
+      "pricePiece": 1.7,
+      "priceBox": 102,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Valik tayoqchasi 2m (zanglamaydigan po'lat)",
+        "ru": "Валик палка 2м (нержавейка)",
+        "en": "Roller handle 2m (stainless steel)"
+      },
+      "category": {
+        "uz": "Valik tayoq",
+        "ru": "Валик палка",
+        "en": "Roller handle"
+      }
+    },
+    "240": {
+      "id": 240,
+      "image": "",
+      "pricePiece": 2.05,
+      "priceBox": 61.5,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Valik tayoqchasi 3m (zanglamaydigan po'lat)",
+        "ru": "Валик палка 3м (нержавейка)",
+        "en": "Roller handle 3m (stainless steel)"
+      },
+      "category": {
+        "uz": "Valik tayoq",
+        "ru": "Валик палка",
+        "en": "Roller handle"
+      }
+    },
+    "241": {
+      "id": 241,
+      "image": "",
+      "pricePiece": 0.97,
+      "priceBox": 29.1,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Valik 64",
+        "ru": "Валик 64",
+        "en": "Roller 64"
+      },
+      "category": {
+        "uz": "Valik (qop)",
+        "ru": "Валик (мешок)",
+        "en": "Roller (bag pack)"
+      }
+    },
+    "242": {
+      "id": 242,
+      "image": "",
+      "pricePiece": 0.78,
+      "priceBox": 31.2,
+      "boxCapacity": 40,
+      "name": {
+        "uz": "Valik 55",
+        "ru": "Валик 55",
+        "en": "Roller 55"
+      },
+      "category": {
+        "uz": "Valik (qop)",
+        "ru": "Валик (мешок)",
+        "en": "Roller (bag pack)"
+      }
+    },
+    "243": {
+      "id": 243,
+      "image": "",
+      "pricePiece": 0.72,
+      "priceBox": 28.8,
+      "boxCapacity": 40,
+      "name": {
+        "uz": "Valik 44",
+        "ru": "Валик 44",
+        "en": "Roller 44"
+      },
+      "category": {
+        "uz": "Valik (qop)",
+        "ru": "Валик (мешок)",
+        "en": "Roller (bag pack)"
+      }
+    },
+    "244": {
+      "id": 244,
+      "image": "",
+      "pricePiece": 0.65,
+      "priceBox": 39,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Valik 38",
+        "ru": "Валик 38",
+        "en": "Roller 38"
+      },
+      "category": {
+        "uz": "Valik (qop)",
+        "ru": "Валик (мешок)",
+        "en": "Roller (bag pack)"
+      }
+    },
+    "245": {
+      "id": 245,
+      "image": "",
+      "pricePiece": 0.31,
+      "priceBox": 62,
+      "boxCapacity": 200,
+      "name": {
+        "uz": "Valik 22",
+        "ru": "Валик 22",
+        "en": "Roller 22"
+      },
+      "category": {
+        "uz": "Valik (qop)",
+        "ru": "Валик (мешок)",
+        "en": "Roller (bag pack)"
+      }
+    },
+    "246": {
+      "id": 246,
+      "image": "",
+      "pricePiece": 0.72,
+      "priceBox": 50.4,
+      "boxCapacity": 70,
+      "name": {
+        "uz": "Valik 22 (to'plam x5)",
+        "ru": "Валик 22 (набор х 5)",
+        "en": "Roller 22 (set of 5)"
+      },
+      "category": {
+        "uz": "Valik (qop)",
+        "ru": "Валик (мешок)",
+        "en": "Roller (bag pack)"
+      }
+    },
+    "247": {
+      "id": 247,
+      "image": "",
+      "pricePiece": 1.1,
+      "priceBox": 44,
+      "boxCapacity": 40,
+      "name": {
+        "uz": "Valik 64",
+        "ru": "Валик 64",
+        "en": "Roller 64"
+      },
+      "category": {
+        "uz": "Valik (karobka)",
+        "ru": "Валик (коробка)",
+        "en": "Roller (box pack)"
+      }
+    },
+    "248": {
+      "id": 248,
+      "image": "",
+      "pricePiece": 0.9,
+      "priceBox": 45,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Valik 55",
+        "ru": "Валик 55",
+        "en": "Roller 55"
+      },
+      "category": {
+        "uz": "Valik (karobka)",
+        "ru": "Валик (коробка)",
+        "en": "Roller (box pack)"
+      }
+    },
+    "249": {
+      "id": 249,
+      "image": "",
+      "pricePiece": 0.8,
+      "priceBox": 40,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Valik 44",
+        "ru": "Валик 44",
+        "en": "Roller 44"
+      },
+      "category": {
+        "uz": "Valik (karobka)",
+        "ru": "Валик (коробка)",
+        "en": "Roller (box pack)"
+      }
+    },
+    "250": {
+      "id": 250,
+      "image": "",
+      "pricePiece": 0.75,
+      "priceBox": 37.5,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Valik 38",
+        "ru": "Валик 38",
+        "en": "Roller 38"
+      },
+      "category": {
+        "uz": "Valik (karobka)",
+        "ru": "Валик (коробка)",
+        "en": "Roller (box pack)"
+      }
+    },
+    "251": {
+      "id": 251,
+      "image": "",
+      "pricePiece": 1.1,
+      "priceBox": 55,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Valik 38 (lak)",
+        "ru": "Валик 38 (Лак)",
+        "en": "Roller 38 (varnish)"
+      },
+      "category": {
+        "uz": "Valik (karobka)",
+        "ru": "Валик (коробка)",
+        "en": "Roller (box pack)"
+      }
+    },
+    "252": {
+      "id": 252,
+      "image": "",
+      "pricePiece": 0.7,
+      "priceBox": 49,
+      "boxCapacity": 70,
+      "name": {
+        "uz": "Valik 22 (to'plam x3)",
+        "ru": "Валик 22 (набор х 3)",
+        "en": "Roller 22 (set of 3)"
+      },
+      "category": {
+        "uz": "Valik (karobka)",
+        "ru": "Валик (коробка)",
+        "en": "Roller (box pack)"
+      }
+    },
+    "253": {
+      "id": 253,
+      "image": "",
+      "pricePiece": 1.85,
+      "priceBox": 74,
+      "boxCapacity": 40,
+      "name": {
+        "uz": "Valik 64 Deluxe sochiq (yangi turi)",
+        "ru": "Валик 64 Deluxe сочиқ (NEW type)",
+        "en": "Roller 64 Deluxe nap (new type)"
+      },
+      "category": {
+        "uz": "Valik OSCAR DELUXE",
+        "ru": "Валик OSCAR DELUXE",
+        "en": "Roller OSCAR DELUXE"
+      }
+    },
+    "254": {
+      "id": 254,
+      "image": "",
+      "pricePiece": 1.55,
+      "priceBox": 62,
+      "boxCapacity": 40,
+      "name": {
+        "uz": "Valik 64 Deluxe",
+        "ru": "Валик 64 Deluxe",
+        "en": "Roller 64 Deluxe"
+      },
+      "category": {
+        "uz": "Valik OSCAR DELUXE",
+        "ru": "Валик OSCAR DELUXE",
+        "en": "Roller OSCAR DELUXE"
+      }
+    },
+    "255": {
+      "id": 255,
+      "image": "",
+      "pricePiece": 1.45,
+      "priceBox": 58,
+      "boxCapacity": 40,
+      "name": {
+        "uz": "Valik 55 Deluxe",
+        "ru": "Валик 55 Deluxe",
+        "en": "Roller 55 Deluxe"
+      },
+      "category": {
+        "uz": "Valik OSCAR DELUXE",
+        "ru": "Валик OSCAR DELUXE",
+        "en": "Roller OSCAR DELUXE"
+      }
+    },
+    "256": {
+      "id": 256,
+      "image": "",
+      "pricePiece": 1.3,
+      "priceBox": 65,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Valik 44 Deluxe",
+        "ru": "Валик 44 Deluxe",
+        "en": "Roller 44 Deluxe"
+      },
+      "category": {
+        "uz": "Valik OSCAR DELUXE",
+        "ru": "Валик OSCAR DELUXE",
+        "en": "Roller OSCAR DELUXE"
+      }
+    },
+    "257": {
+      "id": 257,
+      "image": "",
+      "pricePiece": 1.2,
+      "priceBox": 21.6,
+      "boxCapacity": 18,
+      "name": {
+        "uz": "Valik 38 Deluxe",
+        "ru": "Валик 38 Deluxe",
+        "en": "Roller 38 Deluxe"
+      },
+      "category": {
+        "uz": "Valik OSCAR DELUXE",
+        "ru": "Валик OSCAR DELUXE",
+        "en": "Roller OSCAR DELUXE"
+      }
+    },
+    "258": {
+      "id": 258,
+      "image": "",
+      "pricePiece": 0.7,
+      "priceBox": 35,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Valik 22 Deluxe",
+        "ru": "Валик 22 Deluxe",
+        "en": "Roller 22 Deluxe"
+      },
+      "category": {
+        "uz": "Valik OSCAR DELUXE",
+        "ru": "Валик OSCAR DELUXE",
+        "en": "Roller OSCAR DELUXE"
+      }
+    },
+    "259": {
+      "id": 259,
+      "image": "",
+      "pricePiece": 0.29,
+      "priceBox": 11.6,
+      "boxCapacity": 40,
+      "name": {
+        "uz": "Devor qog'ozi uchun valik",
+        "ru": "Валик для Обоев",
+        "en": "Wallpaper roller"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "260": {
+      "id": 260,
+      "image": "",
+      "pricePiece": 1.2,
+      "priceBox": 30,
+      "boxCapacity": 25,
+      "name": {
+        "uz": "Burchaklar uchun valik",
+        "ru": "Валик для Углов",
+        "en": "Corner roller"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "261": {
+      "id": 261,
+      "image": "",
+      "pricePiece": 3.4,
+      "priceBox": 136,
+      "boxCapacity": 40,
+      "name": {
+        "uz": "Shpatlyovka uchun valik 44mm",
+        "ru": "Валик для шпаклевки 44мм",
+        "en": "Putty roller 44mm"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "262": {
+      "id": 262,
+      "image": "",
+      "pricePiece": 1.65,
+      "priceBox": 82.5,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Lak uchun valik 44mm",
+        "ru": "Валик для лака 44мм",
+        "en": "Varnish roller 44mm"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "263": {
+      "id": 263,
+      "image": "",
+      "pricePiece": 0.9,
+      "priceBox": 45,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Lak uchun valik 22mm",
+        "ru": "Валик для лака 22мм",
+        "en": "Varnish roller 22mm"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "264": {
+      "id": 264,
+      "image": "",
+      "pricePiece": 0.45,
+      "priceBox": 22.5,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Gidroizolyatsiya uchun valik 12mm",
+        "ru": "Валик для гидроизоляции 12мм",
+        "en": "Waterproofing roller 12mm"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "265": {
+      "id": 265,
+      "image": "",
+      "pricePiece": 1.85,
+      "priceBox": 92.5,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Gidroizolyatsiya uchun valik 38mm",
+        "ru": "Валик для гидроизоляции 38мм",
+        "en": "Waterproofing roller 38mm"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "266": {
+      "id": 266,
+      "image": "",
+      "pricePiece": 0.4,
+      "priceBox": 20,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Gubka valik 12mm (oq)",
+        "ru": "Валик губка 12мм (белый)",
+        "en": "Sponge roller 12mm (white)"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "267": {
+      "id": 267,
+      "image": "",
+      "pricePiece": 1.65,
+      "priceBox": 82.5,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Gubka valik 44mm (oq)",
+        "ru": "Валик губка 44мм (белый)",
+        "en": "Sponge roller 44mm (white)"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "268": {
+      "id": 268,
+      "image": "",
+      "pricePiece": 0.45,
+      "priceBox": 22.5,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Bo'yoqchi valigi 12mm",
+        "ru": "Валик малярный 12мм",
+        "en": "Painter's roller 12mm"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "269": {
+      "id": 269,
+      "image": "",
+      "pricePiece": 1.45,
+      "priceBox": 58,
+      "boxCapacity": 40,
+      "name": {
+        "uz": "Fasad valigi (SPONGE sariq)",
+        "ru": "Валик фасадный (SPONGE сариқ)",
+        "en": "Facade roller (SPONGE yellow)"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "270": {
+      "id": 270,
+      "image": "",
+      "pricePiece": 2,
+      "priceBox": 100,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "PRO valik",
+        "ru": "PRO валик",
+        "en": "PRO roller"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "271": {
+      "id": 271,
+      "image": "",
+      "pricePiece": 7,
+      "priceBox": 105,
+      "boxCapacity": 15,
+      "name": {
+        "uz": "Tikon valik 50cm",
+        "ru": "Валик тикон 50см",
+        "en": "Tikon roller 50cm"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "272": {
+      "id": 272,
+      "image": "",
+      "pricePiece": 5.3,
+      "priceBox": 159,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Mexli valik 50cm",
+        "ru": "Валик мехли 50см",
+        "en": "Mexli roller 50cm"
+      },
+      "category": {
+        "uz": "Maxsus valiklar",
+        "ru": "Специальные валики",
+        "en": "Special rollers"
+      }
+    },
+    "273": {
+      "id": 273,
+      "image": "",
+      "pricePiece": 0.47,
+      "priceBox": 338.4,
+      "boxCapacity": 720,
+      "name": {
+        "uz": "Shchyotka 2.0\"",
+        "ru": "Щетка 2.0\"",
+        "en": "Brush 2.0\""
+      },
+      "category": {
+        "uz": "Lak uchun shchyotka",
+        "ru": "Щётка для лака",
+        "en": "Brush for varnish"
+      }
+    },
+    "274": {
+      "id": 274,
+      "image": "",
+      "pricePiece": 0.66,
+      "priceBox": 316.8,
+      "boxCapacity": 480,
+      "name": {
+        "uz": "Shchyotka 3.0\"",
+        "ru": "Щетка 3.0\"",
+        "en": "Brush 3.0\""
+      },
+      "category": {
+        "uz": "Lak uchun shchyotka",
+        "ru": "Щётка для лака",
+        "en": "Brush for varnish"
+      }
+    },
+    "275": {
+      "id": 275,
+      "image": "",
+      "pricePiece": 0.86,
+      "priceBox": 344,
+      "boxCapacity": 400,
+      "name": {
+        "uz": "Shchyotka 4.0\"",
+        "ru": "Щетка 4.0\"",
+        "en": "Brush 4.0\""
+      },
+      "category": {
+        "uz": "Lak uchun shchyotka",
+        "ru": "Щётка для лака",
+        "en": "Brush for varnish"
+      }
+    },
+    "276": {
+      "id": 276,
+      "image": "",
+      "pricePiece": 0.15,
+      "priceBox": 151.2,
+      "boxCapacity": 1008,
+      "name": {
+        "uz": "Shchyotka 1.0\"",
+        "ru": "Щетка 1.0\"",
+        "en": "Brush 1.0\""
+      },
+      "category": {
+        "uz": "Shchyotka (yog'och)",
+        "ru": "Щётка (деревянная)",
+        "en": "Brush (wooden)"
+      }
+    },
+    "277": {
+      "id": 277,
+      "image": "",
+      "pricePiece": 0.21,
+      "priceBox": 181.44,
+      "boxCapacity": 864,
+      "name": {
+        "uz": "Shchyotka 1.5\"",
+        "ru": "Щетка 1.5\"",
+        "en": "Brush 1.5\""
+      },
+      "category": {
+        "uz": "Shchyotka (yog'och)",
+        "ru": "Щётка (деревянная)",
+        "en": "Brush (wooden)"
+      }
+    },
+    "278": {
+      "id": 278,
+      "image": "",
+      "pricePiece": 0.3,
+      "priceBox": 180,
+      "boxCapacity": 600,
+      "name": {
+        "uz": "Shchyotka 2.0\"",
+        "ru": "Щетка 2.0\"",
+        "en": "Brush 2.0\""
+      },
+      "category": {
+        "uz": "Shchyotka (yog'och)",
+        "ru": "Щётка (деревянная)",
+        "en": "Brush (wooden)"
+      }
+    },
+    "279": {
+      "id": 279,
+      "image": "",
+      "pricePiece": 0.38,
+      "priceBox": 159.6,
+      "boxCapacity": 420,
+      "name": {
+        "uz": "Shchyotka 2.5\"",
+        "ru": "Щетка 2.5\"",
+        "en": "Brush 2.5\""
+      },
+      "category": {
+        "uz": "Shchyotka (yog'och)",
+        "ru": "Щётка (деревянная)",
+        "en": "Brush (wooden)"
+      }
+    },
+    "280": {
+      "id": 280,
+      "image": "",
+      "pricePiece": 0.47,
+      "priceBox": 169.2,
+      "boxCapacity": 360,
+      "name": {
+        "uz": "Shchyotka 3.0\"",
+        "ru": "Щетка 3.0\"",
+        "en": "Brush 3.0\""
+      },
+      "category": {
+        "uz": "Shchyotka (yog'och)",
+        "ru": "Щётка (деревянная)",
+        "en": "Brush (wooden)"
+      }
+    },
+    "281": {
+      "id": 281,
+      "image": "",
+      "pricePiece": 0.59,
+      "priceBox": 113.28,
+      "boxCapacity": 192,
+      "name": {
+        "uz": "Shchyotka 4.0\"",
+        "ru": "Щетка 4.0\"",
+        "en": "Brush 4.0\""
+      },
+      "category": {
+        "uz": "Shchyotka (yog'och)",
+        "ru": "Щётка (деревянная)",
+        "en": "Brush (wooden)"
+      }
+    },
+    "282": {
+      "id": 282,
+      "image": "",
+      "pricePiece": 0.13,
+      "priceBox": 156,
+      "boxCapacity": 1200,
+      "name": {
+        "uz": "Shchyotka 1.0\"",
+        "ru": "Щетка 1.0\"",
+        "en": "Brush 1.0\""
+      },
+      "category": {
+        "uz": "Shchyotka (plastik)",
+        "ru": "Щётка (пластиковая)",
+        "en": "Brush (plastic)"
+      }
+    },
+    "283": {
+      "id": 283,
+      "image": "",
+      "pricePiece": 0.15,
+      "priceBox": 144,
+      "boxCapacity": 960,
+      "name": {
+        "uz": "Shchyotka 1.5\"",
+        "ru": "Щетка 1.5\"",
+        "en": "Brush 1.5\""
+      },
+      "category": {
+        "uz": "Shchyotka (plastik)",
+        "ru": "Щётка (пластиковая)",
+        "en": "Brush (plastic)"
+      }
+    },
+    "284": {
+      "id": 284,
+      "image": "",
+      "pricePiece": 0.18,
+      "priceBox": 108,
+      "boxCapacity": 600,
+      "name": {
+        "uz": "Shchyotka 2.0\"",
+        "ru": "Щетка 2.0\"",
+        "en": "Brush 2.0\""
+      },
+      "category": {
+        "uz": "Shchyotka (plastik)",
+        "ru": "Щётка (пластиковая)",
+        "en": "Brush (plastic)"
+      }
+    },
+    "285": {
+      "id": 285,
+      "image": "",
+      "pricePiece": 0.22,
+      "priceBox": 92.4,
+      "boxCapacity": 420,
+      "name": {
+        "uz": "Shchyotka 2.5\"",
+        "ru": "Щетка 2.5\"",
+        "en": "Brush 2.5\""
+      },
+      "category": {
+        "uz": "Shchyotka (plastik)",
+        "ru": "Щётка (пластиковая)",
+        "en": "Brush (plastic)"
+      }
+    },
+    "286": {
+      "id": 286,
+      "image": "",
+      "pricePiece": 0.26,
+      "priceBox": 93.6,
+      "boxCapacity": 360,
+      "name": {
+        "uz": "Shchyotka 3.0\"",
+        "ru": "Щетка 3.0\"",
+        "en": "Brush 3.0\""
+      },
+      "category": {
+        "uz": "Shchyotka (plastik)",
+        "ru": "Щётка (пластиковая)",
+        "en": "Brush (plastic)"
+      }
+    },
+    "287": {
+      "id": 287,
+      "image": "",
+      "pricePiece": 0.35,
+      "priceBox": 84,
+      "boxCapacity": 240,
+      "name": {
+        "uz": "Shchyotka 4.0\"",
+        "ru": "Щетка 4.0\"",
+        "en": "Brush 4.0\""
+      },
+      "category": {
+        "uz": "Shchyotka (plastik)",
+        "ru": "Щётка (пластиковая)",
+        "en": "Brush (plastic)"
+      }
+    },
+    "288": {
+      "id": 288,
+      "image": "",
+      "pricePiece": 0.19,
+      "priceBox": 18.24,
+      "boxCapacity": 96,
+      "name": {
+        "uz": "Xo'jalik skotchi 3.6cm x 25m",
+        "ru": "Скотч хозяйственный 3.6см х 25м",
+        "en": "Household tape 3.6cm x 25m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "289": {
+      "id": 289,
+      "image": "",
+      "pricePiece": 0.34,
+      "priceBox": 32.64,
+      "boxCapacity": 96,
+      "name": {
+        "uz": "Xo'jalik skotchi 3.6cm x 50m",
+        "ru": "Скотч хозяйственный 3.6см х 50м",
+        "en": "Household tape 3.6cm x 50m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "290": {
+      "id": 290,
+      "image": "",
+      "pricePiece": 0.49,
+      "priceBox": 47.04,
+      "boxCapacity": 96,
+      "name": {
+        "uz": "Xo'jalik skotchi 3.6cm x 75m",
+        "ru": "Скотч хозяйственный 3.6см х 75м",
+        "en": "Household tape 3.6cm x 75m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "291": {
+      "id": 291,
+      "image": "",
+      "pricePiece": 0.65,
+      "priceBox": 62.4,
+      "boxCapacity": 96,
+      "name": {
+        "uz": "Xo'jalik skotchi 3.6cm x 100m",
+        "ru": "Скотч хозяйственный 3.6см х 100м",
+        "en": "Household tape 3.6cm x 100m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "292": {
+      "id": 292,
+      "image": "",
+      "pricePiece": 0.96,
+      "priceBox": 92.16,
+      "boxCapacity": 96,
+      "name": {
+        "uz": "Xo'jalik skotchi 3.6cm x 150m",
+        "ru": "Скотч хозяйственный 3.6см х 150м",
+        "en": "Household tape 3.6cm x 150m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "293": {
+      "id": 293,
+      "image": "",
+      "pricePiece": 1.29,
+      "priceBox": 61.92,
+      "boxCapacity": 48,
+      "name": {
+        "uz": "Xo'jalik skotchi 3.6cm x 200m",
+        "ru": "Скотч хозяйственный 3.6см х 200м",
+        "en": "Household tape 3.6cm x 200m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "294": {
+      "id": 294,
+      "image": "",
+      "pricePiece": 1.59,
+      "priceBox": 76.32,
+      "boxCapacity": 48,
+      "name": {
+        "uz": "Xo'jalik skotchi 3.6cm x 250m",
+        "ru": "Скотч хозяйственный 3.6см х 250м",
+        "en": "Household tape 3.6cm x 250m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "295": {
+      "id": 295,
+      "image": "",
+      "pricePiece": 1.88,
+      "priceBox": 90.24,
+      "boxCapacity": 48,
+      "name": {
+        "uz": "Xo'jalik skotchi 3.6cm x 300m",
+        "ru": "Скотч хозяйственный 3.6см х 300м",
+        "en": "Household tape 3.6cm x 300m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "296": {
+      "id": 296,
+      "image": "",
+      "pricePiece": 0.47,
+      "priceBox": 33.84,
+      "boxCapacity": 72,
+      "name": {
+        "uz": "Xo'jalik skotchi 4.5cm x 50m",
+        "ru": "Скотч хозяйственный 4.5см х 50м",
+        "en": "Household tape 4.5cm x 50m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "297": {
+      "id": 297,
+      "image": "",
+      "pricePiece": 0.85,
+      "priceBox": 61.2,
+      "boxCapacity": 72,
+      "name": {
+        "uz": "Xo'jalik skotchi 4.5cm x 100m",
+        "ru": "Скотч хозяйственный 4.5см х 100м",
+        "en": "Household tape 4.5cm x 100m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "298": {
+      "id": 298,
+      "image": "",
+      "pricePiece": 1.24,
+      "priceBox": 89.28,
+      "boxCapacity": 72,
+      "name": {
+        "uz": "Xo'jalik skotchi 4.5cm x 150m",
+        "ru": "Скотч хозяйственный 4.5см х 150м",
+        "en": "Household tape 4.5cm x 150m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "299": {
+      "id": 299,
+      "image": "",
+      "pricePiece": 1.62,
+      "priceBox": 58.32,
+      "boxCapacity": 36,
+      "name": {
+        "uz": "Xo'jalik skotchi 4.5cm x 200m",
+        "ru": "Скотч хозяйственный 4.5см х 200м",
+        "en": "Household tape 4.5cm x 200m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "300": {
+      "id": 300,
+      "image": "",
+      "pricePiece": 2,
+      "priceBox": 56,
+      "boxCapacity": 28,
+      "name": {
+        "uz": "Xo'jalik skotchi 4.5cm x 250m",
+        "ru": "Скотч хозяйственный 4.5см х 250м",
+        "en": "Household tape 4.5cm x 250m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "301": {
+      "id": 301,
+      "image": "",
+      "pricePiece": 2.41,
+      "priceBox": 67.48,
+      "boxCapacity": 28,
+      "name": {
+        "uz": "Xo'jalik skotchi 4.5cm x 300m",
+        "ru": "Скотч хозяйственный 4.5см х 300м",
+        "en": "Household tape 4.5cm x 300m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "302": {
+      "id": 302,
+      "image": "",
+      "pricePiece": 0.32,
+      "priceBox": 19.2,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Xo'jalik skotchi 6.0cm x 25m",
+        "ru": "Скотч хозяйственный 6.0см х 25м",
+        "en": "Household tape 6.0cm x 25m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "303": {
+      "id": 303,
+      "image": "",
+      "pricePiece": 0.59,
+      "priceBox": 35.4,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Xo'jalik skotchi 6.0cm x 50m",
+        "ru": "Скотч хозяйственный 6.0см х 50м",
+        "en": "Household tape 6.0cm x 50m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "304": {
+      "id": 304,
+      "image": "",
+      "pricePiece": 0.86,
+      "priceBox": 51.6,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Xo'jalik skotchi 6.0cm x 75m",
+        "ru": "Скотч хозяйственный 6.0см х 75м",
+        "en": "Household tape 6.0cm x 75m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "305": {
+      "id": 305,
+      "image": "",
+      "pricePiece": 1.12,
+      "priceBox": 67.2,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Xo'jalik skotchi 6.0cm x 100m",
+        "ru": "Скотч хозяйственный 6.0см х 100м",
+        "en": "Household tape 6.0cm x 100m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "306": {
+      "id": 306,
+      "image": "",
+      "pricePiece": 1.65,
+      "priceBox": 99,
+      "boxCapacity": 60,
+      "name": {
+        "uz": "Xo'jalik skotchi 6.0cm x 150m",
+        "ru": "Скотч хозяйственный 6.0см х 150м",
+        "en": "Household tape 6.0cm x 150m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "307": {
+      "id": 307,
+      "image": "",
+      "pricePiece": 2.21,
+      "priceBox": 66.3,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Xo'jalik skotchi 6.0cm x 200m",
+        "ru": "Скотч хозяйственный 6.0см х 200м",
+        "en": "Household tape 6.0cm x 200m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "308": {
+      "id": 308,
+      "image": "",
+      "pricePiece": 2.73,
+      "priceBox": 81.9,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Xo'jalik skotchi 6.0cm x 250m",
+        "ru": "Скотч хозяйственный 6.0см х 250м",
+        "en": "Household tape 6.0cm x 250m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "309": {
+      "id": 309,
+      "image": "",
+      "pricePiece": 3.27,
+      "priceBox": 98.1,
+      "boxCapacity": 30,
+      "name": {
+        "uz": "Xo'jalik skotchi 6.0cm x 300m",
+        "ru": "Скотч хозяйственный 6.0см х 300м",
+        "en": "Household tape 6.0cm x 300m"
+      },
+      "category": {
+        "uz": "Xo'jalik skotchi",
+        "ru": "Скотч хозяйственный",
+        "en": "Household tape"
+      }
+    },
+    "310": {
+      "id": 310,
+      "image": "",
+      "pricePiece": 0.7,
+      "priceBox": 70,
+      "boxCapacity": 100,
+      "name": {
+        "uz": "Andava qumqog'oz lipuchka to'rtburchak",
+        "ru": "Андава қум қоғоз липучка тўртбурчак",
+        "en": "Andava sanding paper hook-loop square"
+      },
+      "category": {
+        "uz": "Andava qum qog'oz",
+        "ru": "Андава шлифовальная сетка",
+        "en": "Andava sanding mesh"
+      }
+    },
+    "311": {
+      "id": 311,
+      "image": "",
+      "pricePiece": 1.2,
+      "priceBox": 120,
+      "boxCapacity": 100,
+      "name": {
+        "uz": "Andava qumqog'oz lipuchka universal",
+        "ru": "Андава қум қоғоз липучка универсал",
+        "en": "Andava sanding paper hook-loop universal"
+      },
+      "category": {
+        "uz": "Andava qum qog'oz",
+        "ru": "Андава шлифовальная сетка",
+        "en": "Andava sanding mesh"
+      }
+    },
+    "312": {
+      "id": 312,
+      "image": "",
+      "pricePiece": 3.05,
+      "priceBox": 146.4,
+      "boxCapacity": 48,
+      "name": {
+        "uz": "Andava qumqog'oz dumaloq",
+        "ru": "Андава қум қоғоз думалоқ",
+        "en": "Andava sanding paper round"
+      },
+      "category": {
+        "uz": "Andava qum qog'oz",
+        "ru": "Андава шлифовальная сетка",
+        "en": "Andava sanding mesh"
+      }
+    },
+    "313": {
+      "id": 313,
+      "image": "",
+      "pricePiece": 0.7,
+      "priceBox": 70,
+      "boxCapacity": 100,
+      "name": {
+        "uz": "Qumqog'oz andava sariq qistirgich",
+        "ru": "Қум қоғоз андава сариқ қистиргич",
+        "en": "Sanding paper andava yellow clip"
+      },
+      "category": {
+        "uz": "Andava qum qog'oz",
+        "ru": "Андава шлифовальная сетка",
+        "en": "Andava sanding mesh"
+      }
+    },
+    "314": {
+      "id": 314,
+      "image": "",
+      "pricePiece": 1.15,
+      "priceBox": 115,
+      "boxCapacity": 100,
+      "name": {
+        "uz": "Qumqog'oz andava universal qistirgich",
+        "ru": "Қум қоғоз андава универсал қистиргич",
+        "en": "Sanding paper andava universal clip"
+      },
+      "category": {
+        "uz": "Andava qum qog'oz",
+        "ru": "Андава шлифовальная сетка",
+        "en": "Andava sanding mesh"
+      }
+    },
+    "315": {
+      "id": 315,
+      "image": "",
+      "pricePiece": 0.25,
+      "priceBox": 12.5,
+      "boxCapacity": 50,
+      "name": {
+        "uz": "Qumqog'oz andava qora qistirgich",
+        "ru": "Қум қоғоз андава қора қистиргич",
+        "en": "Sanding paper andava black clip"
+      },
+      "category": {
+        "uz": "Andava qum qog'oz",
+        "ru": "Андава шлифовальная сетка",
+        "en": "Andava sanding mesh"
+      }
+    },
+    "316": {
+      "id": 316,
+      "image": "",
+      "pricePiece": 0.13,
+      "priceBox": 26,
+      "boxCapacity": 200,
+      "name": {
+        "uz": "Krestiklar (plitka oraliq) 1,5",
+        "ru": "Крестики 1,5",
+        "en": "Tile spacers 1,5"
+      },
+      "category": {
+        "uz": "Krestiklar",
+        "ru": "Крестики",
+        "en": "Tile spacers (crosses)"
+      }
+    },
+    "317": {
+      "id": 317,
+      "image": "",
+      "pricePiece": 0.13,
+      "priceBox": 26,
+      "boxCapacity": 200,
+      "name": {
+        "uz": "Krestiklar (plitka oraliq) 2,0",
+        "ru": "Крестики 2,0",
+        "en": "Tile spacers 2,0"
+      },
+      "category": {
+        "uz": "Krestiklar",
+        "ru": "Крестики",
+        "en": "Tile spacers (crosses)"
+      }
+    },
+    "318": {
+      "id": 318,
+      "image": "",
+      "pricePiece": 0.13,
+      "priceBox": 26,
+      "boxCapacity": 200,
+      "name": {
+        "uz": "Krestiklar (plitka oraliq) 2,5",
+        "ru": "Крестики 2,5",
+        "en": "Tile spacers 2,5"
+      },
+      "category": {
+        "uz": "Krestiklar",
+        "ru": "Крестики",
+        "en": "Tile spacers (crosses)"
+      }
+    },
+    "319": {
+      "id": 319,
+      "image": "",
+      "pricePiece": 0.13,
+      "priceBox": 26,
+      "boxCapacity": 200,
+      "name": {
+        "uz": "Krestiklar (plitka oraliq) 3,0",
+        "ru": "Крестики 3,0",
+        "en": "Tile spacers 3,0"
+      },
+      "category": {
+        "uz": "Krestiklar",
+        "ru": "Крестики",
+        "en": "Tile spacers (crosses)"
+      }
+    },
+    "320": {
+      "id": 320,
+      "image": "",
+      "pricePiece": 0.13,
+      "priceBox": 39,
+      "boxCapacity": 300,
+      "name": {
+        "uz": "Krestiklar (plitka oraliq) 4,0",
+        "ru": "Крестики 4,0",
+        "en": "Tile spacers 4,0"
+      },
+      "category": {
+        "uz": "Krestiklar",
+        "ru": "Крестики",
+        "en": "Tile spacers (crosses)"
+      }
+    },
+    "321": {
+      "id": 321,
+      "image": "",
+      "pricePiece": 0.6,
+      "priceBox": 24,
+      "boxCapacity": 40,
+      "name": {
+        "uz": "Nafis bo'yoqchi skotch 20mm x 25m",
+        "ru": "Деликатный малярный скотч 20мм х 25 м",
+        "en": "Delicate painter's tape 20mm x 25m"
+      },
+      "category": {
+        "uz": "Nafis bo'yoqchi skotch Asos",
+        "ru": "Деликатный малярный скотч Асос",
+        "en": "Delicate painter's tape Asos"
+      }
+    },
+    "322": {
+      "id": 322,
+      "image": "",
+      "pricePiece": 1.3,
+      "priceBox": 20.8,
+      "boxCapacity": 16,
+      "name": {
+        "uz": "Nafis bo'yoqchi skotch 50mm x 25m",
+        "ru": "Деликатный малярный скотч 50мм х 25 м",
+        "en": "Delicate painter's tape 50mm x 25m"
+      },
+      "category": {
+        "uz": "Nafis bo'yoqchi skotch Asos",
+        "ru": "Деликатный малярный скотч Асос",
+        "en": "Delicate painter's tape Asos"
+      }
+    },
+    "323": {
+      "id": 323,
+      "image": "",
+      "pricePiece": 1.9,
+      "priceBox": 22.8,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Asos issiqqa chidamli aerozol oq",
+        "ru": "Аэрозоль термостойкая Асос белая",
+        "en": "Asos heat-resistant spray white"
+      },
+      "category": {
+        "uz": "Issiqqa chidamli aerozol Asos",
+        "ru": "Аэрозоль термостойкая Асос",
+        "en": "Heat-resistant spray Asos"
+      }
+    },
+    "324": {
+      "id": 324,
+      "image": "",
+      "pricePiece": 1.9,
+      "priceBox": 22.8,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Issiqqa chidamli aerozol kulrang",
+        "ru": "Аэрозоль термостойкая серая",
+        "en": "Heat-resistant spray grey"
+      },
+      "category": {
+        "uz": "Issiqqa chidamli aerozol Asos",
+        "ru": "Аэрозоль термостойкая Асос",
+        "en": "Heat-resistant spray Asos"
+      }
+    },
+    "325": {
+      "id": 325,
+      "image": "",
+      "pricePiece": 1.9,
+      "priceBox": 22.8,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Asos issiqqa chidamli aerozol qora",
+        "ru": "Аэрозоль термостойкая Асос черная",
+        "en": "Asos heat-resistant spray black"
+      },
+      "category": {
+        "uz": "Issiqqa chidamli aerozol Asos",
+        "ru": "Аэрозоль термостойкая Асос",
+        "en": "Heat-resistant spray Asos"
+      }
+    },
+    "326": {
+      "id": 326,
+      "image": "",
+      "pricePiece": 1,
+      "priceBox": 20,
+      "boxCapacity": 20,
+      "name": {
+        "uz": "Asos devor qog'ozi yelimi 200g",
+        "ru": "Обойный клей (АСОС) 200гр",
+        "en": "Asos wallpaper glue 200g"
+      },
+      "category": {
+        "uz": "Devor qog'ozi yelimi Asos",
+        "ru": "Обойный клей Асос",
+        "en": "Wallpaper glue Asos"
+      }
+    },
+    "327": {
+      "id": 327,
+      "image": "",
+      "pricePiece": 1.4,
+      "priceBox": 28,
+      "boxCapacity": 20,
+      "name": {
+        "uz": "Asos devor qog'ozi yelimi 300g",
+        "ru": "Обойный клей (АСОС) 300гр",
+        "en": "Asos wallpaper glue 300g"
+      },
+      "category": {
+        "uz": "Devor qog'ozi yelimi Asos",
+        "ru": "Обойный клей Асос",
+        "en": "Wallpaper glue Asos"
+      }
+    },
+    "328": {
+      "id": 328,
+      "image": "",
+      "pricePiece": 2.3,
+      "priceBox": 23,
+      "boxCapacity": 10,
+      "name": {
+        "uz": "Asos devor qog'ozi yelimi 500g",
+        "ru": "Обойный клей (АСОС) 500гр",
+        "en": "Asos wallpaper glue 500g"
+      },
+      "category": {
+        "uz": "Devor qog'ozi yelimi Asos",
+        "ru": "Обойный клей Асос",
+        "en": "Wallpaper glue Asos"
+      }
+    },
+    "329": {
+      "id": 329,
+      "image": "",
+      "pricePiece": 4.5,
+      "priceBox": 45,
+      "boxCapacity": 10,
+      "name": {
+        "uz": "Asos devor qog'ozi yelimi 1000g",
+        "ru": "Обойный клей (АСОС) 1000гр",
+        "en": "Asos wallpaper glue 1000g"
+      },
+      "category": {
+        "uz": "Devor qog'ozi yelimi Asos",
+        "ru": "Обойный клей Асос",
+        "en": "Wallpaper glue Asos"
+      }
+    },
+    "330": {
+      "id": 330,
+      "image": "",
+      "pricePiece": 1.1,
+      "priceBox": 13.2,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Asos yuvuvchi (smivka)",
+        "ru": "Смывка Асос",
+        "en": "Asos paint remover"
+      },
+      "category": {
+        "uz": "Turli mahsulotlar Asos",
+        "ru": "Разные Асос",
+        "en": "Miscellaneous Asos"
+      }
+    },
+    "331": {
+      "id": 331,
+      "image": "",
+      "pricePiece": 1,
+      "priceBox": 28,
+      "boxCapacity": 28,
+      "name": {
+        "uz": "Asos butan gazi",
+        "ru": "Бутан газ Асос",
+        "en": "Asos butane gas"
+      },
+      "category": {
+        "uz": "Turli mahsulotlar Asos",
+        "ru": "Разные Асос",
+        "en": "Miscellaneous Asos"
+      }
+    },
+    "332": {
+      "id": 332,
+      "image": "",
+      "pricePiece": 1.65,
+      "priceBox": 19.8,
+      "boxCapacity": 12,
+      "name": {
+        "uz": "Asos WD-40",
+        "ru": "WD-40 Асос",
+        "en": "Asos WD-40"
+      },
+      "category": {
+        "uz": "Turli mahsulotlar Asos",
+        "ru": "Разные Асос",
+        "en": "Miscellaneous Asos"
+      }
+    }
+  }
+}

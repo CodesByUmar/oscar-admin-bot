@@ -1,0 +1,1293 @@
+{
+  "categories": {
+    "1": {
+      "icon": "",
+      "name_uz": "Suyultiruvchi",
+      "name_ru": "Разбавитель",
+      "name_en": "Thinner",
+      "id": 1
+    },
+    "2": {
+      "id": 2,
+      "icon": "🎨",
+      "name_ru": "Краска \"Оскар \" 2,4 кг",
+      "name_uz": "Oskar bo'yog'i 2.4 kg",
+      "name_en": "Oscar Paint 2.4 kg"
+    },
+    "3": {
+      "id": 3,
+      "icon": "✨",
+      "name_uz": "Oskar bo'yog'i 0.7 kg\n",
+      "name_ru": "Краска Оскар 0.7 кг",
+      "name_en": "Oscar Paint 0.7 kg"
+    },
+    "4": {
+      "id": 4,
+      "name": "Har hil turdagi Valiklar",
+      "icon": "🖌"
+    },
+    "5": {
+      "id": 5,
+      "name": "Emulsiya",
+      "icon": "🧪"
+    },
+    "6": {
+      "id": 6,
+      "name": "Asortiment skotchlar",
+      "icon": "🩹"
+    },
+    "7": {
+      "id": 7,
+      "icon": "🫧",
+      "name": "Penalar va Germetikalar"
+    },
+    "8": {
+      "id": 8,
+      "icon": "🧴",
+      "name": "Suyultirgich"
+    },
+    "9": {
+      "id": 9,
+      "name": "Olifa",
+      "icon": "🖌"
+    },
+    "10": {
+      "id": 10,
+      "name": "Kafel uchun fuga va boshqalar",
+      "icon": "🖽"
+    },
+    "11": {
+      "id": 11,
+      "name": "Har hil turdagi Bitum Laklar",
+      "icon": "⚫️"
+    },
+    "12": {
+      "id": 12,
+      "name": "Gruntovka",
+      "icon": "🥫"
+    },
+    "13": {
+      "id": 13,
+      "name": "Shpatlyovka",
+      "icon": "🧱"
+    },
+    "14": {
+      "id": 14,
+      "icon": "🟦",
+      "name": "Suyuq Shisha"
+    },
+    "15": {
+      "id": 15,
+      "name": "Signal lenta",
+      "icon": "🎗"
+    },
+    "16": {
+      "id": 16,
+      "name": "Har hil turdagi Serpyankalar",
+      "icon": "📎"
+    },
+    "17": {
+      "id": 17,
+      "name": "Steklohost va Kley",
+      "icon": "🍼"
+    },
+    "18": {
+      "id": 18,
+      "name": "Antimaroz",
+      "icon": "❄️"
+    },
+    "19": {
+      "id": 19,
+      "name": "Kaustik Soda",
+      "icon": "⚠️"
+    },
+    "20": {
+      "id": 20,
+      "name": "Har hil turdagi cho'tkalar",
+      "icon": "🖌"
+    },
+    "21": {
+      "id": 21,
+      "name": "Plastik mahsulotlar",
+      "icon": "♻️"
+    },
+    "23": {
+      "id": 23,
+      "name": "Qurilish Mahsulotlari",
+      "icon": "⚒️"
+    },
+    "26": {
+      "id": 26,
+      "name": "Rastvoritel",
+      "icon": "🧴"
+    }
+  },
+  "products": {
+    "1": {
+      "id": 1,
+      "priceBox": 0,
+      "pricePiece": 0.3,
+      "discount": 0,
+      "image": "https://i.ibb.co/B5zLnChj/product-image.jpg",
+      "boxCapacity": 30,
+      "stock": 100,
+      "colors": [],
+      "description": {
+        "uz": "Suyultirgich",
+        "en": "Thinner",
+        "ru": "Разбавитель"
+      },
+      "name": {
+        "uz": "Suyultirgich0,5 (380ml)",
+        "ru": "Разбавитель 0,5 (380мл)",
+        "en": "Thinner 0,5 (380ml)"
+      },
+      "category": "Razbavitel"
+    },
+    "2": {
+      "id": 2,
+      "priceBox": 0,
+      "pricePiece": 0.32,
+      "discount": 0,
+      "category": "Razbavitel",
+      "image": "https://i.ibb.co/FkTnGqP7/product-image.jpg",
+      "boxCapacity": 20,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Razbavitel 0,6 (414ml)",
+        "ru": "Razbavitel 0,6 (414ml)",
+        "en": "Razbavitel 0,6 (414ml)"
+      },
+      "description": {
+        "uz": "Razbavitel",
+        "ru": "Razbavitel",
+        "en": "Razbavitel"
+      }
+    },
+    "3": {
+      "id": 3,
+      "priceBox": 0,
+      "pricePiece": 0.36,
+      "discount": 0,
+      "category": "Razbavitel",
+      "image": "https://i.ibb.co/FkTnGqP7/product-image.jpg",
+      "boxCapacity": 15,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Razbavitel 0,7 (520ml)",
+        "ru": "Razbavitel 0,7 (520ml)",
+        "en": "Razbavitel 0,7 (520ml)"
+      },
+      "description": {
+        "uz": "Razbavitel",
+        "ru": "Razbavitel",
+        "en": "Razbavitel"
+      }
+    },
+    "4": {
+      "id": 4,
+      "priceBox": 0,
+      "pricePiece": 0.46,
+      "discount": 0,
+      "category": "Razbavitel",
+      "image": "https://i.ibb.co/jPZMcJHS/product-image.jpg",
+      "boxCapacity": 15,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Razbavitel 0,9 (697ml)",
+        "ru": "Razbavitel 0,9 (697ml)",
+        "en": "Razbavitel 0,9 (697ml)"
+      },
+      "description": {
+        "uz": "Razbavitel",
+        "ru": "Razbavitel",
+        "en": "Razbavitel"
+      }
+    },
+    "5": {
+      "id": 5,
+      "priceBox": 0,
+      "pricePiece": 0.62,
+      "discount": 0,
+      "category": "Razbavitel",
+      "image": "https://i.ibb.co/jPZMcJHS/product-image.jpg",
+      "boxCapacity": 20,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Razbavitel 0,5 (380ml)",
+        "ru": "Razbavitel 0,5 (380ml)",
+        "en": "Razbavitel 0,5 (380ml)"
+      },
+      "description": {
+        "uz": "Razbavitel",
+        "ru": "Razbavitel",
+        "en": "Razbavitel"
+      }
+    },
+    "6": {
+      "id": 6,
+      "priceBox": 0,
+      "pricePiece": 1.9,
+      "discount": 0,
+      "category": "Razbavitel",
+      "image": "https://i.ibb.co/jPZMcJHS/product-image.jpg",
+      "boxCapacity": 3,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Razbavitel 3,5l",
+        "ru": "Razbavitel 3,5l",
+        "en": "Razbavitel 3,5l"
+      },
+      "description": {
+        "uz": "Razbavitel",
+        "ru": "Razbavitel",
+        "en": "Razbavitel"
+      }
+    },
+    "7": {
+      "id": 7,
+      "priceBox": 0,
+      "pricePiece": 4.8,
+      "discount": 0,
+      "category": "Razbavitel",
+      "image": "https://i.ibb.co/jPZMcJHS/product-image.jpg",
+      "boxCapacity": 1,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Razbavitel 10l",
+        "ru": "Razbavitel 10l",
+        "en": "Razbavitel 10l"
+      },
+      "description": {
+        "uz": "Razbavitel",
+        "ru": "Razbavitel",
+        "en": "Razbavitel"
+      }
+    },
+    "8": {
+      "id": 8,
+      "priceBox": 0,
+      "pricePiece": 1.55,
+      "discount": 0,
+      "category": "Razbavitel",
+      "image": "https://i.ibb.co/jPZMcJHS/product-image.jpg",
+      "boxCapacity": 15,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Razbavitel Bordo",
+        "ru": "Razbavitel Bordo",
+        "en": "Razbavitel Bordo"
+      },
+      "description": {
+        "uz": "Razbavitel",
+        "ru": "Razbavitel",
+        "en": "Razbavitel"
+      }
+    },
+    "9": {
+      "id": 9,
+      "priceBox": 0,
+      "pricePiece": 1.15,
+      "discount": 0,
+      "category": "Lak",
+      "boxCapacity": 30,
+      "stock": 100,
+      "colors": [],
+      "image": "https://i.ibb.co/d4g4LGQR/product-image.jpg",
+      "name": {
+        "uz": "Lak Universal 0,5",
+        "ru": "Lak Universal 0,5",
+        "en": "Lak Universal 0,5"
+      },
+      "description": {
+        "uz": "Lak",
+        "ru": "Lak",
+        "en": "Lak"
+      }
+    },
+    "10": {
+      "id": 10,
+      "priceBox": 0,
+      "pricePiece": 1.55,
+      "discount": 0,
+      "category": "Lak",
+      "boxCapacity": 15,
+      "stock": 100,
+      "colors": [],
+      "image": "https://i.ibb.co/gMkyCyVZ/product-image.jpg",
+      "name": {
+        "uz": "Lak Universal 0,7",
+        "ru": "Lak Universal 0,7",
+        "en": "Lak Universal 0,7"
+      },
+      "description": {
+        "uz": "Lak",
+        "ru": "Lak",
+        "en": "Lak"
+      }
+    },
+    "11": {
+      "id": 11,
+      "priceBox": 0,
+      "pricePiece": 2.05,
+      "discount": 0,
+      "category": "Lak",
+      "boxCapacity": 12,
+      "stock": 100,
+      "colors": [],
+      "image": "https://i.ibb.co/gMkyCyVZ/product-image.jpg",
+      "name": {
+        "uz": "Lak 0,8 j/b",
+        "ru": "Lak 0,8 j/b",
+        "en": "Lak 0,8 j/b"
+      },
+      "description": {
+        "uz": "Lak",
+        "ru": "Lak",
+        "en": "Lak"
+      }
+    },
+    "12": {
+      "id": 12,
+      "priceBox": 0,
+      "pricePiece": 2.6,
+      "discount": 0,
+      "category": "Lak",
+      "boxCapacity": 12,
+      "stock": 100,
+      "colors": [],
+      "image": "https://i.ibb.co/gMkyCyVZ/product-image.jpg",
+      "name": {
+        "uz": "Lak Oscar Yaxt. 0,8j/b",
+        "ru": "Lak Oscar Yaxt. 0,8j/b",
+        "en": "Lak Oscar Yaxt. 0,8j/b"
+      },
+      "description": {
+        "uz": "Lak",
+        "ru": "Lak",
+        "en": "Lak"
+      }
+    },
+    "13": {
+      "id": 13,
+      "priceBox": 0,
+      "pricePiece": 6,
+      "discount": 0,
+      "category": "Lak",
+      "boxCapacity": 4,
+      "stock": 100,
+      "colors": [],
+      "image": "https://i.ibb.co/WNNg35TB/product-image.jpg",
+      "name": {
+        "uz": "Lak Oscar Yaxt. 2,5 j/b",
+        "ru": "Lak Oscar Yaxt. 2,5 j/b",
+        "en": "Lak Oscar Yaxt. 2,5 j/b"
+      },
+      "description": {
+        "uz": "Lak",
+        "ru": "Lak",
+        "en": "Lak"
+      }
+    },
+    "14": {
+      "id": 14,
+      "priceBox": 0,
+      "pricePiece": 5.5,
+      "discount": 0,
+      "category": "Lak",
+      "boxCapacity": 4,
+      "stock": 100,
+      "colors": [],
+      "image": "https://i.ibb.co/TBYNSvhZ/product-image.jpg",
+      "name": {
+        "uz": "Lak Ekstra 2,5 j/b",
+        "ru": "Lak Ekstra 2,5 j/b",
+        "en": "Lak Ekstra 2,5 j/b"
+      },
+      "description": {
+        "uz": "Lak",
+        "ru": "Lak",
+        "en": "Lak"
+      }
+    },
+    "15": {
+      "id": 15,
+      "priceBox": 0,
+      "pricePiece": 0.5,
+      "discount": 0,
+      "category": "Har hil turdagi Bitum Laklar",
+      "image": "https://i.ibb.co/Pz9sP4sM/product-image.jpg",
+      "boxCapacity": 15,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Bitum Lak 0,7l",
+        "ru": "Bitum Lak 0,7l",
+        "en": "Bitum Lak 0,7l"
+      },
+      "description": {
+        "uz": "Bitum Lak",
+        "ru": "Bitum Lak",
+        "en": "Bitum Lak"
+      }
+    },
+    "16": {
+      "id": 16,
+      "priceBox": 0,
+      "pricePiece": 4.5,
+      "discount": 0,
+      "category": "Har hil turdagi Bitum Laklar",
+      "image": "https://i.ibb.co/Y7ZFYBcC/product-image.jpg",
+      "boxCapacity": 3,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Bitum Lak 4l",
+        "ru": "Bitum Lak 4l",
+        "en": "Bitum Lak 4l"
+      },
+      "description": {
+        "uz": "Bitum Lak",
+        "ru": "Bitum Lak",
+        "en": "Bitum Lak"
+      }
+    },
+    "17": {
+      "id": 17,
+      "priceBox": 0,
+      "pricePiece": 5,
+      "discount": 0,
+      "category": "Lak",
+      "image": "https://i.ibb.co/NgxZjx1m/product-image.jpg",
+      "boxCapacity": 2,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Traventin Lak 2,5 kg",
+        "ru": "Traventin Lak 2,5 kg",
+        "en": "Traventin Lak 2,5 kg"
+      },
+      "description": {
+        "uz": "Traventin Lak",
+        "ru": "Traventin Lak",
+        "en": "Traventin Lak"
+      }
+    },
+    "18": {
+      "id": 18,
+      "priceBox": 0,
+      "pricePiece": 8.95,
+      "discount": 0,
+      "category": "Lak",
+      "image": "https://i.ibb.co/NgxZjx1m/product-image.jpg",
+      "boxCapacity": 1,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Traventin Lak 5 kg",
+        "ru": "Traventin Lak 5 kg",
+        "en": "Traventin Lak 5 kg"
+      },
+      "description": {
+        "uz": "Traventin Lak",
+        "ru": "Traventin Lak",
+        "en": "Traventin Lak"
+      }
+    },
+    "19": {
+      "id": 19,
+      "priceBox": 0,
+      "pricePiece": 16.5,
+      "discount": 0,
+      "category": "Lak",
+      "image": "https://i.ibb.co/NgxZjx1m/product-image.jpg",
+      "boxCapacity": 1,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Traventin Lak 10 kg",
+        "ru": "Traventin Lak 10 kg",
+        "en": "Traventin Lak 10 kg"
+      },
+      "description": {
+        "uz": "Traventin Lak",
+        "ru": "Traventin Lak",
+        "en": "Traventin Lak"
+      }
+    },
+    "20": {
+      "id": 20,
+      "priceBox": 0,
+      "pricePiece": 7,
+      "discount": 0,
+      "category": "Olifa",
+      "image": "https://i.ibb.co/8gnv5bH6/product-image.jpg",
+      "boxCapacity": 3,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Olifa (bochka)",
+        "ru": "Olifa (bochka)",
+        "en": "Olifa (bochka)"
+      },
+      "description": {
+        "uz": "Olifa",
+        "ru": "Olifa",
+        "en": "Olifa"
+      }
+    },
+    "21": {
+      "id": 21,
+      "priceBox": 0,
+      "pricePiece": 2.1,
+      "discount": 0,
+      "category": "Olifa",
+      "image": "https://i.ibb.co/8gnv5bH6/product-image.jpg",
+      "boxCapacity": 15,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Olif Bordo",
+        "ru": "Olif Bordo",
+        "en": "Olif Bordo"
+      },
+      "description": {
+        "uz": "Olifa",
+        "ru": "Olifa",
+        "en": "Olifa"
+      }
+    },
+    "22": {
+      "id": 22,
+      "priceBox": 0,
+      "pricePiece": 5.5,
+      "discount": 0,
+      "category": "Olifa",
+      "image": "https://i.ibb.co/DH5PggKw/product-image.jpg",
+      "boxCapacity": 3,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Olifa 2 l",
+        "ru": "Olifa 2 l",
+        "en": "Olifa 2 l"
+      },
+      "description": {
+        "uz": "Olifa",
+        "ru": "Olifa",
+        "en": "Olifa"
+      }
+    },
+    "23": {
+      "id": 23,
+      "priceBox": 0,
+      "pricePiece": 1.3,
+      "discount": 0,
+      "category": "Olifa",
+      "image": "https://i.ibb.co/whG7HshD/product-image.jpg",
+      "boxCapacity": 15,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Olifa 0,7 l",
+        "ru": "Olifa 0,7 l",
+        "en": "Olifa 0,7 l"
+      },
+      "description": {
+        "uz": "Olifa",
+        "ru": "Olifa",
+        "en": "Olifa"
+      }
+    },
+    "24": {
+      "id": 24,
+      "priceBox": 0,
+      "pricePiece": 0.9,
+      "discount": 0,
+      "category": "Gruntovka",
+      "image": "https://i.ibb.co/MyR65MM5/product-image.jpg",
+      "boxCapacity": 6,
+      "stock": 6,
+      "colors": [],
+      "name": {
+        "uz": "Gruntovka Universal (1x1) 1 l",
+        "ru": "Gruntovka Universal (1x1) 1 l",
+        "en": "Gruntovka Universal (1x1) 1 l"
+      },
+      "description": {
+        "uz": "Gruntovka",
+        "ru": "Gruntovka",
+        "en": "Gruntovka"
+      }
+    },
+    "25": {
+      "id": 25,
+      "priceBox": 0,
+      "pricePiece": 1.2,
+      "discount": 0,
+      "category": "Gruntovka",
+      "image": "https://i.ibb.co/gMCT95vC/product-image.jpg",
+      "boxCapacity": 6,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Gruntovka Universal (1x7) 1 l",
+        "ru": "Gruntovka Universal (1x7) 1 l",
+        "en": "Gruntovka Universal (1x7) 1 l"
+      },
+      "description": {
+        "uz": "Gruntovka",
+        "ru": "Gruntovka",
+        "en": "Gruntovka"
+      }
+    },
+    "26": {
+      "id": 26,
+      "priceBox": 0,
+      "pricePiece": 2.7,
+      "discount": 0,
+      "category": "Gruntovka",
+      "image": "https://i.ibb.co/gMCT95vC/product-image.jpg",
+      "boxCapacity": 2,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Gruntovka Veromaks 5 l",
+        "ru": "Gruntovka Veromaks 5 l",
+        "en": "Gruntovka Veromaks 5 l"
+      },
+      "description": {
+        "uz": "Gruntovka",
+        "ru": "Gruntovka",
+        "en": "Gruntovka"
+      }
+    },
+    "27": {
+      "id": 27,
+      "priceBox": 0,
+      "pricePiece": 2.6,
+      "discount": 0,
+      "category": "Gruntovka",
+      "image": "https://i.ibb.co/gMCT95vC/product-image.jpg",
+      "boxCapacity": 3,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Gruntovka Veromaks 3 l",
+        "ru": "Gruntovka Veromaks 3 l",
+        "en": "Gruntovka Veromaks 3 l"
+      },
+      "description": {
+        "uz": "Gruntovka",
+        "ru": "Gruntovka",
+        "en": "Gruntovka"
+      }
+    },
+    "28": {
+      "id": 28,
+      "priceBox": 0,
+      "pricePiece": 0.18,
+      "discount": 0,
+      "category": "Har hil turdagi Serpyankalar",
+      "image": "https://i.ibb.co/j9cyh5v7/product-image.jpg",
+      "boxCapacity": 60,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Serpyanka 25",
+        "ru": "Serpyanka 25",
+        "en": "Serpyanka 25"
+      },
+      "description": {
+        "uz": "Serpyanka",
+        "ru": "Serpyanka",
+        "en": "Serpyanka"
+      }
+    },
+    "29": {
+      "id": 29,
+      "priceBox": 0,
+      "pricePiece": 0.24,
+      "discount": 0,
+      "category": "Har hil turdagi Serpyankalar",
+      "image": "https://i.ibb.co/7xNKbZ4K/product-image.jpg",
+      "boxCapacity": 75,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Serpyanka 45",
+        "ru": "Serpyanka 45",
+        "en": "Serpyanka 45"
+      },
+      "description": {
+        "uz": "Serpyanka",
+        "ru": "Serpyanka",
+        "en": "Serpyanka"
+      }
+    },
+    "30": {
+      "id": 30,
+      "priceBox": 0,
+      "pricePiece": 0.27,
+      "discount": 0,
+      "category": "Har hil turdagi Serpyankalar",
+      "image": "https://i.ibb.co/NnChsz8M/product-image.jpg",
+      "boxCapacity": 40,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Serpyanka 90",
+        "ru": "Serpyanka 90",
+        "en": "Serpyanka 90"
+      },
+      "description": {
+        "uz": "Serpyanka",
+        "ru": "Serpyanka",
+        "en": "Serpyanka"
+      }
+    },
+    "31": {
+      "id": 31,
+      "priceBox": 0,
+      "pricePiece": 0.7,
+      "discount": 0,
+      "category": "Har hil turdagi Serpyankalar",
+      "image": "https://i.ibb.co/NnChsz8M/product-image.jpg",
+      "boxCapacity": 45,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Serpyanka 90/10",
+        "ru": "Serpyanka 90/10",
+        "en": "Serpyanka 90/10"
+      },
+      "description": {
+        "uz": "Serpyanka",
+        "ru": "Serpyanka",
+        "en": "Serpyanka"
+      }
+    },
+    "32": {
+      "id": 32,
+      "priceBox": 0,
+      "pricePiece": 1.15,
+      "discount": 0,
+      "category": "Har hil turdagi Serpyankalar",
+      "image": "https://i.ibb.co/NnChsz8M/product-image.jpg",
+      "boxCapacity": 10,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Serpyanka 4 sm x 90 m",
+        "ru": "Serpyanka 4 sm x 90 m",
+        "en": "Serpyanka 4 sm x 90 m"
+      },
+      "description": {
+        "uz": "Serpyanka",
+        "ru": "Serpyanka",
+        "en": "Serpyanka"
+      }
+    },
+    "33": {
+      "id": 33,
+      "priceBox": 0,
+      "pricePiece": 2.7,
+      "discount": 0,
+      "category": "Har hil turdagi Serpyankalar",
+      "image": "https://i.ibb.co/NnChsz8M/product-image.jpg",
+      "boxCapacity": 6,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Serpyanka 1 m x 10 m (5 x 5 mm)",
+        "ru": "Serpyanka 1 m x 10 m (5 x 5 mm)",
+        "en": "Serpyanka 1 m x 10 m (5 x 5 mm)"
+      },
+      "description": {
+        "uz": "Serpyanka",
+        "ru": "Serpyanka",
+        "en": "Serpyanka"
+      }
+    },
+    "34": {
+      "id": 34,
+      "priceBox": 0,
+      "pricePiece": 2.8,
+      "discount": 0,
+      "category": "Kafel uchun fuga va boshqalar",
+      "image": "https://i.ibb.co/MxzFH26T/product-image.jpg",
+      "boxCapacity": 2,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Betonokontakt 4 kg",
+        "ru": "Betonokontakt 4 kg",
+        "en": "Betonokontakt 4 kg"
+      },
+      "description": {
+        "uz": "Betonokontakt",
+        "ru": "Betonokontakt",
+        "en": "Betonokontakt"
+      }
+    },
+    "35": {
+      "id": 35,
+      "priceBox": 0,
+      "pricePiece": 7.8,
+      "discount": 0,
+      "category": "Kafel uchun fuga va boshqalar",
+      "image": "https://i.ibb.co/WTV1fgs/product-image.jpg",
+      "boxCapacity": 1,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Betonokontakt 12 kg",
+        "ru": "Betonokontakt 12 kg",
+        "en": "Betonokontakt 12 kg"
+      },
+      "description": {
+        "uz": "Betonokontakt",
+        "ru": "Betonokontakt",
+        "en": "Betonokontakt"
+      }
+    },
+    "36": {
+      "id": 36,
+      "priceBox": 0,
+      "pricePiece": 2,
+      "discount": 0,
+      "category": "Plastik mahsulotlar",
+      "image": "https://i.ibb.co/ZRVVXtgq/product-image.jpg",
+      "boxCapacity": 12,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Klin (Gayka) 1 mm",
+        "ru": "Klin (Gayka) 1 mm",
+        "en": "Klin (Gayka) 1 mm"
+      },
+      "description": {
+        "uz": "Klin",
+        "ru": "Klin",
+        "en": "Klin"
+      }
+    },
+    "37": {
+      "id": 37,
+      "priceBox": 0,
+      "pricePiece": 2.35,
+      "discount": 0,
+      "category": "Plastik mahsulotlar",
+      "image": "https://i.ibb.co/ZRVVXtgq/product-image.jpg",
+      "boxCapacity": 12,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Zajim (Bolt) 1 mm",
+        "ru": "Zajim (Bolt) 1 mm",
+        "en": "Zajim (Bolt) 1 mm"
+      },
+      "description": {
+        "uz": "Zajim",
+        "ru": "Zajim",
+        "en": "Zajim"
+      }
+    },
+    "38": {
+      "id": 38,
+      "priceBox": 0,
+      "pricePiece": 1,
+      "discount": 0,
+      "category": "Steklohost va Kley",
+      "image": "https://i.ibb.co/WvrryrZf/product-image.jpg",
+      "boxCapacity": 20,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Oboy yelimi (ASOS) 200 gr",
+        "ru": "Oboy yelimi (ASOS) 200 gr",
+        "en": "Oboy yelimi (ASOS) 200 gr"
+      },
+      "description": {
+        "uz": "Oboy Yelimi",
+        "ru": "Oboy Yelimi",
+        "en": "Oboy Yelimi"
+      }
+    },
+    "39": {
+      "id": 39,
+      "priceBox": 0,
+      "pricePiece": 1.4,
+      "discount": 0,
+      "category": "Steklohost va Kley",
+      "image": "https://i.ibb.co/WvrryrZf/product-image.jpg",
+      "boxCapacity": 20,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Oboy yelimi (ASOS) 300 gr",
+        "ru": "Oboy yelimi (ASOS) 300 gr",
+        "en": "Oboy yelimi (ASOS) 300 gr"
+      },
+      "description": {
+        "uz": "Oboy yelimi",
+        "ru": "Oboy yelimi",
+        "en": "Oboy yelimi"
+      }
+    },
+    "40": {
+      "id": 40,
+      "priceBox": 0,
+      "pricePiece": 2.3,
+      "discount": 0,
+      "category": "Steklohost va Kley",
+      "image": "https://i.ibb.co/WvrryrZf/product-image.jpg",
+      "boxCapacity": 10,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Oboy yelimi (ASOS) 500 gr",
+        "ru": "Oboy yelimi (ASOS) 500 gr",
+        "en": "Oboy yelimi (ASOS) 500 gr"
+      },
+      "description": {
+        "uz": "Oboy yelimi",
+        "ru": "Oboy yelimi",
+        "en": "Oboy yelimi"
+      }
+    },
+    "41": {
+      "id": 41,
+      "priceBox": 0,
+      "pricePiece": 4.5,
+      "discount": 0,
+      "category": "Steklohost va Kley",
+      "image": "https://i.ibb.co/WvrryrZf/product-image.jpg",
+      "boxCapacity": 10,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Oboy yelimi (ASOS) 1000 gr",
+        "ru": "Oboy yelimi (ASOS) 1000 gr",
+        "en": "Oboy yelimi (ASOS) 1000 gr"
+      },
+      "description": {
+        "uz": "Oboy yelimi",
+        "ru": "Oboy yelimi",
+        "en": "Oboy yelimi"
+      }
+    },
+    "42": {
+      "id": 42,
+      "priceBox": 0,
+      "pricePiece": 6.7,
+      "discount": 0,
+      "category": "Bo'yoqlar",
+      "image": "https://i.ibb.co/yzBpHQ9/product-image.jpg",
+      "boxCapacity": 6,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Emal Oscar choko 2.4 kg",
+        "ru": "Emal Oscar choko 2.4 kg",
+        "en": "Emal Oscar choko 2.4 kg"
+      },
+      "description": {
+        "uz": "Bo'yoq",
+        "ru": "Bo'yoq",
+        "en": "Bo'yoq"
+      }
+    },
+    "43": {
+      "id": 43,
+      "priceBox": 0,
+      "pricePiece": 3.7,
+      "discount": 0,
+      "category": "Bo'yoqlar",
+      "image": "https://i.ibb.co/Kp56nkNP/product-image.jpg",
+      "boxCapacity": 6,
+      "stock": 100,
+      "colors": [
+        "qizil",
+        "oq",
+        "qora",
+        "kok",
+        "sariq",
+        "kulrang",
+        "havorang",
+        "toq_sariq",
+        "yashil"
+      ],
+      "name": {
+        "uz": "Emal Oscar 2.4 kg",
+        "ru": "Emal Oscar 2.4 kg",
+        "en": "Emal Oscar 2.4 kg"
+      },
+      "description": {
+        "uz": "Bo'yoq",
+        "ru": "Bo'yoq",
+        "en": "Bo'yoq"
+      }
+    },
+    "44": {
+      "id": 44,
+      "priceBox": 0,
+      "pricePiece": 3.7,
+      "discount": 0,
+      "category": "Bo'yoqlar",
+      "image": "https://i.ibb.co/CKWW0PKP/product-image.jpg",
+      "boxCapacity": 6,
+      "stock": 100,
+      "colors": [
+        "oq",
+        "havorang",
+        "kok",
+        "qora",
+        "kulrang",
+        "yashil",
+        "sariq",
+        "qizil",
+        "jigarrang",
+        "toq_sariq"
+      ],
+      "name": {
+        "uz": "Emal X-tra 2.4 kg",
+        "ru": "Emal X-tra 2.4 kg",
+        "en": "Emal X-tra 2.4 kg"
+      },
+      "description": {
+        "uz": "Bo'yoq",
+        "ru": "Bo'yoq",
+        "en": "Bo'yoq"
+      }
+    },
+    "45": {
+      "id": 45,
+      "priceBox": 0,
+      "pricePiece": 6.9,
+      "discount": 0,
+      "category": "Bo'yoqlar",
+      "image": "https://i.ibb.co/1t0DxRbC/product-image.jpg",
+      "boxCapacity": 4,
+      "stock": 100,
+      "colors": [
+        "oq",
+        "sariq",
+        "qizil"
+      ],
+      "name": {
+        "uz": "Oscar Deluxe",
+        "ru": "Oscar Deluxe",
+        "en": "Oscar Deluxe"
+      },
+      "description": {
+        "uz": "Bo'yoq",
+        "ru": "Bo'yoq",
+        "en": "Bo'yoq"
+      }
+    },
+    "46": {
+      "id": 46,
+      "priceBox": 0,
+      "pricePiece": 6.35,
+      "discount": 0,
+      "category": "Bo'yoqlar",
+      "image": "https://i.ibb.co/nMD76tjD/product-image.jpg",
+      "boxCapacity": 4,
+      "stock": 100,
+      "colors": [
+        "kok",
+        "havorang",
+        "yashil",
+        "qora",
+        "kulrang",
+        "jigarrang"
+      ],
+      "name": {
+        "uz": "Oscar Deluxe",
+        "ru": "Oscar Deluxe",
+        "en": "Oscar Deluxe"
+      },
+      "description": {
+        "uz": "Bo'yoq",
+        "ru": "Bo'yoq",
+        "en": "Bo'yoq"
+      }
+    },
+    "47": {
+      "id": 47,
+      "priceBox": 0,
+      "pricePiece": 0.15,
+      "discount": 0,
+      "category": "Asortiment skotchlar",
+      "image": "https://i.ibb.co/ynjfjfZF/product-image.jpg",
+      "boxCapacity": 180,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Saca ikki tomonli skotch 10 mm x 5",
+        "ru": "Saca ikki tomonli skotch 10 mm x 5",
+        "en": "Saca ikki tomonli skotch 10 mm x 5"
+      },
+      "description": {
+        "uz": "Saca ikki tomonli skotch",
+        "ru": "Saca ikki tomonli skotch",
+        "en": "Saca ikki tomonli skotch"
+      }
+    },
+    "48": {
+      "id": 48,
+      "priceBox": 0,
+      "pricePiece": 0.2,
+      "discount": 0,
+      "category": "Asortiment skotchlar",
+      "image": "https://i.ibb.co/cXRvYD7r/product-image.jpg",
+      "boxCapacity": 160,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Saca ikki tomonli skotch 12 mm x 5",
+        "ru": "Saca ikki tomonli skotch 12 mm x 5",
+        "en": "Saca ikki tomonli skotch 12 mm x 5"
+      },
+      "description": {
+        "uz": "Saca ikki tomonli skotch",
+        "ru": "Saca ikki tomonli skotch",
+        "en": "Saca ikki tomonli skotch"
+      }
+    },
+    "49": {
+      "id": 49,
+      "priceBox": 0,
+      "pricePiece": 0.26,
+      "discount": 0,
+      "category": "Asortiment skotchlar",
+      "image": "https://i.ibb.co/cXRvYD7r/product-image.jpg",
+      "boxCapacity": 130,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Saca ikki tomonli skotch 15 mm x 5",
+        "ru": "Saca ikki tomonli skotch 15 mm x 5",
+        "en": "Saca ikki tomonli skotch 15 mm x 5"
+      },
+      "description": {
+        "uz": "Saca ikki tomonli skotch",
+        "ru": "Saca ikki tomonli skotch",
+        "en": "Saca ikki tomonli skotch"
+      }
+    },
+    "50": {
+      "id": 50,
+      "priceBox": 0,
+      "pricePiece": 0.26,
+      "discount": 0,
+      "category": "Asortiment skotchlar",
+      "image": "https://i.ibb.co/cXRvYD7r/product-image.jpg",
+      "boxCapacity": 100,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Saca ikki tomonli skotch 22 mm x 5",
+        "ru": "Saca ikki tomonli skotch 22 mm x 5",
+        "en": "Saca ikki tomonli skotch 22 mm x 5"
+      },
+      "description": {
+        "uz": "Saca ikki tomonli skotch",
+        "ru": "Saca ikki tomonli skotch",
+        "en": "Saca ikki tomonli skotch"
+      }
+    },
+    "51": {
+      "id": 51,
+      "priceBox": 0,
+      "pricePiece": 0.56,
+      "discount": 0,
+      "category": "Asortiment skotchlar",
+      "image": "https://i.ibb.co/cXRvYD7r/product-image.jpg",
+      "boxCapacity": 80,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Saca ikki tomonli skotch 30 mm x 5",
+        "ru": "Saca ikki tomonli skotch 30 mm x 5",
+        "en": "Saca ikki tomonli skotch 30 mm x 5"
+      },
+      "description": {
+        "uz": "Saca ikki tomonli skotch",
+        "ru": "Saca ikki tomonli skotch",
+        "en": "Saca ikki tomonli skotch"
+      }
+    },
+    "52": {
+      "id": 52,
+      "priceBox": 0,
+      "pricePiece": 0.66,
+      "discount": 0,
+      "category": "Asortiment skotchlar",
+      "image": "https://i.ibb.co/cXRvYD7r/product-image.jpg",
+      "boxCapacity": 60,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Saca ikki tomonli skotch 40 mm x 5",
+        "ru": "Saca ikki tomonli skotch 40 mm x 5",
+        "en": "Saca ikki tomonli skotch 40 mm x 5"
+      },
+      "description": {
+        "uz": "Saca ikki tomonli skotch",
+        "ru": "Saca ikki tomonli skotch",
+        "en": "Saca ikki tomonli skotch"
+      }
+    },
+    "53": {
+      "id": 53,
+      "priceBox": 0,
+      "pricePiece": 0.76,
+      "discount": 0,
+      "category": "Asortiment skotchlar",
+      "image": "https://i.ibb.co/cXRvYD7r/product-image.jpg",
+      "boxCapacity": 50,
+      "stock": 100,
+      "colors": [],
+      "name": {
+        "uz": "Saca ikki tomonli skotch 50 mm x 5",
+        "ru": "Saca ikki tomonli skotch 50 mm x 5",
+        "en": "Saca ikki tomonli skotch 50 mm x 5"
+      },
+      "description": {
+        "uz": "Saca ikki tomonli skotch",
+        "ru": "Saca ikki tomonli skotch",
+        "en": "Saca ikki tomonli skotch"
+      }
+    },
+    "54": {
+      "id": 54,
+      "priceBox": 0,
+      "pricePiece": 0.64,
+      "discount": 0,
+      "category": "Asortiment skotchlar",
+      "image": "https://i.ibb.co/rRtWNkkt/product-image.jpg",
+      "boxCapacity": 72,
+      "stock": 100000000,
+      "colors": [],
+      "name": {
+        "uz": "Malyar Skotchi 45x40",
+        "ru": "Malyar Skotchi 45x40",
+        "en": "Malyar Skotchi 45x40"
+      },
+      "description": {
+        "uz": "NImadir",
+        "ru": "NImadir",
+        "en": "NImadir"
+      }
+    }
+  }
+}

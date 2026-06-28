@@ -1,0 +1,452 @@
+import { create } from 'zustand';
+
+type Lang = 'uz' | 'ru' | 'en';
+
+interface I18nState {
+  lang: Lang;
+  setLang: (lang: Lang) => void;
+  t: (key: string) => string;
+}
+
+const translations: Record<Lang, Record<string, string>> = {
+  uz: {
+    // BottomNav
+    'nav.home': 'Asosiy',
+    'nav.catalog': 'Katalog',
+    'nav.cart': 'Savatcha',
+    'nav.location': 'Manzil',
+
+    // Home
+    'home.search': 'Qidirish...',
+    'home.categories': 'Kategoriyalar',
+    'home.all': 'Barchasi',
+    'home.recommended': 'Tavsiya etamiz',
+    'home.all_products': 'Barcha mahsulotlar',
+    'home.discount': 'Chegirmalar',
+    'home.selected_category_no_products': 'Tanlangan kategoriyada mahsulotlar hozircha yo\'q',
+    'home.not_found': 'Topilmadi',
+    'home.system_error': 'Tizim xatosi',
+
+    // Cart
+    'cart.title': 'Savatcha',
+    'cart.empty': 'Savatcha bo\'sh',
+    'cart.empty_desc': 'Xarid qilishni boshlang',
+    'cart.shop': 'Xarid qilish',
+    'cart.total': 'Jami',
+    'cart.checkout': 'Buyurtma berish',
+    'cart.item': 'Dona',
+    'cart.box': 'Karobka',
+    'cart.discount': 'Chegirma',
+
+    // Checkout
+    'checkout.title': 'Rasmiylashtirish',
+    'checkout.order_info': 'Xarid ma\'lumoti',
+    'checkout.personal': 'Shaxsiy ma\'lumotlar',
+    'checkout.name': 'Ism Familiya',
+    'checkout.phone': 'Telefon Raqami',
+    'checkout.payment': 'To\'lov usuli',
+    'checkout.cash': 'Naqt',
+    'checkout.card': 'Karta',
+    'checkout.delivery': 'Yetkazib berish usuli',
+    'checkout.delivery_btn': 'Yetkazib berish',
+    'checkout.pickup': 'O\'zim olib ketaman',
+    'checkout.address': 'Yetkazib berish manzili',
+    'checkout.region': 'Viloyat',
+    'checkout.district': 'Tuman',
+    'checkout.select_region': 'Viloyat tanlang',
+    'checkout.select_district': 'Tuman tanlang',
+    'checkout.select_map': 'Xaritadan tanlash',
+    'checkout.change_map': 'Manzilni o\'zgartirish',
+    'checkout.pickup_address': 'Olib ketish manzili',
+    'checkout.submit': 'Buyurtma berish',
+    'checkout.loading': 'Kuting...',
+    'checkout.products': 'Mahsulotlar',
+    'checkout.delivery_fee': 'Yetkazib berish',
+    'checkout.total': 'Jami',
+    'checkout.free': 'Bepul',
+    'checkout.select_address': 'Manzilni tanlang',
+    'checkout.distance': 'Masofa',
+    'checkout.success_title': 'Buyurtmangiz qabul qilindi!',
+    'checkout.success_card': 'To\'lov muvaffaqiyatli amalga oshirildi',
+    'checkout.success_desc': 'Tez orada hodimlarimiz siz bilan bog\'lanadi.',
+    'checkout.success_desc_card': 'Xaridingiz uchun rahmat. Tez orada siz bilan bog\'lanamiz.',
+    'checkout.success_amount': 'To\'lov summasi',
+    'checkout.back_home': 'Bosh sahifaga qaytish',
+    'checkout.confirm_map': 'Manzilni tasdiqlash',
+    'checkout.finding_address': 'Manzil aniqlanmoqda...',
+    'checkout.map_hint': 'Xaritani surib manzilni tanlang',
+    'checkout.map_title': 'Xaritadan tanlang',
+    'checkout.selected_address': 'Tanlangan manzil',
+    'checkout.payment_system': 'To\'lov tizimi',
+    'checkout.pickup_info': 'Buyurtmangizni shu manzildan olib ketishingiz mumkin.',
+    'checkout.view_map': 'Xaritada ko\'rish',
+    'checkout.free_order': 'Bepul ($100+ buyurtma uchun)',
+    'checkout.pickup_free': 'O\'zim olib ketaman (bepul)',
+    'checkout.empty_options': 'Hech narsa yo\'q',
+    'checkout.box': 'Karobka',
+    'checkout.item': 'Dona',
+    'checkout.vip_label': 'VIP mijoz',
+    'checkout.kelishamiz': 'Kelishamiz',
+    'checkout.kelishamiz_desc': "To'lov admin bilan alohida kelishiladi",
+    'checkout.vip_success_title': 'Buyurtma qabul qilindi!',
+    'checkout.vip_success_desc': "Admin tez orada siz bilan bog'lanadi",
+
+    // ProductDetail
+    'product.add_cart': 'Savatchaga qo\'shish',
+    'product.view_cart': 'Savatchani ko\'rish',
+    'product.box': 'Karobka',
+    'product.item': 'Dona',
+    'product.related': 'O\'xshash mahsulotlar',
+    'product.not_found': 'Mahsulot topilmadi',
+    'product.description': "Mahsulot tavsifi",
+    'product.quantity': "Miqdor",
+    'product.select_unit': "Xarid turini tanlang",
+
+    // Notifications
+    'notif.title': 'Xabarnomalar',
+    'notif.empty': 'Yangi xabarlar yo\'q',
+    'notif.read_all': 'Barchasini o\'qish',
+
+    // Location
+    'location.title': 'Manzil',
+    'location.support_desc': 'Barcha savollaringizga Telegram orqali javob beramiz.',
+    'location.support_title': 'Savollaringiz bormi?',
+    'location.support_btn': 'Yordam va qo\'llab-quvvatlash',
+
+    // Profile
+    'profile.title': 'Shaxsiy profil',
+    'profile.coming_soon': 'Bu sahifa tez orada Antigravity UI uslubida to\'liq ishga tushiriladi!',
+
+    // Categories
+    'home.no_products': 'Bu kategoriyada hozircha mahsulotlar mavjud emas.',
+
+    // DiscountCarousel
+    'discountCarousel.discount': 'Chegirmadagi mahsulotlar',
+    'discountCarousel.box': 'karobka',
+    'discountCarousel.piece': 'dona',
+
+    // CategoryModal
+    'categoryModal.title': 'Kategoriyalar',
+    'categoryModal.all': 'Barchasi',
+
+    // Category Names
+    'category.razbavitel': 'Suyultirgich',
+    'category.lak': 'Lak',
+    'category.bitum_lak': 'Har hil turdagi Bitum Laklar',
+    'category.olifa': 'Olifa',
+    'category.gruntovka': 'Gruntovka',
+    'category.serpyanka': 'Har hil turdagi Serpyankalar ',
+    'category.kafel_uchun': 'Kafel uchun fuga va boshqalar',
+    'category.plastika': 'Plastik mahsulotlar',
+    'category.steklahost': 'Steklahost va Kley',
+    'category.boyoqlar': 'Bo`yoqlar',
+    'category.skoch': 'Asortiment skotchlar',
+    'category.boshqalar': 'Boshqalar',
+
+    // SignIn
+    'signin.title': 'VIP kirish',
+    'signin.subtitle': 'VIP mijozlar uchun',
+    'signin.desc': 'Hisobingizga kiring',
+    'signin.email': 'Email',
+    'signin.password': 'Parol',
+    'signin.email_placeholder': 'vip@oscar.uz',
+    'signin.password_placeholder': '••••••••',
+    'signin.error': 'Login yoki parol xato',
+    'signin.loading': 'Kirish...',
+    'signin.button': 'Kirish',
+  },
+
+  ru: {
+    'nav.home': 'Главная',
+    'nav.catalog': 'Каталог',
+    'nav.cart': 'Корзина',
+    'nav.location': 'Адрес',
+
+    'home.search': 'Поиск...',
+    'home.categories': 'Категории',
+    'home.all': 'Все',
+    'home.recommended': 'Рекомендуем',
+    'home.all_products': 'Все товары',
+    'home.discount': 'Скидки',
+    'home.not_found': 'Не найдено',
+    'home.system_error': 'Системная ошибка',
+    'home.selected_category_no_products': 'В выбранной категории пока нет товаров',
+
+    'cart.title': 'Корзина',
+    'cart.empty': 'Корзина пуста',
+    'cart.empty_desc': 'Начните покупки',
+    'cart.shop': 'Купить',
+    'cart.total': 'Итого',
+    'cart.checkout': 'Оформить заказ',
+    'cart.item': 'Штука',
+    'cart.box': 'Коробка',
+    'cart.discount': 'Скидка',
+
+    'checkout.title': 'Оформление',
+    'checkout.order_info': 'Информация о заказе',
+    'checkout.personal': 'Личные данные',
+    'checkout.name': 'Имя Фамилия',
+    'checkout.phone': 'Номер телефона',
+    'checkout.payment': 'Способ оплаты',
+    'checkout.cash': 'Наличные',
+    'checkout.card': 'Карта',
+    'checkout.delivery': 'Способ доставки',
+    'checkout.delivery_btn': 'Доставка',
+    'checkout.pickup': 'Самовывоз',
+    'checkout.address': 'Адрес доставки',
+    'checkout.region': 'Область',
+    'checkout.district': 'Район',
+    'checkout.select_region': 'Выберите область',
+    'checkout.select_district': 'Выберите район',
+    'checkout.select_map': 'Выбрать на карте',
+    'checkout.change_map': 'Изменить адрес',
+    'checkout.pickup_address': 'Адрес самовывоза',
+    'checkout.submit': 'Оформить заказ',
+    'checkout.loading': 'Подождите...',
+    'checkout.products': 'Товары',
+    'checkout.delivery_fee': 'Доставка',
+    'checkout.total': 'Итого',
+    'checkout.free': 'Бесплатно',
+    'checkout.select_address': 'Выберите адрес',
+    'checkout.distance': 'Расстояние',
+    'checkout.success_title': 'Заказ принят!',
+    'checkout.success_card': 'Оплата прошла успешно',
+    'checkout.success_desc': 'Наши сотрудники скоро свяжутся с вами.',
+    'checkout.success_desc_card': 'Спасибо за покупку. Скоро свяжемся с вами.',
+    'checkout.success_amount': 'Сумма оплаты',
+    'checkout.back_home': 'На главную',
+    'checkout.confirm_map': 'Подтвердить адрес',
+    'checkout.finding_address': 'Определяем адрес...',
+    'checkout.map_hint': 'Переместите карту для выбора адреса',
+    'checkout.map_title': 'Выбрать на карте',
+    'checkout.selected_address': 'Выбранный адрес',
+    'checkout.payment_system': 'Платёжная система',
+    'checkout.pickup_info': 'Вы можете забрать заказ по этому адресу.',
+    'checkout.view_map': 'Смотреть на карте',
+    'checkout.free_order': 'Бесплатно (заказ от $100)',
+    'checkout.pickup_free': 'Самовывоз (бесплатно)',
+    'checkout.empty_options': 'Пусто',
+    'checkout.box': 'Коробка',
+    'checkout.item': 'Штука',
+    'checkout.vip_label': 'VIP клиент',
+    'checkout.kelishamiz': 'Договоримся',
+    'checkout.kelishamiz_desc': 'Оплата согласовывается отдельно с администратором',
+    'checkout.vip_success_title': 'Заказ принят!',
+    'checkout.vip_success_desc': 'Администратор скоро свяжется с вами',
+
+    'product.add_cart': 'В корзину',
+    'product.view_cart': 'Смотреть корзину',
+    'product.box': 'Коробка',
+    'product.item': 'Штука',
+    'product.related': 'Похожие товары',
+    'product.not_found': 'Товар не найден',
+    'product.description': "Описание товара",
+    'product.quantity': "Количество",
+    'product.select_unit': "Выберите единицу измерения",
+
+    'notif.title': 'Уведомления',
+    'notif.empty': 'Нет новых уведомлений',
+    'notif.read_all': 'Прочитать все',
+
+    'location.title': 'Адрес',
+    'location.support_desc': 'Мы ответим на все ваши вопросы в Telegram.',
+    'location.support_title': 'Есть вопросы?',
+    'location.support_btn': 'Помощь и поддержка',
+
+    'profile.title': 'Профиль',
+    'profile.coming_soon': 'Этот раздел будет полностью готов на днях в стиле Antigravity UI!',
+
+    'home.no_products': 'В этой категории пока нет товаров.',
+
+    // DiscountCarousel
+    'discountCarousel.discount': 'Скидки',
+    'discountCarousel.box': 'коробка',
+    'discountCarousel.piece': 'шт',
+
+    // CategoryModal
+    'categoryModal.title': 'Категории',
+    'categoryModal.all': 'Все',
+
+    // Category Names
+    'category.razbavitel': 'Разбавитель',
+    'category.lak': 'Лак',
+    'category.bitum_lak': 'Различные битумные лаки',
+    'category.olifa': 'Олифа',
+    'category.gruntovka': 'Грунтовка',
+    'category.serpyanka': 'Различные типы серпий ',
+    'category.kafel_uchun': 'Фуга для плитки и др.',
+    'category.plastika': 'Пластиковые изделия',
+    'category.steklahost': 'Стеклахост и Клей',
+    'category.boyoqlar': 'Краски',
+    'category.skoch': ' Aссортимент скотча ',
+    'category.boshqalar': 'Другое',
+
+    // SignIn
+    'signin.title': 'VIP вход',
+    'signin.subtitle': 'Для VIP клиентов',
+    'signin.desc': 'Войдите в свой аккаунт',
+    'signin.email': 'Email',
+    'signin.password': 'Пароль',
+    'signin.email_placeholder': 'vip@oscar.uz',
+    'signin.password_placeholder': '••••••••',
+    'signin.error': 'Неверный логин или пароль',
+    'signin.loading': 'Вход...',
+    'signin.button': 'Войти',
+  },
+
+  en: {
+    'nav.home': 'Home',
+    'nav.catalog': 'Catalog',
+    'nav.cart': 'Cart',
+    'nav.location': 'Location',
+
+    'home.search': 'Search...',
+    'home.categories': 'Categories',
+    'home.all': 'All',
+    'home.recommended': 'Recommended',
+    'home.all_products': 'All products',
+    'home.discount': 'Discounts',
+    'home.not_found': 'Not found',
+    'home.system_error': 'System error',
+    'home.selected_category_no_products': 'No products in this category',
+
+    'cart.title': 'Cart',
+    'cart.empty': 'Cart is empty',
+    'cart.empty_desc': 'Start shopping',
+    'cart.shop': 'Shop',
+    'cart.total': 'Total',
+    'cart.checkout': 'Checkout',
+    'cart.item': 'Item',
+    'cart.box': 'Box',
+    'cart.discount': 'Discount',
+
+    'checkout.title': 'Checkout',
+    'checkout.order_info': 'Order info',
+    'checkout.personal': 'Personal info',
+    'checkout.name': 'Full name',
+    'checkout.phone': 'Phone number',
+    'checkout.payment': 'Payment method',
+    'checkout.cash': 'Cash',
+    'checkout.card': 'Card',
+    'checkout.delivery': 'Delivery method',
+    'checkout.delivery_btn': 'Delivery',
+    'checkout.pickup': 'Pickup',
+    'checkout.address': 'Delivery address',
+    'checkout.region': 'Region',
+    'checkout.district': 'District',
+    'checkout.select_region': 'Select region',
+    'checkout.select_district': 'Select district',
+    'checkout.select_map': 'Select on map',
+    'checkout.change_map': 'Change address',
+    'checkout.pickup_address': 'Pickup address',
+    'checkout.submit': 'Place order',
+    'checkout.loading': 'Please wait...',
+    'checkout.products': 'Products',
+    'checkout.delivery_fee': 'Delivery',
+    'checkout.total': 'Total',
+    'checkout.free': 'Free',
+    'checkout.select_address': 'Select address',
+    'checkout.distance': 'Distance',
+    'checkout.success_title': 'Order placed!',
+    'checkout.success_card': 'Payment successful',
+    'checkout.success_desc': 'Our staff will contact you soon.',
+    'checkout.success_desc_card': 'Thank you for your purchase. We will contact you soon.',
+    'checkout.success_amount': 'Payment amount',
+    'checkout.back_home': 'Back to home',
+    'checkout.confirm_map': 'Confirm address',
+    'checkout.finding_address': 'Finding address...',
+    'checkout.map_hint': 'Move the map to select address',
+    'checkout.map_title': 'Select on map',
+    'checkout.selected_address': 'Selected address',
+    'checkout.payment_system': 'Payment system',
+    'checkout.pickup_info': 'You can pick up your order at this address.',
+    'checkout.view_map': 'View on map',
+    'checkout.free_order': 'Free (order $100+)',
+    'checkout.pickup_free': 'Pickup (free)',
+    'checkout.empty_options': 'Nothing',
+    'checkout.box': 'Box',
+    'checkout.item': 'Item',
+    'checkout.vip_label': 'VIP Client',
+    'checkout.kelishamiz': "We'll agree",
+    'checkout.kelishamiz_desc': 'Payment is agreed separately with the admin',
+    'checkout.vip_success_title': 'Order accepted!',
+    'checkout.vip_success_desc': 'Admin will contact you soon',
+
+    'product.add_cart': 'Add to cart',
+    'product.view_cart': 'View cart',
+    'product.box': 'Box',
+    'product.item': 'Item',
+    'product.related': 'Related products',
+    'product.not_found': 'Product not found',
+    'product.description': "Product description",
+    'product.quantity': "Quantity",
+    'product.select_unit': "Choose shopping method",
+
+    'notif.title': 'Notifications',
+    'notif.empty': 'No new notifications',
+    'notif.read_all': 'Read all',
+
+    'location.title': 'Location',
+    'location.support_desc': 'We will answer all your questions in Telegram.',
+    'location.support_title': 'Have questions?',
+    'location.support_btn': 'Help and support',
+
+    'profile.title': 'Profile',
+    'profile.coming_soon': 'This section will be fully ready in the coming days in the style of Antigravity UI!',
+
+    'home.no_products': 'No products in this category.',
+
+    // DiscountCarousel
+    'discountCarousel.discount': 'Discounts',
+    'discountCarousel.box': 'box',
+    'discountCarousel.piece': 'item',
+
+    // CategoryModal
+    'categoryModal.title': 'Categories',
+    'categoryModal.all': 'All',
+
+    // Category Names
+    'category.razbavitel': 'Thinner',
+    'category.lak': 'Varnish',
+    'category.bitum_lak': 'Various Bitum Varnishes',
+    'category.olifa': 'Drying Oil',
+    'category.gruntovka': 'Primer',
+    'category.serpyanka': 'Serpyanka Mesh Tapes',
+    'category.kafel_uchun': 'Tile Grouts & Accessories',
+    'category.plastika': 'Plastic Goods',
+    'category.steklahost': 'Fiberglass Mesh & Glue',
+    'category.boyoqlar': 'Paints & Coatings',
+    'category.skoch': 'Tape Collection',
+    'category.boshqalar': 'Other',
+
+    // SignIn
+    'signin.title': 'VIP login',
+    'signin.subtitle': 'For VIP clients',
+    'signin.desc': 'Sign in to your account',
+    'signin.email': 'Email',
+    'signin.password': 'Password',
+    'signin.email_placeholder': 'vip@oscar.uz',
+    'signin.password_placeholder': '••••••••',
+    'signin.error': 'Invalid login or password',
+    'signin.loading': 'Signing in...',
+    'signin.button': 'Sign in',
+  },
+};
+
+const makeT = (lang: Lang) => (key: string) =>
+  translations[lang][key] || translations['uz'][key] || key;
+
+const initialLang = ((localStorage.getItem('oscar_lang') as Lang) || 'uz');
+
+export const useI18nStore = create<I18nState>((set) => ({
+  lang: initialLang,
+  t: makeT(initialLang),
+
+  setLang: (lang) => {
+    localStorage.setItem('oscar_lang', lang);
+    set({ lang, t: makeT(lang) });
+    import('@/store/productStore').then(({ useProductStore }) => {
+      useProductStore.getState().remapForLang(lang);
+    });
+  },
+}));
