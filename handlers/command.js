@@ -11,42 +11,32 @@ async function handleCommand(chatId, text) {
     resetUserState(chatId);
     if (!db) { bot.sendMessage(chatId, "❌ Database ulanmagan.", mainKeyboard); return; }
 
-    // ─── VIP QO'SHISH ─────────────────────────────────────────────
+    // ─── VIP ──────────────────────────────────────────────────────────
     if (text === "⭐ VIP qo'shish") {
         userState[chatId] = { step: 'vip_add_id', data: {}, steps: [] };
         bot.sendMessage(chatId, "👤 VIP qo'shish\n\nTelegram ID yoki @username kiriting:", backKeyboard);
         return;
     }
-
-    // ─── VIP O'CHIRISH ─────────────────────────────────────────────
     if (text === "🗑 VIP o'chirish") {
         userState[chatId] = { step: 'vip_remove_id', data: {}, steps: [] };
         bot.sendMessage(chatId, "🗑 VIP o'chirish\n\nTelegram ID yoki @username kiriting:", backKeyboard);
         return;
     }
 
-    // if (text === "🛍 Mahsulot qo'shish") {
-    //     const snapshot = await db.collection('categories').get();
-    //     const categoryNames = snapshot.docs
-    //         .map(d => getStr(d.data().name))
-    //         .filter(n => n && n.trim().length > 0);
-    //     if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval kategoriya qo'shing.", mainKeyboard); return; }
-    //     userState[chatId] = { step: 'product_name', data: { categoryNames }, steps: [] };
-    //     bot.sendMessage(chatId, "1/8. Mahsulot nomini kiriting:", backKeyboard);
-    //     return;
-    // }
-
+    // ─── MAHSULOT QO'SHISH ─────────────────────────────────────────
     if (text === "🛍 Mahsulot qo'shish") {
         const snapshot = await db.collection('categories').get();
         const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name }));
-        if (categoryNames.length === 0) { bot.sendMessage(chatId, "1. Avval kategoriya qo'shing.", mainKeyboard); return; }
-        userState[chatId] = { step: 'product_name', data: { categoryNames }, steps: [] };
-        bot.sendMessage(chatId, "1. Mahsulot nomini kiriting:", backKeyboard);
+        if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval kategoriya qo'shing.", mainKeyboard); return; }
+        userState[chatId] = { step: 'product_name_uz', data: { categoryNames }, steps: [] };
+        bot.sendMessage(chatId, "1a. Mahsulot nomini UZ tilida kiriting:", backKeyboard);
         return;
     }
+
+    // ─── KATEGORIYA ────────────────────────────────────────────────
     if (text === "📂 Kategoriya qo'shish") {
         userState[chatId] = { step: 'category_name', data: {}, steps: [] };
-        bot.sendMessage(chatId, "2. Kategoriya nomini kiriting:", backKeyboard);
+        bot.sendMessage(chatId, "1/2. Kategoriya nomini kiriting:", backKeyboard);
         return;
     }
     if (text === "📂 Kategoriya yangilash") {
@@ -59,9 +49,11 @@ async function handleCommand(chatId, text) {
         await showProductUpdateCategorySelect(chatId);
         return;
     }
+
+    // ─── MIJOZLAR ──────────────────────────────────────────────────
     if (text === "👥 Mijoz qo'shish") {
         userState[chatId] = { step: 'customer_firstName', data: {}, steps: [] };
-        bot.sendMessage(chatId, "1. Mijozning ismini kiriting:", backKeyboard);
+        bot.sendMessage(chatId, "1/5. Mijozning ismini kiriting:", backKeyboard);
         return;
     }
     if (text === "👥 Mijozlar ro'yxati") {
@@ -76,57 +68,52 @@ async function handleCommand(chatId, text) {
                 msg += `   📞 ${c.phone}\n`;
                 msg += `   🔑 Login: ${c.login} | Parol: ${c.password}\n`;
                 msg += `   ${tgStatus}\n`;
-                msg += `   📦 Buyurtmalar: ${c.totalOrders || 0} ta (bonus: ${c.ordersCount || 0}/3)\n\n`;
+                msg += `   📦 Buyurtmalar: ${c.totalOrders || 0} ta\n\n`;
             });
             bot.sendMessage(chatId, msg, mainKeyboard);
         } catch (error) {
-            console.error("Mijozlarni olishda xato:", error);
             bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
         }
         return;
     }
-    if (text === "📋 Barcha mahsulotlar") {
+
+    // ─── USD KURS ──────────────────────────────────────────────────
+    if (text === "💱 USD kurs") {
         try {
-            const snapshot = await db.collection('products').orderBy('id', 'asc').get();
-            if (snapshot.empty) { bot.sendMessage(chatId, "Hali mahsulotlar yo'q.", mainKeyboard); return; }
-            const products = snapshot.docs.map(d => d.data());
-            const kb = { reply_markup: { inline_keyboard: [] } };
-            for (let i = 0; i < products.length; i += 2) {
-                const p = products[i];
-                const label = `${getStr(p.name, '?')} [${getStr(p.category, '?')}]`;
-                const row = [{ text: label, callback_data: `update_product_${p.id}` }];
-                if (i + 1 < products.length) {
-                    const p2 = products[i + 1];
-                    row.push({ text: `${getStr(p2.name, '?')} [${getStr(p2.category, '?')}]`, callback_data: `update_product_${p2.id}` });
-                }
-                kb.reply_markup.inline_keyboard.push(row);
-            }
-            bot.sendMessage(chatId, `📋 Barcha mahsulotlar (${products.length} ta):`, kb);
+            const doc = await db.collection('settings').doc('usd_rate').get();
+            const currentRate = doc.exists ? (doc.data().rate || 0) : 0;
+            const currentText = currentRate > 0
+                ? `💱 Hozirgi kurs: 1 USD = ${currentRate.toLocaleString('uz-UZ')} so'm\n\n`
+                : `💱 Kurs hali o'rnatilmagan.\n\n`;
+            userState[chatId] = { step: 'set_usd_rate', data: {}, steps: [] };
+            bot.sendMessage(chatId, `${currentText}Yangi kursni kiriting (mas: 12600):`, backKeyboard);
         } catch (error) {
-            console.error("Mahsulotlarni olishda xato:", error);
-            bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
+            userState[chatId] = { step: 'set_usd_rate', data: {}, steps: [] };
+            bot.sendMessage(chatId, "Yangi USD kursni kiriting (mas: 12600):", backKeyboard);
         }
         return;
     }
-    if (text === "❌ Bekor qilish") {
-        resetUserState(chatId);
-        bot.sendMessage(chatId, "Bekor qilindi.", mainKeyboard);
-        return;
-    }
+
+    // ─── STATISTIKA ────────────────────────────────────────────────
     if (text === "📊 Statistika") {
         try {
-            const p = await db.collection('products').get();
-            const c = await db.collection('categories').get();
-            const o = await db.collection('orders').get();
-            const cust = await db.collection('customers').get();
-            const vip = await db.collection('VIP_users').get();
+            const [p, c, o, cust, vip, rateDoc] = await Promise.all([
+                db.collection('products').get(),
+                db.collection('categories').get(),
+                db.collection('orders').get(),
+                db.collection('customers').get(),
+                db.collection('VIP_users').get(),
+                db.collection('settings').doc('usd_rate').get(),
+            ]);
+            const rate = rateDoc.exists ? (rateDoc.data().rate || 'Kiritilmagan') : 'Kiritilmagan';
             bot.sendMessage(chatId,
                 `📊 Statistika:\n` +
                 `🔹 Mahsulotlar: ${p.size}\n` +
                 `🔹 Kategoriyalar: ${c.size}\n` +
                 `🔹 Buyurtmalar: ${o.size}\n` +
                 `🔹 Mijozlar: ${cust.size}\n` +
-                `🔹 VIP: ${vip.size}`,
+                `🔹 VIP: ${vip.size}\n` +
+                `💱 USD kurs: 1 USD = ${typeof rate === 'number' ? rate.toLocaleString('uz-UZ') : rate} so'm`,
                 mainKeyboard
             );
         } catch (error) {
@@ -134,6 +121,8 @@ async function handleCommand(chatId, text) {
         }
         return;
     }
+
+    // ─── BUYURTMALAR RO'YXATI ───────────────────────────────────────
     if (text === "📦 Buyurtmalar") {
         try {
             const snapshot = await db.collection('orders').orderBy('createdAt', 'desc').limit(10).get();
@@ -141,16 +130,34 @@ async function handleCommand(chatId, text) {
             const kb = { inline_keyboard: [] };
             snapshot.docs.forEach(doc => {
                 const o = doc.data();
-                let emoji = o.status === 'confirmed' ? "✅" : o.status === 'cancelled' ? "❌" : "🆕";
-                const btn = `${emoji} ${o.customerName || 'Noma\'lum'} — ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm`;
+                // Manzil qisqa ko'rinishda
+                let addressShort = '';
+                if (o.deliveryMethod === 'pickup') {
+                    addressShort = `🏪 O'zim olib ketaman`;
+                } else {
+                    const addr = o.deliveryAddress || o.address || '';
+                    addressShort = addr ? `📍 ${addr.length > 25 ? addr.substring(0, 25) + '…' : addr}` : `📍 Manzil yo'q`;
+                }
+                const emoji = o.status === 'confirmed' ? '✅' : o.status === 'cancelled' ? '❌' : o.status === 'delivered' ? '🏁' : '🆕';
+                const totalStr = (o.totalUZS || 0).toLocaleString('uz-UZ');
+                const btn = `${emoji} ${o.customerName || 'Noma\'lum'} | ${totalStr} so'm | ${addressShort}`;
                 kb.inline_keyboard.push([{ text: btn, callback_data: `order_detail_${doc.id}` }]);
             });
-            bot.sendMessage(chatId, "So'nggi 10 ta buyurtma:", { reply_markup: kb });
+            bot.sendMessage(chatId, "📦 So'nggi 10 ta buyurtma:", { reply_markup: kb });
         } catch (error) {
             bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
         }
         return;
     }
+
+    // ─── BEKOR QILISH ──────────────────────────────────────────────
+    if (text === "❌ Bekor qilish") {
+        resetUserState(chatId);
+        bot.sendMessage(chatId, "Bekor qilindi.", mainKeyboard);
+        return;
+    }
+
     bot.sendMessage(chatId, "Tugmalardan tanlang:", mainKeyboard);
 }
+
 module.exports = { handleCommand, handleVipStep };

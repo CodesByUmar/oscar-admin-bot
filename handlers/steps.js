@@ -9,11 +9,23 @@ async function handleProductStep(chatId, currentStep, isBack = false) {
     if (!isBack) state.steps.push(oldStep);
     state.step = currentStep;
     switch (currentStep) {
-        case 'product_name':
-            bot.sendMessage(chatId, "1. Mahsulot nomini kiriting:", backKeyboard);
+        case 'product_name_uz':
+            bot.sendMessage(chatId, "1a. Mahsulot nomini UZ tilida kiriting:", backKeyboard);
             break;
-        case 'product_price':
-            bot.sendMessage(chatId, "2. Narxni so'mda kiriting (mas: 250000):", backKeyboard);
+        case 'product_name_ru':
+            bot.sendMessage(chatId, "1b. Mahsulot nomini RU tilida kiriting:", backKeyboard);
+            break;
+        case 'product_name_en':
+            bot.sendMessage(chatId, "1c. Mahsulot nomini EN tilida kiriting:", backKeyboard);
+            break;
+        case 'product_price_piece':
+            bot.sendMessage(chatId, "2. Dona narxini USD da kiriting (mas: 3.5):", backKeyboard);
+            break;
+        case 'product_price_box':
+            bot.sendMessage(chatId, "2b. Karobka narxini USD da kiriting (yo'q bo'lsa 0):", backKeyboard);
+            break;
+        case 'product_items_per_box':
+            bot.sendMessage(chatId, "2c. Bir karobkada nechta dona? (yo'q bo'lsa 0):", backKeyboard);
             break;
         case 'product_discount':
             bot.sendMessage(chatId, "3. Chegirma (0-100, mas: 10 yoki 0):", backKeyboard);
@@ -32,8 +44,14 @@ async function handleProductStep(chatId, currentStep, isBack = false) {
         case 'product_image':
             bot.sendMessage(chatId, "5. Rasm yuboring (photo formatida):", mainBackKeyboard);
             break;
-        case 'product_description':
-            bot.sendMessage(chatId, "6. Tavsifni kiriting:", backKeyboard);
+        case 'product_description_uz':
+            bot.sendMessage(chatId, "6a. Tavsifni UZ tilida kiriting:", backKeyboard);
+            break;
+        case 'product_description_ru':
+            bot.sendMessage(chatId, "6b. Tavsifni RU tilida kiriting:", backKeyboard);
+            break;
+        case 'product_description_en':
+            bot.sendMessage(chatId, "6c. Tavsifni EN tilida kiriting:", backKeyboard);
             break;
         case 'product_stock':
             bot.sendMessage(chatId, "7. Ombordagi miqdor (mas: 50):", backKeyboard);

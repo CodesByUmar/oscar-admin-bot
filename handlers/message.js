@@ -2,7 +2,7 @@ const { bot, admins } = require('../config/adminBot');
 const { db, admin } = require('../config/firebase');
 const { mainKeyboard, backKeyboard, mainBackKeyboard, commandButtons } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
-const { parseNumberInput, parseDateDDMMYYYY, getNextId } = require('../utils/helpers');
+const { parseNumberInput, parseDateDDMMYYYY, getNextId, getStr } = require('../utils/helpers');
 const { handleBack } = require('./back');
 const { handleCommand } = require('./command');
 const { handleVipStep } = require('./vip');
@@ -17,7 +17,7 @@ function registerMessageHandler() {
             console.error("❌ message handlerida kutilmagan xato:", error);
             try {
                 await bot.sendMessage(msg.chat.id, "❌ Kutilmagan xato yuz berdi. Iltimos, qaytadan urinib ko'ring yoki /start bosing.", mainKeyboard);
-            } catch (_) { /* xabar yuborishning o'zi ham muvaffaqiyatsiz bo'lsa, jim qoldiramiz */ }
+            } catch (_) { }
         }
     });
 }
@@ -37,7 +37,6 @@ async function handleIncomingMessage(msg) {
             resetUserState(chatId);
             bot.sendMessage(chatId, "Xush kelibsiz! Shop-bot admin paneli.", mainKeyboard);
         } else if (text === '/addvip' || text === '/removevip') {
-            // bu komandalar vip.js dagi bot.onText orqali ishlanadi
             return;
         } else bot.sendMessage(chatId, "Noma'lum buyruq. /start ni bosing.", mainKeyboard);
         return;
@@ -54,25 +53,90 @@ async function handleIncomingMessage(msg) {
     const step = state.step;
     let data = state.data;
 
-    // MAHSULOT QO'SHISH
+    // ─── USD KURS O'RNATISH ──────────────────────────────────────────
+    if (step === 'set_usd_rate') {
+        const rate = parseNumberInput(text);
+        if (!rate || rate <= 0 || rate > 99999999) {
+            bot.sendMessage(chatId, "❌ Noto'g'ri qiymat! Musbat son kiriting (mas: 12600):");
+            return;
+        }
+        try {
+            await db.collection('settings').doc('usd_rate').set({ rate: Math.round(rate), updatedAt: admin.firestore.FieldValue.serverTimestamp() });
+            resetUserState(chatId);
+            bot.sendMessage(chatId, `✅ USD kurs yangilandi!\n\n💱 1 USD = ${Math.round(rate).toLocaleString('uz-UZ')} so'm`, mainKeyboard);
+        } catch (error) {
+            console.error("USD kurs saqlashda xato:", error);
+            bot.sendMessage(chatId, "❌ Saqlashda xato!", mainKeyboard);
+            resetUserState(chatId);
+        }
+        return;
+    }
+
+    // ─── MAHSULOT QO'SHISH (3 tilda) ────────────────────────────────
     if (step.startsWith('product_')) {
         const oldStep = step;
         switch (step) {
-            case 'product_name':
-                data.name = text;
+
+            // 1. Nom UZ
+            case 'product_name_uz':
+                if (!text || text.trim().length < 2) { bot.sendMessage(chatId, "Kamida 2 belgi kiriting!"); return; }
+                data.name_uz = text.trim();
                 state.steps.push(oldStep);
-                state.step = 'product_price';
-                bot.sendMessage(chatId, "2. Narxni so'mda kiriting (mas: 250000):", backKeyboard);
+                state.step = 'product_name_ru';
+                bot.sendMessage(chatId, "1b. Mahsulot nomini RU tilida kiriting:", backKeyboard);
                 break;
-            case 'product_price': {
-                const price = parseNumberInput(text);
-                if (price === null || price <= 0) { bot.sendMessage(chatId, "Musbat son kiriting!"); return; }
-                data.price = Math.floor(price);
+
+            // 1b. Nom RU
+            case 'product_name_ru':
+                if (!text || text.trim().length < 2) { bot.sendMessage(chatId, "Kamida 2 belgi kiriting!"); return; }
+                data.name_ru = text.trim();
                 state.steps.push(oldStep);
-                state.step = 'product_discount';
-                bot.sendMessage(chatId, "3. Chegirma (0-100, mas: 10 yoki 0):", backKeyboard);
+                state.step = 'product_name_en';
+                bot.sendMessage(chatId, "1c. Mahsulot nomini EN tilida kiriting:", backKeyboard);
+                break;
+
+            // 1c. Nom EN
+            case 'product_name_en':
+                if (!text || text.trim().length < 2) { bot.sendMessage(chatId, "Kamida 2 belgi kiriting!"); return; }
+                data.name_en = text.trim();
+                state.steps.push(oldStep);
+                state.step = 'product_price_piece';
+                bot.sendMessage(chatId, "2. Dona narxini USD da kiriting (mas: 3.5):", backKeyboard);
+                break;
+
+            // 2. Narx (pricePiece, USD)
+            case 'product_price_piece': {
+                const price = parseNumberInput(text, true);
+                if (price === null || price <= 0) { bot.sendMessage(chatId, "Musbat son kiriting! (mas: 3.5)"); return; }
+                data.pricePiece = price;
+                state.steps.push(oldStep);
+                state.step = 'product_price_box';
+                bot.sendMessage(chatId, "2b. Karobka narxini USD da kiriting (agar yo'q bo'lsa 0):", backKeyboard);
                 break;
             }
+
+            // 2b. Narx (priceBox, USD)
+            case 'product_price_box': {
+                const price = parseNumberInput(text, true);
+                if (price === null || price < 0) { bot.sendMessage(chatId, "0 yoki musbat son kiriting!"); return; }
+                data.priceBox = price;
+                state.steps.push(oldStep);
+                state.step = 'product_items_per_box';
+                bot.sendMessage(chatId, "2c. Bir karobkada nechta dona bor? (yo'q bo'lsa 0):", backKeyboard);
+                break;
+            }
+
+            // 2c. itemsPerBox
+            case 'product_items_per_box': {
+                if (!/^\d+$/.test(text) || parseInt(text) < 0) { bot.sendMessage(chatId, "0 yoki musbat butun son!"); return; }
+                data.itemsPerBox = parseInt(text);
+                state.steps.push(oldStep);
+                state.step = 'product_discount';
+                bot.sendMessage(chatId, "3. Chegirma foizi (0-100, chegirma yo'q bo'lsa 0):", backKeyboard);
+                break;
+            }
+
+            // 3. Chegirma
             case 'product_discount': {
                 if (!/^\d+$/.test(text) || parseInt(text) < 0 || parseInt(text) > 100) {
                     bot.sendMessage(chatId, "0 dan 100 gacha son kiriting!");
@@ -91,6 +155,8 @@ async function handleIncomingMessage(msg) {
                 bot.sendMessage(chatId, "4. Kategoriyani tanlang:", ckb);
                 break;
             }
+
+            // 4. Kategoriya
             case 'product_category': {
                 const matched = data.categoryNames.find(c => c.label === text);
                 if (!matched) { bot.sendMessage(chatId, "Tugmalardan tanlang!"); return; }
@@ -100,34 +166,63 @@ async function handleIncomingMessage(msg) {
                 bot.sendMessage(chatId, "5. Rasm yuboring (photo formatida):", mainBackKeyboard);
                 break;
             }
+
             case 'product_image':
                 return;
-            case 'product_description':
-                data.description = text;
+
+            // 6. Tavsif UZ
+            case 'product_description_uz':
+                data.desc_uz = text.trim();
+                state.steps.push(oldStep);
+                state.step = 'product_description_ru';
+                bot.sendMessage(chatId, "6b. Tavsifni RU tilida kiriting:", backKeyboard);
+                break;
+
+            // 6b. Tavsif RU
+            case 'product_description_ru':
+                data.desc_ru = text.trim();
+                state.steps.push(oldStep);
+                state.step = 'product_description_en';
+                bot.sendMessage(chatId, "6c. Tavsifni EN tilida kiriting:", backKeyboard);
+                break;
+
+            // 6c. Tavsif EN → so'ng stock
+            case 'product_description_en':
+                data.desc_en = text.trim();
                 state.steps.push(oldStep);
                 state.step = 'product_stock';
                 bot.sendMessage(chatId, "7. Ombordagi miqdor (mas: 50):", backKeyboard);
                 break;
+
+            // 7. Stock → saqlash
             case 'product_stock': {
                 if (!/^\d+$/.test(text) || parseInt(text) < 0) { bot.sendMessage(chatId, "0 yoki musbat son!"); return; }
                 data.stock = parseInt(text);
                 const newId = await getNextId('products');
                 if (newId === -1) { bot.sendMessage(chatId, "❌ ID xato!", mainKeyboard); resetUserState(chatId); return; }
                 const newProduct = {
-                    id: newId, name: data.name, price: data.price,
-                    discount: data.discount || 0, category: data.category,
-                    image: data.image, description: data.description, stock: data.stock,
+                    id: newId,
+                    name: { uz: data.name_uz, ru: data.name_ru, en: data.name_en },
+                    pricePiece: data.pricePiece,
+                    priceBox: data.priceBox || 0,
+                    itemsPerBox: data.itemsPerBox || 0,
+                    discount: data.discount || 0,
+                    category: data.category,
+                    image: data.image,
+                    description: { uz: data.desc_uz || '', ru: data.desc_ru || '', en: data.desc_en || '' },
+                    stock: data.stock,
                 };
                 try {
                     await db.collection('products').doc(String(newId)).set(newProduct);
                     bot.sendMessage(chatId,
                         `✅ Mahsulot qo'shildi!\n\n` +
-                        `📦 ${newProduct.name}\n` +
-                        `💰 ${newProduct.price.toLocaleString('uz-UZ')} so'm\n` +
+                        `📦 UZ: ${newProduct.name.uz}\n` +
+                        `📦 RU: ${newProduct.name.ru}\n` +
+                        `📦 EN: ${newProduct.name.en}\n` +
+                        `💰 Dona: $${newProduct.pricePiece} | Karobka: $${newProduct.priceBox}\n` +
                         `🏷 Chegirma: ${newProduct.discount}%\n` +
-                        `📂 ${newProduct.category}\n` +
-                        `📊 Stock: ${newProduct.stock} ta\n\n` +
-                        `Chegirma sanalari qo'shish uchun "Mahsulotni yangilash" → ushbu mahsulot → "Chegirma boshlanishi/tugashi" tugmalarini ishlating.`,
+                        `📂 Kategoriya: ${getStr(newProduct.category)}\n` +
+                        `📊 Stock: ${newProduct.stock} ta`,
                         mainKeyboard
                     );
                 } catch (error) {
@@ -142,7 +237,7 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
-    // KATEGORIYA QO'SHISH
+    // ─── KATEGORIYA QO'SHISH ─────────────────────────────────────────
     if (step.startsWith('category_')) {
         const oldStep = step;
         if (step === 'category_name') {
@@ -166,7 +261,7 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
-    // KATEGORIYA YANGILASH
+    // ─── KATEGORIYA YANGILASH ────────────────────────────────────────
     if (state.step === 'update_category_name') {
         try {
             const catDoc = await db.collection('categories').doc(String(state.data.categoryId)).get();
@@ -196,7 +291,7 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
-    // CHEGIRMA SANASI
+    // ─── CHEGIRMA SANASI ─────────────────────────────────────────────
     if (state.step === 'update_discount_date') {
         const stateData = state.data;
         if (text === "0") {
@@ -220,19 +315,19 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
-    // MAHSULOT YANGILASH - VALUE
+    // ─── MAHSULOT YANGILASH ──────────────────────────────────────────
     if (state.step === 'update_value') {
         const stateData = state.data;
         const fieldType = stateData.field;
         let value;
-        if (fieldType === 'price') {
-            const parsed = parseNumberInput(text);
-            if (parsed === null || parsed <= 0) { bot.sendMessage(chatId, "Musbat son kiriting!"); return; }
-            value = Math.floor(parsed);
+        if (fieldType === 'pricePiece' || fieldType === 'priceBox') {
+            const parsed = parseNumberInput(text, true);
+            if (parsed === null || parsed < 0) { bot.sendMessage(chatId, "0 yoki musbat son kiriting! (mas: 3.5)"); return; }
+            value = parsed;
         } else if (fieldType === 'discount') {
             if (!/^\d+$/.test(text) || parseInt(text) < 0 || parseInt(text) > 100) { bot.sendMessage(chatId, "0-100 oralig'ida!"); return; }
             value = parseInt(text);
-        } else if (fieldType === 'stock') {
+        } else if (fieldType === 'stock' || fieldType === 'itemsPerBox') {
             if (!/^\d+$/.test(text) || parseInt(text) < 0) { bot.sendMessage(chatId, "0 yoki musbat son!"); return; }
             value = parseInt(text);
         } else { bot.sendMessage(chatId, "Xato!"); resetUserState(chatId); return; }
@@ -263,7 +358,7 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
-    // MIJOZ QO'SHISH
+    // ─── MIJOZ QO'SHISH ──────────────────────────────────────────────
     if (step.startsWith('customer_')) {
         const oldStep = step;
         switch (step) {
@@ -287,15 +382,15 @@ async function handleIncomingMessage(msg) {
                 data.phone = text.replace(/\s/g, '');
                 state.steps.push(oldStep);
                 state.step = 'customer_login';
-                bot.sendMessage(chatId, "4/5. Login yarating (mas: jonibek_123, faqat lotin harflar/raqamlar/_, kamida 3 belgi):", backKeyboard);
+                bot.sendMessage(chatId, "4/5. Login yarating (mas: jonibek_123):", backKeyboard);
                 break;
             }
             case 'customer_login': {
                 const loginRegex = /^[a-zA-Z0-9_]{3,30}$/;
-                if (!loginRegex.test(text)) { bot.sendMessage(chatId, "❌ Login noto'g'ri! Faqat lotin harflar, raqamlar, _. Kamida 3 belgi."); return; }
+                if (!loginRegex.test(text)) { bot.sendMessage(chatId, "❌ Login noto'g'ri! Faqat lotin harflar, raqamlar, _."); return; }
                 const login = text.toLowerCase().trim();
                 const existing = await db.collection('customers').doc(login).get();
-                if (existing.exists) { bot.sendMessage(chatId, "❌ Bunday login allaqachon mavjud! Boshqa login tanlang."); return; }
+                if (existing.exists) { bot.sendMessage(chatId, "❌ Bunday login allaqachon mavjud!"); return; }
                 data.login = login;
                 state.steps.push(oldStep);
                 state.step = 'customer_password';
@@ -315,17 +410,11 @@ async function handleIncomingMessage(msg) {
                 try {
                     await db.collection('customers').doc(data.login).set(newCustomer);
                     bot.sendMessage(chatId,
-                        `✅ Mijoz qo'shildi!\n\n` +
-                        `👤 ${data.firstName} ${data.lastName}\n` +
-                        `📞 ${data.phone}\n\n` +
-                        `🔑 LOGIN MA'LUMOTLARI (mijozga jo'nating):\n` +
-                        `Login: ${data.login}\n` +
-                        `Parol: ${data.password}\n\n` +
-                        `📲 Mijoz Telegram Mini App orqali shu ma'lumotlar bilan kirsin.`,
+                        `✅ Mijoz qo'shildi!\n\n👤 ${data.firstName} ${data.lastName}\n📞 ${data.phone}\n\n` +
+                        `🔑 LOGIN MA'LUMOTLARI:\nLogin: ${data.login}\nParol: ${data.password}`,
                         mainKeyboard
                     );
                 } catch (error) {
-                    console.error("Mijoz saqlashda xato:", error);
                     bot.sendMessage(chatId, "❌ Mijozni saqlashda xato!", mainKeyboard);
                 }
                 resetUserState(chatId);
@@ -336,8 +425,8 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
-    // VIP QO'SHISH / O'CHIRISH STEPS
-    if (step && (step.startsWith('vip_'))) {
+    // ─── VIP ─────────────────────────────────────────────────────────
+    if (step && step.startsWith('vip_')) {
         await handleVipStep(chatId, text);
         return;
     }
