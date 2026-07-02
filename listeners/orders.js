@@ -51,16 +51,21 @@ function notifyAdminsNewOrder(orderId, orderData) {
         bonusBlock = `🎁 Buyurtma turi: 1-buyurtma — to'liq narx\n\n`;
     }
 
+    // ✅ TUZATILGAN QISM
     let deliveryBlock = '';
     if (orderData.deliveryMethod === 'pickup') {
-        deliveryBlock = `📦 Yetkazib berish: O'zim olib ketaman\n🏪 Manzil: ${orderData.pickupAddress || 'Belgilanmagan'}\n\n`;
+        const address = orderData.pickupAddress || orderData.deliveryAddress || 'Belgilanmagan';
+        deliveryBlock = `📦 Yetkazib berish: O'zim olib ketaman\n🏪 Manzil: ${address}\n\n`;
     } else if (orderData.deliveryMethod === 'delivery') {
         const distance = orderData.distanceKm ? `${orderData.distanceKm.toFixed(1)} km` : "Noma'lum";
         const deliveryFeeUZS = orderData.deliveryFee || 0;
         const deliveryFeeText = deliveryFeeUZS === 0 ? "Bepul" : `${deliveryFeeUZS.toLocaleString("uz-UZ")} so'm`;
-        deliveryBlock = `📦 Yetkazib berish: Yetkazib berish\n📏 Masofa: ~${distance}\n🚚 Narx: ${deliveryFeeText}\n📍 Manzil: ${orderData.deliveryAddress || 'Kiritilmagan'}\n\n`;
+        const address = orderData.deliveryAddress || orderData.pickupAddress || 'Kiritilmagan';
+        deliveryBlock = `📦 Yetkazib berish: Yetkazib berish\n📏 Masofa: ~${distance}\n🚚 Narx: ${deliveryFeeText}\n📍 Manzil: ${address}\n\n`;
     } else {
-        deliveryBlock = `📍 Manzil: ${orderData.deliveryAddress || 'Kiritilmagan'}\n\n`;
+        // ✅ Agar deliveryMethod aniqlanmagan bo'lsa, ikkala manzilni ham tekshiradi
+        const address = orderData.deliveryAddress || orderData.pickupAddress || 'Kiritilmagan';
+        deliveryBlock = `📍 Manzil: ${address}\n\n`;
     }
 
     const message =
