@@ -26,7 +26,16 @@ function registerCallbackHandler() {
                 const bonusText = o.orderType === 'discount' ? `🎁 ${BONUS_DISCOUNT_PERCENT}% chegirma\n` : o.orderType === 'bonus' ? `🎁 1+1 bonus\n` : '';
                 const statusEmoji = o.status === 'confirmed' ? "✅" : o.status === 'cancelled' ? "❌" : "🆕";
                 const statusText = o.status === 'confirmed' ? "Tasdiqlangan" : o.status === 'cancelled' ? "Bekor qilingan" : "Yangi";
-                const msg = `📋 BUYURTMA\n\n🆔 ${orderId}\n👤 ${o.customerName}\n📞 ${o.customerPhone}\n${bonusText}\n🛍 Mahsulotlar:\n${itemsText}\n\n💰 Jami: ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm\n📊 Status: ${statusEmoji} ${statusText}`;
+                let deliveryText = '';
+                if (o.deliveryMethod === 'pickup') {
+                    const pickupAddr = o.pickupAddress || o.storeAddress || "Oscar do'koni";
+                    deliveryText = `📦 Yetkazish: O'zim olib ketaman\n🏪 Manzil: ${pickupAddr}\n`;
+                } else {
+                    const addr = o.deliveryAddress || o.address || 'Kiritilmagan';
+                    const comment = o.addressComment || o.deliveryComment || '';
+                    deliveryText = `📦 Yetkazish: Yetkazib berish\n📍 Manzil: ${addr}\n` + (comment ? `💬 Izoh: ${comment}\n` : '');
+                }
+                const msg = `📋 BUYURTMA\n\n🆔 ${orderId}\n👤 ${o.customerName}\n📞 ${o.customerPhone}\n${bonusText}${deliveryText}\n🛍 Mahsulotlar:\n${itemsText}\n\n💰 Jami: ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm\n📊 Status: ${statusEmoji} ${statusText}`;
                 const kb = { inline_keyboard: [] };
                 if (o.status === 'new') kb.inline_keyboard.push([{ text: "✅ Tasdiqlash", callback_data: `confirm_order_${orderId}` }, { text: "❌ Bekor", callback_data: `cancel_order_${orderId}` }]);
                 kb.inline_keyboard.push([{ text: "⬅️ Orqaga", callback_data: "back_to_orders" }]);
@@ -44,7 +53,14 @@ function registerCallbackHandler() {
                 snapshot.docs.forEach(d => {
                     const o = d.data();
                     const emoji = o.status === 'confirmed' ? "✅" : o.status === 'cancelled' ? "❌" : "🆕";
-                    kb.inline_keyboard.push([{ text: `${emoji} ${o.customerName || 'Noma\'lum'} — ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm`, callback_data: `order_detail_${d.id}` }]);
+                    let addressShort = '';
+                    if (o.deliveryMethod === 'pickup') {
+                        addressShort = `🏪 O'zim olib ketaman`;
+                    } else {
+                        const addr = o.deliveryAddress || o.address || '';
+                        addressShort = addr ? `📍 ${addr.length > 25 ? addr.substring(0, 25) + '…' : addr}` : `📍 Manzil yo'q`;
+                    }
+                    kb.inline_keyboard.push([{ text: `${emoji} ${o.customerName || 'Noma\'lum'} | ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm | ${addressShort}`, callback_data: `order_detail_${d.id}` }]);
                 });
                 bot.editMessageText("So'nggi 10 ta buyurtma:", { chat_id: chatId, message_id: messageId, reply_markup: kb });
                 bot.answerCallbackQuery(cq.id);

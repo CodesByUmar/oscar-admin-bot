@@ -19,9 +19,9 @@ function registerPhotoHandler() {
                 state.data.image = imageUrl;
                 if (state.step === 'product_image') {
                     state.steps.push(state.step);
-                    state.step = 'product_description';
-                    bot.editMessageText("✅ Rasm yuklandi!\n6/8. Tavsifni kiriting:", { chat_id: chatId, message_id: waitMsg.message_id });
-                    bot.sendMessage(chatId, "Tavsif:", backKeyboard);
+                    state.step = 'product_description_uz';
+                    bot.editMessageText("✅ Rasm yuklandi!\n6a. Tavsifni UZ tilida kiriting:", { chat_id: chatId, message_id: waitMsg.message_id });
+                    bot.sendMessage(chatId, "Tavsif (UZ):", backKeyboard);
                 } else {
                     try {
                         await db.collection('products').doc(String(state.data.productId)).update({ image: imageUrl });
