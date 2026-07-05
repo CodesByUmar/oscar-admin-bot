@@ -88,26 +88,9 @@ async function showProductUpdateCategorySelect(chatId, messageId = null) {
 
 async function showProductsInCategory(chatId, categoryName, messageId = null) {
     try {
-        // 🔥 Kategoriya nomini qidirish (string bo'lsa)
-        let categoryQuery = categoryName;
-
-        // Agar categoryName string bo'lsa, uni object ichidan qidirish kerak
-        // Firestore'da category object sifatida saqlangani uchun
-        const allProducts = await db.collection('products').get();
-        const filteredProducts = allProducts.docs.filter(doc => {
-            const data = doc.data();
-            const cat = data.category;
-            // category object bo'lsa
-            if (cat && typeof cat === 'object') {
-                return cat.uz === categoryName || cat.ru === categoryName || cat.en === categoryName;
-            }
-            // category string bo'lsa
-            return cat === categoryName;
-        });
-
+        const snapshot = await db.collection('products').where('category', '==', categoryName).get();
         const categoryNameStr = getStr(categoryName, '?');
-
-        if (filteredProducts.length === 0) {
+        if (snapshot.empty) {
             const text = `"${categoryNameStr}" kategoriyasida mahsulot yo'q.`;
             if (messageId) {
                 bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
@@ -117,45 +100,24 @@ async function showProductsInCategory(chatId, categoryName, messageId = null) {
             resetUserState(chatId);
             return;
         }
-
-        const products = filteredProducts.map(doc => {
-            const x = doc.data();
-            return {
-                id: doc.id,
-                name: getStr(x.name, 'Noma\'lum'),
-                price: x.price || x.pricePiece || 0
-            };
+        const products = snapshot.docs.map(d => {
+            const x = d.data();
+            return { id: d.id, name: getStr(x.name, 'Noma\'lum') };
         });
-
         const kb = { reply_markup: { inline_keyboard: [] } };
         for (let i = 0; i < products.length; i += 2) {
-            const priceInUZS = Math.round(products[i].price * USD_TO_UZS);
-            const label1 = `${products[i].name} (${priceInUZS.toLocaleString('uz-UZ')} so'm)`;
-            const row = [{ text: label1, callback_data: `update_product_${products[i].id}` }];
-
-            if (i + 1 < products.length) {
-                const priceInUZS2 = Math.round(products[i + 1].price * USD_TO_UZS);
-                const label2 = `${products[i + 1].name} (${priceInUZS2.toLocaleString('uz-UZ')} so'm)`;
-                row.push({ text: label2, callback_data: `update_product_${products[i + 1].id}` });
-            }
+            const row = [{ text: products[i].name, callback_data: `update_product_${products[i].id}` }];
+            if (i + 1 < products.length) row.push({ text: products[i + 1].name, callback_data: `update_product_${products[i + 1].id}` });
             kb.reply_markup.inline_keyboard.push(row);
         }
-
         kb.reply_markup.inline_keyboard.push([{ text: "⬅️ Orqaga", callback_data: 'back_to_prev' }]);
-
         const text = `"${categoryNameStr}" kategoriyasidagi mahsulotlar:`;
-        if (messageId) {
-            bot.editMessageText(text, { chat_id: chatId, message_id: messageId, reply_markup: kb.reply_markup });
-        } else {
-            bot.sendMessage(chatId, text, kb);
-        }
-
+        if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId, reply_markup: kb.reply_markup });
+        else bot.sendMessage(chatId, text, kb);
         const state = userState[chatId];
         if (state) state.data.selectedCategory = categoryName;
-
     } catch (error) {
         console.error("Xato:", error);
-        bot.sendMessage(chatId, `❌ Xato: ${error.message}`);
     }
 }
 
