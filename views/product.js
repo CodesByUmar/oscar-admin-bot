@@ -26,8 +26,8 @@ async function showProductView(chatId, productId, messageId) {
                     [{ text: `📅 Chegirma boshlanishi: ${startDateText}`, callback_data: `update_field_discountStart_${productId}` }],
                     [{ text: `📅 Chegirma tugashi: ${endDateText}`, callback_data: `update_field_discountEnd_${productId}` }],
                     [{ text: `Stock: ${(p.stock || 0).toLocaleString()} dona`, callback_data: `update_field_stock_${productId}` }],
-                    [{ text: `Tavsif: ${p.description ? p.description.substring(0, 20) + '...' : 'Yo\'q'}`, callback_data: `update_field_description_${productId}` }],
-                    [{ text: `Rasm: ${p.image ? 'Bor' : 'Yo\'q'}`, callback_data: `update_field_image_${productId}` }],
+                    // YANGI:
+                    [{ text: `Tavsif: ${p.description ? getStr(p.description).substring(0, 20) + '...' : 'Yo\'q'}`, callback_data: `update_field_description_${productId}` }], [{ text: `Rasm: ${p.image ? 'Bor' : 'Yo\'q'}`, callback_data: `update_field_image_${productId}` }],
                     [{ text: `📂 Kategoriya: ${category}`, callback_data: `update_field_category_${productId}` }],
                     [{ text: "🗑 Mahsulotni o'chirish", callback_data: `delete_product_${productId}` }],
                     [{ text: "⬅️ Orqaga", callback_data: 'back_to_prev' }],
@@ -42,7 +42,8 @@ async function showProductView(chatId, productId, messageId) {
             `• Chegirma tugashi: ${endDateText}\n` +
             `• Stock: ${(p.stock || 0).toLocaleString()} dona\n` +
             `• Kategoriya: ${category}\n` +
-            `• Tavsif: ${p.description || 'Belgilanmagan'}\n` +
+            // YANGI:
+            `• Tavsif: ${p.description ? getStr(p.description) : 'Belgilanmagan'}\n` +
             `• Rasm: ${p.image ? 'URL mavjud' : 'Yo\'q'}\n` +
             `Qaysi maydonni yangilashni xohlaysiz?`;
         if (messageId) {
