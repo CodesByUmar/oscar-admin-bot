@@ -163,8 +163,10 @@ function registerCallbackHandler() {
         }
         if (data.startsWith('update_product_')) {
             const id = parseInt(data.replace('update_product_', ''));
+            bot.sendMessage(chatId, `🐞 DEBUG:\ncallback_data: ${data}\nparsed id: ${id}`);
             try {
                 const doc = await db.collection('products').doc(String(id)).get();
+                bot.sendMessage(chatId, `🐞 DEBUG: doc.exists = ${doc.exists}` + (doc.exists ? `\ndata: ${JSON.stringify(doc.data())}` : ''));
                 if (!doc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
                 const state = userState[chatId] || { step: 'none', data: {}, steps: [] };
                 state.steps.push(state.step); state.step = 'product_update_view';
@@ -172,7 +174,10 @@ function registerCallbackHandler() {
                 userState[chatId] = state;
                 await showProductView(chatId, id, messageId);
                 bot.answerCallbackQuery(cq.id);
-            } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            } catch (error) {
+                bot.sendMessage(chatId, `🐞 DEBUG XATO: ${error.message}`);
+                bot.answerCallbackQuery(cq.id, { text: "Xato!" });
+            }
             return;
         }
 
