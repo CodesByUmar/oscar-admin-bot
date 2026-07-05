@@ -6,7 +6,7 @@ const { handleInlineBack } = require('./back');
 const { showCategoryView, showCategoryUpdateSelect } = require('../views/category');
 const { showProductView, showProductUpdateCategorySelect, showProductsInCategory, getProductsInCategory } = require('../views/product');
 const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
-const { getStr } = require('../utils/helpers');
+const { getStr, formatDateTime } = require('../utils/helpers');
 
 function registerCallbackHandler() {
     bot.on('callback_query', async (cq) => {
@@ -35,8 +35,8 @@ function registerCallbackHandler() {
                     const comment = o.addressComment || o.deliveryComment || '';
                     deliveryText = `📦 Yetkazish: Yetkazib berish\n📍 Manzil: ${addr}\n` + (comment ? `💬 Izoh: ${comment}\n` : '');
                 }
-                const msg = `📋 BUYURTMA\n\n🆔 ${orderId}\n👤 ${o.customerName}\n📞 ${o.customerPhone}\n${bonusText}${deliveryText}\n🛍 Mahsulotlar:\n${itemsText}\n\n💰 Jami: ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm\n📊 Status: ${statusEmoji} ${statusText}`;
-                const kb = { inline_keyboard: [] };
+                // YANGI:
+                const msg = `📋 BUYURTMA\n\n🆔 ${orderId}\n🕐 Vaqt: ${formatDateTime(o.createdAt)}\n👤 ${o.customerName}\n📞 ${o.customerPhone}\n${bonusText}${deliveryText}\n🛍 Mahsulotlar:\n${itemsText}\n\n💰 Jami: ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm\n📊 Status: ${statusEmoji} ${statusText}`; const kb = { inline_keyboard: [] };
                 if (o.status === 'new') kb.inline_keyboard.push([{ text: "✅ Tasdiqlash", callback_data: `confirm_order_${orderId}` }, { text: "❌ Bekor", callback_data: `cancel_order_${orderId}` }]);
                 kb.inline_keyboard.push([{ text: "⬅️ Orqaga", callback_data: "back_to_orders" }]);
                 bot.editMessageText(msg, { chat_id: chatId, message_id: messageId, reply_markup: kb });
@@ -60,7 +60,8 @@ function registerCallbackHandler() {
                         const addr = o.deliveryAddress || o.address || '';
                         addressShort = addr ? `📍 ${addr.length > 25 ? addr.substring(0, 25) + '…' : addr}` : `📍 Manzil yo'q`;
                     }
-                    kb.inline_keyboard.push([{ text: `${emoji} ${o.customerName || 'Noma\'lum'} | ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm | ${addressShort}`, callback_data: `order_detail_${d.id}` }]);
+                    // YANGI:
+                    kb.inline_keyboard.push([{ text: `${emoji} ${o.customerName || 'Noma\'lum'} | ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm | 🕐 ${formatDateTime(o.createdAt)}`, callback_data: `order_detail_${d.id}` }]);
                 });
                 bot.editMessageText("So'nggi 10 ta buyurtma:", { chat_id: chatId, message_id: messageId, reply_markup: kb });
                 bot.answerCallbackQuery(cq.id);

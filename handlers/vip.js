@@ -193,7 +193,7 @@ async function handleVipStep(chatId, text) {
         if (/^\d+$/.test(input)) {
             const telegramId = input;
             try {
-                const docRef = db.collection('VIP_users').doc(telegramId);
+                const docRef = db.collection('VIP_Clients').doc(telegramId);
                 const docSnap = await docRef.get();
 
                 if (!docSnap.exists) {
@@ -242,7 +242,7 @@ async function handleVipStep(chatId, text) {
                     return true;
                 }
 
-                const docRef = db.collection('VIP_users').doc(telegramId);
+                const docRef = db.collection('VIP_Clients').doc(telegramId);
                 const docSnap = await docRef.get();
 
                 if (!docSnap.exists) {
