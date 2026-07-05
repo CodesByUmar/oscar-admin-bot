@@ -3,9 +3,8 @@ const mainKeyboard = {
         keyboard: [
             [{ text: "🛍 Mahsulot qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
             [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
-            [{ text: "👥 Mijoz qo'shish" }, { text: "👥 Mijozlar ro'yxati" }],
             [{ text: "📊 Statistika" }, { text: "💱 USD kurs" }],
-            [{ text: "📦 Buyurtmalar" }, { text: "❌ Bekor qilish" }],
+            [{ text: "📦 Buyurtmalar" }],
             [{ text: "⭐ VIP qo'shish" }, { text: "🗑 VIP o'chirish" }],
         ],
         resize_keyboard: true,
@@ -28,8 +27,8 @@ const mainBackKeyboard = {
 
 const commandButtons = [
     "🛍 Mahsulot qo'shish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
-    "🔄 Mahsulotni yangilash", "👥 Mijoz qo'shish",
-    "👥 Mijozlar ro'yxati", "📊 Statistika", "💱 USD kurs",
+    "🔄 Mahsulotni yangilash",
+    "📊 Statistika", "💱 USD kurs",
     "📦 Buyurtmalar", "❌ Bekor qilish",
     "⭐ VIP qo'shish", "🗑 VIP o'chirish",
 ];
