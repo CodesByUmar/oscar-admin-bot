@@ -118,13 +118,28 @@ async function handleVipStep(chatId, text) {
             return true;
         }
         data.login = login;
+        state.step = 'vip_add_password';
+        bot.sendMessage(chatId, 'Parol kiriting (kamida 4 belgi):', backKeyboard);
+        return true;
+    }
+
+    // ─── ADD VIP (STEP 3: Parol) ────────────────────────────────────────
+    if (step === 'vip_add_password') {
+        const password = text.trim();
+        if (password.length < 4) {
+            bot.sendMessage(chatId, '❌ Parol kamida 4 belgi bo\'lsin!');
+            return true;
+        }
+        data.password = password;
 
         try {
             const telegramId = data.telegramId;
+            const login = data.login;
             const username = data.displayName || data.username || 'VIP foydalanuvchi';
 
-            await db.collection('VIP_users').doc(telegramId).set({
+            await db.collection('VIP_Clients').doc(telegramId).set({
                 login: login,
+                password: password,
                 username: username,
                 telegram_id: telegramId,
                 isVip: true,
@@ -137,6 +152,7 @@ async function handleVipStep(chatId, text) {
                 `✅ VIP qo'shildi!\n\n` +
                 `👤 Ism: ${username}\n` +
                 `🔑 Login: ${login}\n` +
+                `🔐 Parol: ${password}\n` +
                 `🆔 Telegram ID: ${telegramId}`,
                 mainKeyboard
             );
@@ -149,7 +165,8 @@ async function handleVipStep(chatId, text) {
                     await userBot.sendMessage(
                         Number(telegramId),
                         `🎉 Tabriklaymiz! Sizga VIP status berildi!\n\n` +
-                        `🔑 Sizning loginingiz: ${login}\n\n` +
+                        `🔑 Sizning loginingiz: ${login}\n` +
+                        `🔐 Sizning parolingiz: ${password}\n\n` +
                         `VIP imtiyozlaridan foydalanishingiz mumkin.`
                     );
                 } else {
