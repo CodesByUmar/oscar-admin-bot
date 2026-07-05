@@ -3,9 +3,13 @@ const { db } = require('../config/firebase');
 const { mainKeyboard, backKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { getStr } = require('../utils/helpers');
+// import qatoringizga formatDateTime qo'shing (mavjud import'ni tekshiring, masalan:)
+const { formatDateTime } = require('../utils/helpers');
 const { showCategoryUpdateSelect } = require('../views/category');
 const { showProductUpdateCategorySelect } = require('../views/product');
 const { handleVipStep } = require('./vip');
+
+
 
 async function handleCommand(chatId, text) {
     resetUserState(chatId);
@@ -51,31 +55,31 @@ async function handleCommand(chatId, text) {
     }
 
     // ─── MIJOZLAR ──────────────────────────────────────────────────
-    if (text === "👥 Mijoz qo'shish") {
-        userState[chatId] = { step: 'customer_firstName', data: {}, steps: [] };
-        bot.sendMessage(chatId, "1/5. Mijozning ismini kiriting:", backKeyboard);
-        return;
-    }
-    if (text === "👥 Mijozlar ro'yxati") {
-        try {
-            const snapshot = await db.collection('customers').orderBy('createdAt', 'desc').limit(20).get();
-            if (snapshot.empty) { bot.sendMessage(chatId, "Hali mijozlar yo'q.", mainKeyboard); return; }
-            let msg = `👥 Mijozlar ro'yxati (oxirgi 20):\n\n`;
-            snapshot.docs.forEach((doc, idx) => {
-                const c = doc.data();
-                const tgStatus = c.telegramId ? `✅ TG: ${c.telegramId}` : `⏳ Hali kirmagan`;
-                msg += `${idx + 1}. ${c.firstName} ${c.lastName}\n`;
-                msg += `   📞 ${c.phone}\n`;
-                msg += `   🔑 Login: ${c.login} | Parol: ${c.password}\n`;
-                msg += `   ${tgStatus}\n`;
-                msg += `   📦 Buyurtmalar: ${c.totalOrders || 0} ta\n\n`;
-            });
-            bot.sendMessage(chatId, msg, mainKeyboard);
-        } catch (error) {
-            bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
-        }
-        return;
-    }
+    // if (text === "👥 Mijoz qo'shish") {
+    //     userState[chatId] = { step: 'customer_firstName', data: {}, steps: [] };
+    //     bot.sendMessage(chatId, "1/5. Mijozning ismini kiriting:", backKeyboard);
+    //     return;
+    // }
+    // if (text === "👥 Mijozlar ro'yxati") {
+    //     try {
+    //         const snapshot = await db.collection('customers').orderBy('createdAt', 'desc').limit(20).get();
+    //         if (snapshot.empty) { bot.sendMessage(chatId, "Hali mijozlar yo'q.", mainKeyboard); return; }
+    //         let msg = `👥 Mijozlar ro'yxati (oxirgi 20):\n\n`;
+    //         snapshot.docs.forEach((doc, idx) => {
+    //             const c = doc.data();
+    //             const tgStatus = c.telegramId ? `✅ TG: ${c.telegramId}` : `⏳ Hali kirmagan`;
+    //             msg += `${idx + 1}. ${c.firstName} ${c.lastName}\n`;
+    //             msg += `   📞 ${c.phone}\n`;
+    //             msg += `   🔑 Login: ${c.login} | Parol: ${c.password}\n`;
+    //             msg += `   ${tgStatus}\n`;
+    //             msg += `   📦 Buyurtmalar: ${c.totalOrders || 0} ta\n\n`;
+    //         });
+    //         bot.sendMessage(chatId, msg, mainKeyboard);
+    //     } catch (error) {
+    //         bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
+    //     }
+    //     return;
+    // }
 
     // ─── USD KURS ──────────────────────────────────────────────────
     if (text === "💱 USD kurs") {
@@ -102,7 +106,7 @@ async function handleCommand(chatId, text) {
                 db.collection('categories').get(),
                 db.collection('orders').get(),
                 db.collection('customers').get(),
-                db.collection('VIP_users').get(),
+                db.collection('VIP_Clients').get(),
                 db.collection('settings').doc('usd_rate').get(),
             ]);
             const rate = rateDoc.exists ? (rateDoc.data().rate || 'Kiritilmagan') : 'Kiritilmagan';
@@ -140,7 +144,8 @@ async function handleCommand(chatId, text) {
                 }
                 const emoji = o.status === 'confirmed' ? '✅' : o.status === 'cancelled' ? '❌' : o.status === 'delivered' ? '🏁' : '🆕';
                 const totalStr = (o.totalUZS || 0).toLocaleString('uz-UZ');
-                const btn = `${emoji} ${o.customerName || 'Noma\'lum'} | ${totalStr} so'm | ${addressShort}`;
+                // YANGI:
+                const btn = `${emoji} ${o.customerName || 'Noma\'lum'} | ${totalStr} so'm | 🕐 ${formatDateTime(o.createdAt)}`;
                 kb.inline_keyboard.push([{ text: btn, callback_data: `order_detail_${doc.id}` }]);
             });
             bot.sendMessage(chatId, "📦 So'nggi 10 ta buyurtma:", { reply_markup: kb });

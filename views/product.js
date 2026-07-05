@@ -102,7 +102,7 @@ async function showProductsInCategory(chatId, categoryName, messageId = null) {
         }
         const products = snapshot.docs.map(d => {
             const x = d.data();
-            return { id: x.id, name: getStr(x.name, 'Noma\'lum') };
+            return { id: d.id, name: getStr(x.name, 'Noma\'lum') };
         });
         const kb = { reply_markup: { inline_keyboard: [] } };
         for (let i = 0; i < products.length; i += 2) {
