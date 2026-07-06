@@ -30,41 +30,62 @@ function parseNumberInput(input, isPrice = false) {
     return parsed;
 }
 
+// ==================== VAQT FUNKSIYALARI (TO‘G‘RILANDI) ====================
+
+/** O‘zbekiston vaqti (Asia/Tashkent) bo‘yicha formatlash */
 function formatTimestamp(ts) {
     if (!ts) return "Yo'q";
     try {
         const date = ts.toDate ? ts.toDate() : new Date(ts);
-        const dd = String(date.getDate()).padStart(2, '0');
-        const mm = String(date.getMonth() + 1).padStart(2, '0');
-        return `${dd}.${mm}.${date.getFullYear()}`;
+
+        return new Intl.DateTimeFormat('ru-RU', {
+            timeZone: 'Asia/Tashkent',
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }).format(date);
     } catch (e) {
+        console.error("formatTimestamp xato:", e);
         return "Yo'q";
     }
 }
 
+/** O‘zbekiston vaqti (Asia/Tashkent) bo‘yicha sana + vaqt */
 function formatDateTime(ts) {
     if (!ts) return "Noma'lum";
     try {
         const date = ts.toDate ? ts.toDate() : new Date(ts);
-        const dd = String(date.getDate()).padStart(2, '0');
-        const mm = String(date.getMonth() + 1).padStart(2, '0');
-        const hh = String(date.getHours()).padStart(2, '0');
-        const min = String(date.getMinutes()).padStart(2, '0');
-        return `${dd}.${mm}.${date.getFullYear()} ${hh}:${min}`;
+
+        return new Intl.DateTimeFormat('ru-RU', {
+            timeZone: 'Asia/Tashkent',
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        }).format(date);
     } catch (e) {
+        console.error("formatDateTime xato:", e);
         return "Noma'lum";
     }
 }
 
+/** Matndan sana o‘qish (DD.MM.YYYY) */
 function parseDateDDMMYYYY(text) {
     const match = text.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
     if (!match) return null;
     const day = parseInt(match[1]);
     const month = parseInt(match[2]);
     const year = parseInt(match[3]);
-    if (day < 1 || day > 31 || month < 1 || month > 12 || year < 2024 || year > 2100) return null;
+
+    if (day < 1 || day > 31 || month < 1 || month > 12 || year < 2024 || year > 2100)
+        return null;
+
     const dateObj = new Date(year, month - 1, day, 0, 0, 0);
-    if (dateObj.getDate() !== day || dateObj.getMonth() !== month - 1 || dateObj.getFullYear() !== year) return null;
+    if (dateObj.getDate() !== day || dateObj.getMonth() !== month - 1 || dateObj.getFullYear() !== year)
+        return null;
+
     return dateObj;
 }
 
@@ -75,5 +96,11 @@ function getStr(val, fallback = '') {
     return String(val);
 }
 
-module.exports = { getNextId, parseNumberInput, formatTimestamp, formatDateTime, parseDateDDMMYYYY, getStr };
-
+module.exports = {
+    getNextId,
+    parseNumberInput,
+    formatTimestamp,
+    formatDateTime,
+    parseDateDDMMYYYY,
+    getStr
+};
