@@ -3,6 +3,7 @@ require('./config/firebase');
 require('./config/adminBot');
 
 const { registerOrderListener } = require('./listeners/orders');
+const { registerOrderBotCallbacks } = require('./handlers/orderBotCallback');
 const { registerMessageHandler } = require('./handlers/message');
 const { registerPhotoHandler } = require('./handlers/photo');
 const { registerCallbackHandler } = require('./handlers/callback');
@@ -21,6 +22,7 @@ process.on('uncaughtException', (error) => {
 });
 
 registerOrderListener();
+registerOrderBotCallbacks();
 registerMessageHandler();
 registerPhotoHandler();
 registerCallbackHandler();
