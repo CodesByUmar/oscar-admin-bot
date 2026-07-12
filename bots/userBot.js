@@ -51,8 +51,8 @@ function startUserBot() {
 
         const welcomeMessage =
             `Salom, ${firstName}! 👋\n\n` +
-            `🚗 *Nanokill* botiga xush kelibsiz!\n\n` +
-            `Sifatli avtomobil ehtiyot qismlari va tezkor yetkazib berish.\n\n` +
+            `🛒 *Oscar* do'koniga xush kelibsiz!\n\n` +
+            `Sifatli mahsulotlar va tezkor yetkazib berish.\n\n` +
             `Do'kondan foydalanish uchun pastdagi tugmani bosing 👇`;
         const inlineKeyboard = {
             inline_keyboard: [[{ text: "🛍 Ilovani ochish", web_app: { url: MINI_APP_URL } }]],
