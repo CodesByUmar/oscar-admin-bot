@@ -202,13 +202,13 @@ async function handleIncomingMessage(msg) {
                 if (newId === -1) { bot.sendMessage(chatId, "❌ ID xato!", mainKeyboard); resetUserState(chatId); return; }
                 const newProduct = {
                     id: newId,
-                    name: { uz: data.name_uz, ru: data.name_ru, en: data.name_en },
-                    pricePiece: data.pricePiece,
+                    name: { uz: data.name_uz || '', ru: data.name_ru || '', en: data.name_en || '' },
+                    pricePiece: data.pricePiece || 0,
                     priceBox: data.priceBox || 0,
                     itemsPerBox: data.itemsPerBox || 0,
                     discount: data.discount || 0,
-                    category: data.category,
-                    image: data.image,
+                    category: data.category || '',
+                    image: data.image || '',
                     description: { uz: data.desc_uz || '', ru: data.desc_ru || '', en: data.desc_en || '' },
                     stock: data.stock,
                 };
@@ -226,8 +226,8 @@ async function handleIncomingMessage(msg) {
                         mainKeyboard
                     );
                 } catch (error) {
-                    console.error("Saqlashda xato:", error);
-                    bot.sendMessage(chatId, "❌ Saqlashda xato!", mainKeyboard);
+                    console.error("Mahsulot saqlashda xato:", error);
+                    bot.sendMessage(chatId, `❌ Mahsulot qo'shilmadi!\nSabab: ${error.message || 'noma\'lum xato'}`, mainKeyboard);
                 }
                 resetUserState(chatId);
                 break;
