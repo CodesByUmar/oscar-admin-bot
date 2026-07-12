@@ -1,0 +1,108 @@
+diff --git a/handlers/callback.js b/handlers/callback.js
+index 4e2003a..f9ac5c7 100644
+--- a/handlers/callback.js
++++ b/handlers/callback.js
+@@ -7,6 +7,7 @@ const { showCategoryView, showCategoryUpdateSelect } = require('../views/categor
+ const { showProductView, showProductUpdateCategorySelect, showProductsInCategory, getProductsInCategory } = require('../views/product');
+ const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
+ const { getStr, formatDateTime } = require('../utils/helpers');
++const { getUserBot } = require('../bots/userBot');
+ 
+ function registerCallbackHandler() {
+     bot.on('callback_query', async (cq) => {
+@@ -63,6 +64,7 @@ function registerCallbackHandler() {
+                     // YANGI:
+                     kb.inline_keyboard.push([{ text: `${emoji} ${o.customerName || 'Noma\'lum'} | ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm | 🕐 ${formatDateTime(o.createdAt)}`, callback_data: `order_detail_${d.id}` }]);
+                 });
++                kb.inline_keyboard.push([{ text: "🔙 Bosh menyu", callback_data: "close_orders_list" }]);
+                 bot.editMessageText("So'nggi 10 ta buyurtma:", { chat_id: chatId, message_id: messageId, reply_markup: kb });
+                 bot.answerCallbackQuery(cq.id);
+             } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+@@ -97,6 +99,23 @@ function registerCallbackHandler() {
+                 admins.forEach(aId => {
+                     if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} ${isConfirm ? 'tasdiqlandi' : 'bekor'} → ${adminName}`);
+                 });
++
++                // Mijozga (birinchi/do'kon bot orqali) status o'zgarganini xabar qilamiz
++                if (orderData.customerTelegramId) {
++                    try {
++                        const userBot = getUserBot();
++                        if (userBot) {
++                            const customerMsg = isConfirm
++                                ? `✅ Buyurtmangiz tasdiqlandi!\n\n🆔 ${orderId}\n\nTez orada yetkazib beriladi.`
++                                : `❌ Afsuski, buyurtmangiz bekor qilindi.\n\n🆔 ${orderId}\n\nSavollar bo'lsa, qo'llab-quvvatlash xizmatiga murojaat qiling.`;
++                            await userBot.sendMessage(Number(orderData.customerTelegramId), customerMsg);
++                        } else {
++                            console.log('User bot ishga tushmagan, mijozga status xabari yuborilmadi.');
++                        }
++                    } catch (err) {
++                        console.log(`Mijozga (${orderData.customerTelegramId}) status xabarini yuborib bo'lmadi:`, err.message);
++                    }
++                }
+             } catch (error) {
+                 console.error("Buyurtma xato:", error);
+                 bot.answerCallbackQuery(cq.id, { text: "Xato!" });
+@@ -104,6 +123,15 @@ function registerCallbackHandler() {
+             return;
+         }
+ 
++        if (data === 'close_orders_list') {
++            try {
++                await bot.editMessageReplyMarkup({ inline_keyboard: [] }, { chat_id: chatId, message_id: messageId });
++            } catch (error) { /* xabar allaqachon o'zgargan bo'lishi mumkin, e'tibor bermaymiz */ }
++            bot.sendMessage(chatId, "🏠 Asosiy menyu", mainKeyboard);
++            bot.answerCallbackQuery(cq.id);
++            return;
++        }
++
+         if (data === 'back_to_prev') { await handleInlineBack(chatId, messageId); bot.answerCallbackQuery(cq.id); return; }
+ 
+         if (data.startsWith('cat_select_')) {
+diff --git a/handlers/command.js b/handlers/command.js
+index d519495..ea66fea 100644
+--- a/handlers/command.js
++++ b/handlers/command.js
+@@ -148,6 +148,7 @@ async function handleCommand(chatId, text) {
+                 const btn = `${emoji} ${o.customerName || 'Noma\'lum'} | ${totalStr} so'm | 🕐 ${formatDateTime(o.createdAt)}`;
+                 kb.inline_keyboard.push([{ text: btn, callback_data: `order_detail_${doc.id}` }]);
+             });
++            kb.inline_keyboard.push([{ text: "🔙 Bosh menyu", callback_data: "close_orders_list" }]);
+             bot.sendMessage(chatId, "📦 So'nggi 10 ta buyurtma:", { reply_markup: kb });
+         } catch (error) {
+             bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
+diff --git a/index.js b/index.js
+index fdbce39..5a2846a 100644
+--- a/index.js
++++ b/index.js
+@@ -3,6 +3,7 @@ require('./config/firebase');
+ require('./config/adminBot');
+ 
+ const { registerOrderListener } = require('./listeners/orders');
++const { registerOrderBotCallbacks } = require('./handlers/orderBotCallback');
+ const { registerMessageHandler } = require('./handlers/message');
+ const { registerPhotoHandler } = require('./handlers/photo');
+ const { registerCallbackHandler } = require('./handlers/callback');
+@@ -21,6 +22,7 @@ process.on('uncaughtException', (error) => {
+ });
+ 
+ registerOrderListener();
++registerOrderBotCallbacks();
+ registerMessageHandler();
+ registerPhotoHandler();
+ registerCallbackHandler();
+diff --git a/listeners/orders.js b/listeners/orders.js
+index 80ce45a..0f74472 100644
+--- a/listeners/orders.js
++++ b/listeners/orders.js
+@@ -1,10 +1,10 @@
+-const { bot, admins } = require('../config/adminBot');
++const { bot, admins } = require('../config/orderBot');
+ const { db, admin } = require('../config/firebase');
+ const { getPaymentMethodText } = require('../paymentMethods');
+ const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
+ 
+ function registerOrderListener() {
+-    if (!db) return;
++    if (!db || !bot) return;
+     const botStartTime = admin.firestore.Timestamp.now();
+     console.log("🔔 Order listener faol...");
