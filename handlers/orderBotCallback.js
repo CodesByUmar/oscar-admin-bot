@@ -2,9 +2,6 @@ const { bot, admins } = require('../config/orderBot');
 const { db } = require('../config/firebase');
 const { getUserBot } = require('../bots/userBot');
 
-// Bu bot faqat: yangi buyurtma xabarini ko'rsatish, Tasdiqlash/Bekor qilish,
-// va tasdiqlangandan keyin "Yetkazildi" deb belgilashni boshqaradi.
-// Buyurtmalar ro'yxati / statistika kabi funksiyalar admin botda o'zgarishsiz qoladi.
 function registerOrderBotCallbacks() {
     if (!bot) return;
     if (!db) { console.warn("⚠️ DB yo'q — order bot callback ishlamaydi."); return; }
@@ -19,7 +16,6 @@ function registerOrderBotCallbacks() {
             return;
         }
 
-        // ── Tasdiqlash / Bekor qilish ──────────────────────────────
         if (data.startsWith('confirm_order_') || data.startsWith('cancel_order_')) {
             const isConfirm = data.startsWith('confirm_order_');
             const orderId = isConfirm ? data.replace('confirm_order_', '') : data.replace('cancel_order_', '');
@@ -28,7 +24,7 @@ function registerOrderBotCallbacks() {
                 const doc = await orderRef.get();
                 if (!doc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
                 const orderData = doc.data();
-                if (orderData.status !== 'new') {
+                if (orderData.status !== 'pending') {
                     bot.answerCallbackQuery(cq.id, { text: `Allaqachon ${orderData.status}!` });
                     return;
                 }
@@ -36,10 +32,9 @@ function registerOrderBotCallbacks() {
                 const newStatus = isConfirm ? 'confirmed' : 'cancelled';
                 await orderRef.update({ status: newStatus });
 
-                // Mijozlar statistikasi (faqat tasdiqlanganda, admin botdagi kabi)
-                if (isConfirm && orderData.customerTelegramId) {
+                if (isConfirm && orderData.telegramChatId) {
                     try {
-                        const customerRef = db.collection('customers').doc(String(orderData.customerTelegramId));
+                        const customerRef = db.collection('customers').doc(String(orderData.telegramChatId));
                         const customerDoc = await customerRef.get();
                         if (customerDoc.exists) {
                             const c = customerDoc.data();
@@ -55,7 +50,6 @@ function registerOrderBotCallbacks() {
                 const adminName = cq.from.first_name || "Admin";
                 const statusLine = isConfirm ? `✅ Qabul qilindi — ${adminName}` : `❌ Bekor qilindi — ${adminName}`;
 
-                // Tasdiqlangan bo'lsa — "Yetkazildi" deb belgilash tugmasini qoldiramiz.
                 const newKeyboard = isConfirm
                     ? { inline_keyboard: [[{ text: "🚚 Yetkazildi deb belgilash", callback_data: `deliver_order_${orderId}` }]] }
                     : { inline_keyboard: [] };
@@ -69,8 +63,7 @@ function registerOrderBotCallbacks() {
                     if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} ${isConfirm ? 'qabul qilindi' : 'bekor qilindi'} → ${adminName}`);
                 });
 
-                // Mijozga (mini-app / birinchi bot orqali) xabar
-                notifyCustomer(orderData.customerTelegramId, orderId,
+                notifyCustomer(orderData.telegramChatId, orderId,
                     isConfirm
                         ? `✅ Buyurtmangiz qabul qilindi!\n\n🆔 ${orderId}\n\nTez orada yetkazib beriladi.`
                         : `❌ Afsuski, buyurtmangiz bekor qilindi.\n\n🆔 ${orderId}\n\nSavollar bo'lsa, qo'llab-quvvatlash xizmatiga murojaat qiling.`
@@ -82,7 +75,6 @@ function registerOrderBotCallbacks() {
             return;
         }
 
-        // ── Yetkazildi deb belgilash ────────────────────────────────
         if (data.startsWith('deliver_order_')) {
             const orderId = data.replace('deliver_order_', '');
             try {
@@ -107,7 +99,7 @@ function registerOrderBotCallbacks() {
                     if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} yetkazildi → ${adminName}`);
                 });
 
-                notifyCustomer(orderData.customerTelegramId, orderId,
+                notifyCustomer(orderData.telegramChatId, orderId,
                     `🚚 Buyurtmangiz yetkazib berildi!\n\n🆔 ${orderId}\n\nXaridingiz uchun rahmat!`
                 );
             } catch (error) {
@@ -119,17 +111,17 @@ function registerOrderBotCallbacks() {
     });
 }
 
-async function notifyCustomer(customerTelegramId, orderId, text) {
-    if (!customerTelegramId) return;
+async function notifyCustomer(telegramChatId, orderId, text) {
+    if (!telegramChatId) return;
     try {
         const userBot = getUserBot();
         if (userBot) {
-            await userBot.sendMessage(Number(customerTelegramId), text);
+            await userBot.sendMessage(Number(telegramChatId), text);
         } else {
             console.log('User bot ishga tushmagan, mijozga status xabari yuborilmadi.');
         }
     } catch (err) {
-        console.log(`Mijozga (${customerTelegramId}) status xabarini (buyurtma ${orderId}) yuborib bo'lmadi:`, err.message);
+        console.log(`Mijozga (${telegramChatId}) status xabarini (buyurtma ${orderId}) yuborib bo'lmadi:`, err.message);
     }
 }
 

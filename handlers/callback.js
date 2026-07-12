@@ -7,6 +7,7 @@ const { showCategoryView, showCategoryUpdateSelect } = require('../views/categor
 const { showProductView, showProductUpdateCategorySelect, showProductsInCategory, getProductsInCategory } = require('../views/product');
 const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
 const { getStr, formatDateTime } = require('../utils/helpers');
+const { getUserBot } = require('../bots/userBot');
 
 function registerCallbackHandler() {
     bot.on('callback_query', async (cq) => {
@@ -22,10 +23,11 @@ function registerCallbackHandler() {
                 const doc = await db.collection('orders').doc(orderId).get();
                 if (!doc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
                 const o = doc.data();
-                const itemsText = o.items?.map(item => `- ${item.quantity} x ${item.name} — ${(item.price * item.quantity).toLocaleString("uz-UZ")} so'm`).join('\n') || "Mahsulot yo'q";
+                const nameToStr = (n) => typeof n === 'string' ? n : (n && typeof n === 'object' ? (n.uz || n.ru || n.en || Object.values(n)[0] || "Noma'lum mahsulot") : "Noma'lum mahsulot");
+                const itemsText = o.items?.map(item => `- ${item.quantity} x ${nameToStr(item.name)} — ${(item.price * item.quantity).toLocaleString("uz-UZ")} so'm`).join('\n') || "Mahsulot yo'q";
                 const bonusText = o.orderType === 'discount' ? `🎁 ${BONUS_DISCOUNT_PERCENT}% chegirma\n` : o.orderType === 'bonus' ? `🎁 1+1 bonus\n` : '';
-                const statusEmoji = o.status === 'confirmed' ? "✅" : o.status === 'cancelled' ? "❌" : "🆕";
-                const statusText = o.status === 'confirmed' ? "Tasdiqlangan" : o.status === 'cancelled' ? "Bekor qilingan" : "Yangi";
+                const statusEmoji = o.status === 'confirmed' ? "✅" : o.status === 'cancelled' ? "❌" : o.status === 'delivered' ? "🏁" : "🆕";
+                const statusText = o.status === 'confirmed' ? "Tasdiqlangan" : o.status === 'cancelled' ? "Bekor qilingan" : o.status === 'delivered' ? "Yetkazildi" : "Yangi";
                 let deliveryText = '';
                 if (o.deliveryMethod === 'pickup') {
                     const pickupAddr = o.pickupAddress || o.storeAddress || "Oscar do'koni";
@@ -36,8 +38,8 @@ function registerCallbackHandler() {
                     deliveryText = `📦 Yetkazish: Yetkazib berish\n📍 Manzil: ${addr}\n` + (comment ? `💬 Izoh: ${comment}\n` : '');
                 }
                 // YANGI:
-                const msg = `📋 BUYURTMA\n\n🆔 ${orderId}\n🕐 Vaqt: ${formatDateTime(o.createdAt)}\n👤 ${o.customerName}\n📞 ${o.customerPhone}\n${bonusText}${deliveryText}\n🛍 Mahsulotlar:\n${itemsText}\n\n💰 Jami: ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm\n📊 Status: ${statusEmoji} ${statusText}`; const kb = { inline_keyboard: [] };
-                if (o.status === 'new') kb.inline_keyboard.push([{ text: "✅ Tasdiqlash", callback_data: `confirm_order_${orderId}` }, { text: "❌ Bekor", callback_data: `cancel_order_${orderId}` }]);
+                const msg = `📋 BUYURTMA\n\n🆔 ${orderId}\n🕐 Vaqt: ${formatDateTime(o.createdAt)}\n👤 ${o.customerName || o.username || 'Noma\'lum'}\n📞 ${o.customerPhone || 'Noma\'lum'}\n${bonusText}${deliveryText}\n🛍 Mahsulotlar:\n${itemsText}\n\n💰 Jami: ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm\n📊 Status: ${statusEmoji} ${statusText}`; const kb = { inline_keyboard: [] };
+                if (o.status === 'pending') kb.inline_keyboard.push([{ text: "✅ Tasdiqlash", callback_data: `confirm_order_${orderId}` }, { text: "❌ Bekor", callback_data: `cancel_order_${orderId}` }]);
                 kb.inline_keyboard.push([{ text: "⬅️ Orqaga", callback_data: "back_to_orders" }]);
                 bot.editMessageText(msg, { chat_id: chatId, message_id: messageId, reply_markup: kb });
                 bot.answerCallbackQuery(cq.id);
@@ -52,7 +54,7 @@ function registerCallbackHandler() {
                 const kb = { inline_keyboard: [] };
                 snapshot.docs.forEach(d => {
                     const o = d.data();
-                    const emoji = o.status === 'confirmed' ? "✅" : o.status === 'cancelled' ? "❌" : "🆕";
+                    const emoji = o.status === 'confirmed' ? "✅" : o.status === 'cancelled' ? "❌" : o.status === 'delivered' ? "🏁" : "🆕";
                     let addressShort = '';
                     if (o.deliveryMethod === 'pickup') {
                         addressShort = `🏪 O'zim olib ketaman`;
@@ -61,7 +63,7 @@ function registerCallbackHandler() {
                         addressShort = addr ? `📍 ${addr.length > 25 ? addr.substring(0, 25) + '…' : addr}` : `📍 Manzil yo'q`;
                     }
                     // YANGI:
-                    kb.inline_keyboard.push([{ text: `${emoji} ${o.customerName || 'Noma\'lum'} | ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm | 🕐 ${formatDateTime(o.createdAt)}`, callback_data: `order_detail_${d.id}` }]);
+                    kb.inline_keyboard.push([{ text: `${emoji} ${o.customerName || o.username || 'Noma\'lum'} | ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm | 🕐 ${formatDateTime(o.createdAt)}`, callback_data: `order_detail_${d.id}` }]);
                 });
                 bot.editMessageText("So'nggi 10 ta buyurtma:", { chat_id: chatId, message_id: messageId, reply_markup: kb });
                 bot.answerCallbackQuery(cq.id);
@@ -77,17 +79,17 @@ function registerCallbackHandler() {
                 const doc = await orderRef.get();
                 if (!doc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
                 const orderData = doc.data();
-                if (orderData.status !== 'new') { bot.answerCallbackQuery(cq.id, { text: `Allaqachon ${orderData.status}!` }); return; }
+                if (orderData.status !== 'pending') { bot.answerCallbackQuery(cq.id, { text: `Allaqachon ${orderData.status}!` }); return; }
                 await orderRef.update({ status: isConfirm ? 'confirmed' : 'cancelled' });
-                if (isConfirm && orderData.customerTelegramId) {
-                    const customerRef = db.collection('customers').doc(String(orderData.customerTelegramId));
+                if (isConfirm && orderData.telegramChatId) {
+                    const customerRef = db.collection('customers').doc(String(orderData.telegramChatId));
                     const customerDoc = await customerRef.get();
                     if (customerDoc.exists) {
                         const c = customerDoc.data();
                         const currentCount = c.ordersCount || 0;
                         const newCount = currentCount >= 2 ? 0 : currentCount + 1;
                         await customerRef.update({ ordersCount: newCount, totalOrders: (c.totalOrders || 0) + 1 });
-                        console.log(`✅ Mijoz ${orderData.customerTelegramId}: ordersCount ${currentCount} → ${newCount}`);
+                        console.log(`✅ Mijoz ${orderData.telegramChatId}: ordersCount ${currentCount} → ${newCount}`);
                     }
                 }
                 const adminName = cq.from.first_name || "Admin";
