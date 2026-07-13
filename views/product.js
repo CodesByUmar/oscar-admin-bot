@@ -40,8 +40,8 @@ async function showProductView(chatId, productId, messageId) {
             `📝 Mahsulot: ${name} (ID: ${productId})\n` +
             `• Narx: $${price} (dona, USD)\n` +
             `• Narx: $${priceBox} (karobka, USD)\n` +
-            `• Chegirma: ${p.discount || 0}%\n` + u
-                `• Chegirma boshlanishi: ${startDateText}\n` +
+            `• Chegirma: ${p.discount || 0}%\n` +
+            `• Chegirma boshlanishi: ${startDateText}\n` +
             `• Chegirma tugashi: ${endDateText}\n` +
             `• Stock: ${(p.stock || 0).toLocaleString()} dona\n` +
             `• Kategoriya: ${category}\n` +
