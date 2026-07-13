@@ -15,13 +15,15 @@ async function showProductView(chatId, productId, messageId) {
         const name = getStr(p.name, 'Noma\'lum');
         const category = getStr(p.category, 'Yo\'q');
         const price = p.price || p.pricePiece || 0;
+        const priceBox = p.priceBox || 0;
         const startDateText = formatTimestamp(p.discountStartDate);
         const endDateText = formatTimestamp(p.discountEndDate);
         const updateKeyboard = {
             reply_markup: {
                 inline_keyboard: [
                     [{ text: `Nomi: ${name}`, callback_data: `update_field_name_${productId}` }],
-                    [{ text: `Narx: ${price.toLocaleString('uz-UZ')} so'm`, callback_data: `update_field_price_${productId}` }],
+                    [{ text: `Narx: $${price} (dona, USD)`, callback_data: `update_field_price_${productId}` }],
+                    [{ text: `Narx: $${priceBox} (karobka, USD)`, callback_data: `update_field_priceBox_${productId}` }],
                     [{ text: `Chegirma: ${p.discount || 0}%`, callback_data: `update_field_discount_${productId}` }],
                     [{ text: `📅 Chegirma boshlanishi: ${startDateText}`, callback_data: `update_field_discountStart_${productId}` }],
                     [{ text: `📅 Chegirma tugashi: ${endDateText}`, callback_data: `update_field_discountEnd_${productId}` }],
@@ -36,9 +38,10 @@ async function showProductView(chatId, productId, messageId) {
         };
         const message =
             `📝 Mahsulot: ${name} (ID: ${productId})\n` +
-            `• Narx: ${price.toLocaleString('uz-UZ')} so'm\n` +
-            `• Chegirma: ${p.discount || 0}%\n` +
-            `• Chegirma boshlanishi: ${startDateText}\n` +
+            `• Narx: $${price} (dona, USD)\n` +
+            `• Narx: $${priceBox} (karobka, USD)\n` +
+            `• Chegirma: ${p.discount || 0}%\n` + u
+                `• Chegirma boshlanishi: ${startDateText}\n` +
             `• Chegirma tugashi: ${endDateText}\n` +
             `• Stock: ${(p.stock || 0).toLocaleString()} dona\n` +
             `• Kategoriya: ${category}\n` +
