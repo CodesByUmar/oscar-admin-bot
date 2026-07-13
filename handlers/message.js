@@ -101,17 +101,17 @@ async function handleIncomingMessage(msg) {
                 data.name_en = text.trim();
                 state.steps.push(oldStep);
                 state.step = 'product_price_piece';
-                bot.sendMessage(chatId, "2. Dona narxini USD da kiriting (mas: 3.5):", backKeyboard);
+                bot.sendMessage(chatId, "2. Dona narxini USD da kiriting (mas: 6.53):", backKeyboard);
                 break;
 
             // 2. Narx (pricePiece, USD)
             case 'product_price_piece': {
                 const price = parseNumberInput(text, true);
-                if (price === null || price <= 0) { bot.sendMessage(chatId, "Musbat son kiriting! (mas: 3.5)"); return; }
+                if (price === null || price <= 0) { bot.sendMessage(chatId, "Musbat son kiriting! (mas: 6.53)"); return; }
                 data.pricePiece = price;
                 state.steps.push(oldStep);
                 state.step = 'product_price_box';
-                bot.sendMessage(chatId, "2b. Karobka narxini USD da kiriting (agar yo'q bo'lsa 0):", backKeyboard);
+                bot.sendMessage(chatId, "2b. Karobka narxini USD da kiriting, agar yo'q bo'lsa 0 (mas: 24.99):", backKeyboard);
                 break;
             }
 
@@ -320,9 +320,9 @@ async function handleIncomingMessage(msg) {
         const stateData = state.data;
         const fieldType = stateData.field;
         let value;
-        if (fieldType === 'pricePiece' || fieldType === 'priceBox') {
+        if (fieldType === 'pricePiece' || fieldType === 'priceBox' || fieldType === 'price') {
             const parsed = parseNumberInput(text, true);
-            if (parsed === null || parsed < 0) { bot.sendMessage(chatId, "0 yoki musbat son kiriting! (mas: 3.5)"); return; }
+            if (parsed === null || parsed < 0) { bot.sendMessage(chatId, "0 yoki musbat son kiriting! (mas: 6.53)"); return; }
             value = parsed;
         } else if (fieldType === 'discount') {
             if (!/^\d+$/.test(text) || parseInt(text) < 0 || parseInt(text) > 100) { bot.sendMessage(chatId, "0-100 oralig'ida!"); return; }
@@ -332,7 +332,8 @@ async function handleIncomingMessage(msg) {
             value = parseInt(text);
         } else { bot.sendMessage(chatId, "Xato!"); resetUserState(chatId); return; }
         try {
-            await db.collection('products').doc(String(stateData.productId)).update({ [fieldType]: value });
+            const actualField = fieldType === 'price' ? 'pricePiece' : fieldType;
+            await db.collection('products').doc(String(stateData.productId)).update({ [actualField]: value });
             state.step = 'product_update_view';
             await showProductView(chatId, stateData.productId, stateData.messageId);
             bot.sendMessage(chatId, `✅ Yangilandi: ${value}`, backKeyboard);
