@@ -34,7 +34,7 @@ function nameToStr(name) {
     return "Noma'lum mahsulot";
 }
 
-function notifyAdminsNewOrder(orderId, orderData) {
+async function notifyAdminsNewOrder(orderId, orderData) {
     let itemsText = '';
     if (orderData.items && orderData.items.length > 0) {
         itemsText = orderData.items.map(item => {
