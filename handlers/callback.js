@@ -233,11 +233,11 @@ function registerCallbackHandler() {
             const cur = userState[chatId] || { step: 'none', data: {}, steps: [] };
             const preserve = { selectedCategory: cur.data.selectedCategory, messageId };
             if (fieldType === 'name') {
-                userState[chatId] = { step: 'update_product_name', data: { productId: id, ...preserve }, steps: cur.steps || [] };
-                bot.sendMessage(chatId, 'Yangi nomni kiriting:', backKeyboard);
+                userState[chatId] = { step: 'update_product_name_uz', data: { productId: id, ...preserve }, steps: cur.steps || [] };
+                bot.sendMessage(chatId, "1/3. Yangi nomni O'ZBEKCHA kiriting:", backKeyboard);
             } else if (fieldType === 'description') {
-                userState[chatId] = { step: 'update_product_description', data: { productId: id, ...preserve }, steps: cur.steps || [] };
-                bot.sendMessage(chatId, 'Yangi tavsifni kiriting:', backKeyboard);
+                userState[chatId] = { step: 'update_product_description_uz', data: { productId: id, ...preserve }, steps: cur.steps || [] };
+                bot.sendMessage(chatId, "1/3. Yangi tavsifni O'ZBEKCHA kiriting:", backKeyboard);
             } else if (fieldType === 'image') {
                 userState[chatId] = { step: 'update_product_image', data: { productId: id, ...preserve }, steps: cur.steps || [] };
                 const { mainBackKeyboard } = require('../keyboards');
