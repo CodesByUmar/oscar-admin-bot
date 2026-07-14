@@ -23,6 +23,18 @@ function registerCallbackHandler() {
                 const doc = await db.collection('orders').doc(orderId).get();
                 if (!doc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
                 const o = doc.data();
+
+                // VIP mijoz bo'lsa - login/ismini VIP_Clients'dan topamiz
+                let vipInfoText = '';
+                if (o.isVip && o.telegramChatId) {
+                    try {
+                        const vipDoc = await db.collection('VIP_Clients').doc(String(o.telegramChatId)).get();
+                        if (vipDoc.exists) {
+                            const vip = vipDoc.data();
+                            vipInfoText = `⭐ VIP login: ${vip.login}\n`;
+                        }
+                    } catch (e) { console.error('VIP lookup xato:', e.message); }
+                }
                 const nameToStr = (n) => typeof n === 'string' ? n : (n && typeof n === 'object' ? (n.uz || n.ru || n.en || Object.values(n)[0] || "Noma'lum mahsulot") : "Noma'lum mahsulot");
                 const itemsText = o.items?.map(item => `- ${item.quantity} x ${nameToStr(item.name)} — ${(item.price * item.quantity).toLocaleString("uz-UZ")} so'm`).join('\n') || "Mahsulot yo'q";
                 const bonusText = o.orderType === 'discount' ? `🎁 ${BONUS_DISCOUNT_PERCENT}% chegirma\n` : o.orderType === 'bonus' ? `🎁 1+1 bonus\n` : '';
@@ -38,7 +50,7 @@ function registerCallbackHandler() {
                     deliveryText = `📦 Yetkazish: Yetkazib berish\n📍 Manzil: ${addr}\n` + (comment ? `💬 Izoh: ${comment}\n` : '');
                 }
                 // YANGI:
-                const msg = `📋 BUYURTMA\n\n🆔 ${orderId}\n🕐 Vaqt: ${formatDateTime(o.createdAt)}\n👤 ${o.customerName || o.username || 'Noma\'lum'}\n📞 ${o.customerPhone || 'Noma\'lum'}\n${bonusText}${deliveryText}\n🛍 Mahsulotlar:\n${itemsText}\n\n💰 Jami: ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm\n📊 Status: ${statusEmoji} ${statusText}`; const kb = { inline_keyboard: [] };
+                const msg = `📋 BUYURTMA\n\n🆔 ${orderId}\n🕐 Vaqt: ${formatDateTime(o.createdAt)}\n👤 ${o.customerName || o.username || 'Noma\'lum'}\n📞 ${o.customerPhone || 'Noma\'lum'}\n🆔 Telegram ID: ${o.telegramChatId || 'Yo\'q'}\n${vipInfoText}${bonusText}${deliveryText}\n🛍 Mahsulotlar:\n${itemsText}\n\n💰 Jami: ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm\n📊 Status: ${statusEmoji} ${statusText}`; const kb = { inline_keyboard: [] };
                 if (o.status === 'pending') kb.inline_keyboard.push([{ text: "✅ Tasdiqlash", callback_data: `confirm_order_${orderId}` }, { text: "❌ Bekor", callback_data: `cancel_order_${orderId}` }]);
                 kb.inline_keyboard.push([{ text: "⬅️ Orqaga", callback_data: "back_to_orders" }]);
                 bot.editMessageText(msg, { chat_id: chatId, message_id: messageId, reply_markup: kb });
