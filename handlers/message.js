@@ -340,21 +340,47 @@ async function handleIncomingMessage(msg) {
         } catch (error) { bot.sendMessage(chatId, "❌ Xato!", mainKeyboard); resetUserState(chatId); }
         return;
     }
-    if (state.step === 'update_product_description') {
+    if (state.step === 'update_product_description_uz') {
+        state.data.desc_uz = text;
+        state.step = 'update_product_description_ru';
+        bot.sendMessage(chatId, "2/3. Yangi tavsifni RUSCHA kiriting:", backKeyboard);
+        return;
+    }
+    if (state.step === 'update_product_description_ru') {
+        state.data.desc_ru = text;
+        state.step = 'update_product_description_en';
+        bot.sendMessage(chatId, "3/3. Yangi tavsifni INGLIZCHA kiriting:", backKeyboard);
+        return;
+    }
+    if (state.step === 'update_product_description_en') {
         try {
-            await db.collection('products').doc(String(state.data.productId)).update({ description: text });
+            const newDescription = { uz: state.data.desc_uz, ru: state.data.desc_ru, en: text };
+            await db.collection('products').doc(String(state.data.productId)).update({ description: newDescription });
             state.step = 'product_update_view';
             await showProductView(chatId, state.data.productId, state.data.messageId);
-            bot.sendMessage(chatId, `✅ Tavsif yangilandi`, backKeyboard);
+            bot.sendMessage(chatId, `✅ Tavsif (uz/ru/en) yangilandi`, backKeyboard);
         } catch (error) { bot.sendMessage(chatId, "❌ Xato!", mainKeyboard); resetUserState(chatId); }
         return;
     }
-    if (state.step === 'update_product_name') {
+    if (state.step === 'update_product_name_uz') {
+        state.data.name_uz = text;
+        state.step = 'update_product_name_ru';
+        bot.sendMessage(chatId, "2/3. Yangi nomni RUSCHA kiriting:", backKeyboard);
+        return;
+    }
+    if (state.step === 'update_product_name_ru') {
+        state.data.name_ru = text;
+        state.step = 'update_product_name_en';
+        bot.sendMessage(chatId, "3/3. Yangi nomni INGLIZCHA kiriting:", backKeyboard);
+        return;
+    }
+    if (state.step === 'update_product_name_en') {
         try {
-            await db.collection('products').doc(String(state.data.productId)).update({ name: text });
+            const newName = { uz: state.data.name_uz, ru: state.data.name_ru, en: text };
+            await db.collection('products').doc(String(state.data.productId)).update({ name: newName });
             state.step = 'product_update_view';
             await showProductView(chatId, state.data.productId, state.data.messageId);
-            bot.sendMessage(chatId, `✅ Nom yangilandi: ${text}`, backKeyboard);
+            bot.sendMessage(chatId, `✅ Nom (uz/ru/en) yangilandi`, backKeyboard);
         } catch (error) { bot.sendMessage(chatId, "❌ Xato!", mainKeyboard); resetUserState(chatId); }
         return;
     }
