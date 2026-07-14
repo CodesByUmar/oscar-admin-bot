@@ -34,6 +34,33 @@ function nameToStr(name) {
     return "Noma'lum mahsulot";
 }
 
+// Telefonni topish: 1) orderdagi customerPhone 2) telegram_users fallback
+async function resolveCustomerPhone(orderData) {
+    if (orderData.customerPhone) return orderData.customerPhone;
+    if (!orderData.telegramChatId || !db) return null;
+    try {
+        const userDoc = await db.collection('telegram_users').doc(String(orderData.telegramChatId)).get();
+        if (userDoc.exists && userDoc.data().phone) return userDoc.data().phone;
+    } catch (e) { console.error('Telefon fallback xato:', e.message); }
+    return null;
+}
+
+// Mijoz bloki: VIP -> faqat login + telefon; oddiy -> kiritgan ismi + telefon
+async function buildCustomerBlock(orderData) {
+    const phone = await resolveCustomerPhone(orderData);
+    if (orderData.isVip) {
+        let vipLogin = orderData.username || '';
+        if (orderData.telegramChatId && db) {
+            try {
+                const vipDoc = await db.collection('VIP_Clients').doc(String(orderData.telegramChatId)).get();
+                if (vipDoc.exists && vipDoc.data().login) vipLogin = vipDoc.data().login;
+            } catch (e) { console.error('VIP lookup xato:', e.message); }
+        }
+        return `⭐ VIP: ${vipLogin || "Noma'lum"}\n📞 Telefon: ${phone || "Noma'lum"}\n\n`;
+    }
+    return `👤 Mijoz: ${orderData.customerName || orderData.username || "Noma'lum"}\n📞 Telefon: ${phone || "Noma'lum"}\n\n`;
+}
+
 async function notifyAdminsNewOrder(orderId, orderData) {
     let itemsText = '';
     if (orderData.items && orderData.items.length > 0) {
@@ -72,11 +99,11 @@ async function notifyAdminsNewOrder(orderId, orderData) {
         deliveryBlock = `📍 Manzil: ${address}\n\n`;
     }
 
+    const customerBlock = await buildCustomerBlock(orderData);
+
     const message =
         `🛒 YANGI BUYURTMA!\n\n` +
-        `👤 Mijoz: ${orderData.customerName || orderData.username || 'Noma\'lum'}\n` +
-        `📞 Telefon: ${orderData.customerPhone || 'Noma\'lum'}\n` +
-        `🆔 Telegram ID: ${orderData.telegramChatId || 'Yo\'q'}\n\n` +
+        customerBlock +
         bonusBlock + deliveryBlock +
         `🛍 Mahsulotlar:\n${itemsText}\n\n` +
         `💰 Jami: ${(orderData.totalUZS || 0).toLocaleString("uz-UZ")} so'm\n` +
