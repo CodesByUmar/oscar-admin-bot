@@ -6,3 +6,4 @@ node_modules
 rasmlar
 *.txt
 bulk-upload-images.js
+export-prosucts-excel.js
