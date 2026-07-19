@@ -35,10 +35,18 @@ function startUserBot() {
         return;
     }
 
-    const userBot = new TelegramBot(USER_BOT_TOKEN, { polling: true });
+    // MUHIM: bu bot oscar-shop-bot bilan BIR XIL tokenga ega (ataylab, shunda
+    // mijoz xabarlarni bitta botdan oladi). Shu sababli bu yerda polling: false
+    // bo'lishi SHART — aks holda ikkita process bir vaqtda bir xil tokenga
+    // ulanishga urinadi va Telegram "409 Conflict" xatosini beradi.
+    const userBot = new TelegramBot(USER_BOT_TOKEN, { polling: false });
     userBotInstance = userBot;
-    console.log("✅ User bot ishga tushdi...");
+    console.log("✅ User bot ishga tushdi (faqat xabar yuborish uchun, polling o'chirilgan)...");
 
+    return;
+
+    // Pastdagi kod ataylab ishlatilmaydi (polling o'chirilgani uchun hech qachon
+    // chaqirilmaydi) — tarixiy ma'lumot sifatida saqlab qo'yildi.
     userBot.on('polling_error', (error) => {
         console.error("User bot polling xatosi:", error.message);
     });
