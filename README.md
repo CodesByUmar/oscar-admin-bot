@@ -1,3 +1,4 @@
+GOOD MORNING 
 # 🛠️ OSCAR — Admin Bot (oscar-admin-bot)
 
 Telegram orqali ishlaydigan boshqaruv paneli. **OSCAR** tizimining uchta repozitoriyasidan biri — do'kon egasi/xodimi mahsulotlar, kategoriyalar, buyurtmalar va VIP mijozlarni shu bot orqali boshqaradi.
