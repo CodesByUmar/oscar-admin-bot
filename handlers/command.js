@@ -1,6 +1,6 @@
 const { bot } = require('../config/adminBot');
 const { db } = require('../config/firebase');
-const { mainKeyboard, backKeyboard } = require('../keyboards');
+const { mainKeyboard, backKeyboard, mainBackKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { getStr } = require('../utils/helpers');
 const { formatDateTime } = require('../utils/helpers');
@@ -11,6 +11,16 @@ const { handleVipStep } = require('./vip');
 
 
 async function handleCommand(chatId, text) {
+    const current = userState[chatId];
+    if (text !== "❌ Bekor qilish" && current && current.step && current.step !== 'none') {
+        bot.sendMessage(
+            chatId,
+            "⚠️ Siz hozir boshqa jarayon o'rtasidasiz (masalan mahsulot yoki kategoriya qo'shish).\n\n" +
+            "Avval uni tugating yoki \"❌ Bekor qilish\" tugmasini bosing — aks holda kiritgan ma'lumotlaringiz yo'qoladi.",
+            mainBackKeyboard
+        );
+        return;
+    }
     resetUserState(chatId);
     if (!db) { bot.sendMessage(chatId, "❌ Database ulanmagan.", mainKeyboard); return; }
 
