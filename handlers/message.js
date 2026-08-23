@@ -43,7 +43,11 @@ async function handleIncomingMessage(msg) {
     }
     if (text === "Orqaga") { await handleBack(chatId); return; }
     if (text && commandButtons.includes(text)) { await handleCommand(chatId, text); return; }
-    if (photo && !text) { bot.emit('photo', msg); return; }
+    // MUHIM: rasmni bu yerda qayta emit qilish SHART EMAS — node-telegram-bot-api
+    // rasmli xabar kelganda 'message' bilan birga 'photo' event'ini ham avtomatik
+    // chiqaradi. Qo'lda qayta emit qilish rasm 2 marta ishlanishiga (banner/mahsulot
+    // rasmi 2 marta yuklanib, 2 marta saqlanishiga) sabab bo'lardi.
+    if (photo && !text) { return; }
     if (!userState[chatId] || userState[chatId].step === 'none') {
         bot.sendMessage(chatId, "Tugmalardan tanlang:", mainKeyboard);
         return;
