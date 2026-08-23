@@ -1,7 +1,7 @@
 const { bot, admins } = require('../config/adminBot');
-const { db } = require('../config/firebase');
-const { backKeyboard } = require('../keyboards');
-const { userState } = require('../state/userState');
+const { db, admin } = require('../config/firebase');
+const { backKeyboard, mainKeyboard } = require('../keyboards');
+const { userState, resetUserState } = require('../state/userState');
 const { uploadToImgBB } = require('../utils/imgbb');
 const { showProductView } = require('../views/product');
 
@@ -12,7 +12,28 @@ function registerPhotoHandler() {
         if (!db) return;
         const fileId = msg.photo[msg.photo.length - 1].file_id;
         const state = userState[chatId];
-        if (state && (state.step === 'product_image' || state.step === 'update_product_image')) {
+        if (state && state.step === 'banner_image') {
+            const waitMsg = await bot.sendMessage(chatId, "Banner yuklanmoqda... ⏳");
+            const imageUrl = await uploadToImgBB(fileId);
+            if (imageUrl) {
+                try {
+                    const countSnap = await db.collection('banners').get();
+                    await db.collection('banners').add({
+                        image: imageUrl,
+                        link: null,
+                        order: countSnap.size,
+                        createdAt: admin.firestore.FieldValue.serverTimestamp(),
+                    });
+                    resetUserState(chatId);
+                    bot.editMessageText("✅ Banner qo'shildi! Mini-appda darhol ko'rinadi.", { chat_id: chatId, message_id: waitMsg.message_id });
+                    bot.sendMessage(chatId, "Davom eting.", mainKeyboard);
+                } catch (error) {
+                    bot.editMessageText("❌ Bannerni saqlashda xato!", { chat_id: chatId, message_id: waitMsg.message_id });
+                }
+            } else {
+                bot.editMessageText("❌ Rasm yuklashda xato!", { chat_id: chatId, message_id: waitMsg.message_id });
+            }
+        } else if (state && (state.step === 'product_image' || state.step === 'update_product_image')) {
             const waitMsg = await bot.sendMessage(chatId, "Rasm yuklanmoqda... ⏳");
             const imageUrl = await uploadToImgBB(fileId);
             if (imageUrl) {

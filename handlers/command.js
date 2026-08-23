@@ -144,6 +144,29 @@ async function handleCommand(chatId, text) {
         return;
     }
 
+    // ─── BANNER QO'SHISH ─────────────────────────────────────────
+    if (text === "🖼 Banner qo'shish") {
+        userState[chatId] = { step: 'banner_image', data: {}, steps: [] };
+        bot.sendMessage(chatId, "🖼 Yangi banner rasmini yuboring (photo formatida):", backKeyboard);
+        return;
+    }
+
+    // ─── BANNERNI O'CHIRISH ──────────────────────────────────────
+    if (text === "🗑 Bannerni o'chirish") {
+        try {
+            const snapshot = await db.collection('banners').orderBy('order', 'asc').get();
+            if (snapshot.empty) { bot.sendMessage(chatId, "Bannerlar yo'q.", mainKeyboard); return; }
+            const kb = { inline_keyboard: [] };
+            snapshot.docs.forEach((doc, i) => {
+                kb.inline_keyboard.push([{ text: `🖼 Banner ${i + 1}`, callback_data: `delete_banner_${doc.id}` }]);
+            });
+            bot.sendMessage(chatId, "🗑 O'chirmoqchi bo'lgan bannerni tanlang:", { reply_markup: kb });
+        } catch (error) {
+            bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
+        }
+        return;
+    }
+
     // ─── BEKOR QILISH ──────────────────────────────────────────────
     if (text === "❌ Bekor qilish") {
         resetUserState(chatId);

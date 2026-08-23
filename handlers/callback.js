@@ -279,6 +279,16 @@ function registerCallbackHandler() {
             bot.answerCallbackQuery(cq.id); return;
         }
 
+        if (data.startsWith('delete_banner_')) {
+            const id = data.replace('delete_banner_', '');
+            try {
+                await db.collection('banners').doc(id).delete();
+                bot.editMessageText(`✅ Banner o'chirildi.`, { chat_id: chatId, message_id: messageId });
+                bot.answerCallbackQuery(cq.id);
+            } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
+        }
+
         if (data.startsWith('delete_product_')) {
             const id = parseInt(data.replace('delete_product_', ''));
             try {
