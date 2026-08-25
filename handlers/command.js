@@ -39,7 +39,7 @@ async function handleCommand(chatId, text) {
     // ─── MAHSULOT QO'SHISH ─────────────────────────────────────────
     if (text === "🛍 Mahsulot qo'shish") {
         const snapshot = await db.collection('categories').get();
-        const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name }));
+        const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name, topCategory: d.data().topCategory || "Boshqa (turli mahsulotlar)" }));
         if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval kategoriya qo'shing.", mainKeyboard); return; }
         userState[chatId] = { step: 'product_name_uz', data: { categoryNames }, steps: [] };
         bot.sendMessage(chatId, "1a. Mahsulot nomini UZ tilida kiriting:", backKeyboard);
@@ -49,7 +49,7 @@ async function handleCommand(chatId, text) {
     // ─── ROʻYXAT ORQALI OMMAVIY QOʻSHISH ───────────────────────────
     if (text === "📋 Ro'yxat orqali qo'shish") {
         const snapshot = await db.collection('categories').get();
-        const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name }));
+        const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name, topCategory: d.data().topCategory || "Boshqa (turli mahsulotlar)" }));
         userState[chatId] = { step: 'bulk_paste', data: { categoryNames, bulkQueue: [], bulkCreated: [], bulkIndex: 0, bulkMode: 'create' }, steps: [] };
         bot.sendMessage(chatId,
             "📋 Ro'yxat orqali qo'shish\n\n" +

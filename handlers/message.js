@@ -175,6 +175,7 @@ async function handleIncomingMessage(msg) {
                 const matched = data.categoryNames.find(c => c.label === text);
                 if (!matched) { bot.sendMessage(chatId, "Tugmalardan tanlang!"); return; }
                 data.category = matched.full;
+                data.topCategory = matched.topCategory;
                 state.steps.push(oldStep);
                 state.step = 'product_image';
                 bot.sendMessage(chatId, "5. Rasm yuboring (photo formatida):", mainBackKeyboard);
@@ -222,6 +223,7 @@ async function handleIncomingMessage(msg) {
                     itemsPerBox: data.itemsPerBox || 0,
                     discount: data.discount || 0,
                     category: data.category || '',
+                    topCategory: data.topCategory || "Boshqa (turli mahsulotlar)",
                     image: data.image || '',
                     description: { uz: data.desc_uz || '', ru: data.desc_ru || '', en: data.desc_en || '' },
                     stock: data.stock,
@@ -264,23 +266,26 @@ async function handleIncomingMessage(msg) {
                         bot.sendMessage(chatId, "Hali birorta mahsulot qabul qilinmadi! Avval ro'yxatni yuboring.");
                         return;
                     }
-                    const resolved = new Map(); // kategoriya matni (kichik harf) -> { full, isNew }
+                    const resolved = new Map(); // kategoriya matni (kichik harf) -> { full, topCategory, isNew }
                     for (const item of data.bulkQueue) {
                         const key = item.categoryText.trim().toLowerCase();
                         if (resolved.has(key)) continue;
                         const matched = data.categoryNames.find(c => c.label.trim().toLowerCase() === key);
                         if (matched) {
-                            resolved.set(key, { full: matched.full, isNew: false });
+                            resolved.set(key, { full: matched.full, topCategory: matched.topCategory, isNew: false });
                         } else {
                             const catName = item.categoryText.trim();
+                            const topCategory = "Boshqa (turli mahsulotlar)";
                             const newCatId = await getNextId('categories');
-                            await db.collection('categories').doc(String(newCatId)).set({ id: newCatId, name: catName, icon: '📦' });
-                            data.categoryNames.push({ label: catName, full: catName });
-                            resolved.set(key, { full: catName, isNew: true });
+                            await db.collection('categories').doc(String(newCatId)).set({ id: newCatId, name: catName, icon: '📦', topCategory });
+                            data.categoryNames.push({ label: catName, full: catName, topCategory });
+                            resolved.set(key, { full: catName, topCategory, isNew: true });
                         }
                     }
                     data.bulkQueue.forEach(item => {
-                        item.category = resolved.get(item.categoryText.trim().toLowerCase()).full;
+                        const r = resolved.get(item.categoryText.trim().toLowerCase());
+                        item.category = r.full;
+                        item.topCategory = r.topCategory;
                     });
                     const newCatCount = [...resolved.values()].filter(v => v.isNew).length;
                     state.step = 'bulk_item_image';
@@ -348,6 +353,7 @@ async function handleIncomingMessage(msg) {
                         itemsPerBox: 0,
                         discount: 0,
                         category: item.category || '',
+                        topCategory: item.topCategory || "Boshqa (turli mahsulotlar)",
                         image: item.image || '',
                         description: { uz: '', ru: '', en: '' },
                         stock: 999,
@@ -399,7 +405,7 @@ async function handleIncomingMessage(msg) {
             const newId = await getNextId('categories');
             if (newId === -1) { bot.sendMessage(chatId, "❌ Xato!", mainKeyboard); resetUserState(chatId); return; }
             try {
-                await db.collection('categories').doc(String(newId)).set({ id: newId, name: data.name, icon: data.icon });
+                await db.collection('categories').doc(String(newId)).set({ id: newId, name: data.name, icon: data.icon, topCategory: "Boshqa (turli mahsulotlar)" });
                 bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${data.icon} ${data.name}`, mainKeyboard);
             } catch (error) {
                 bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
