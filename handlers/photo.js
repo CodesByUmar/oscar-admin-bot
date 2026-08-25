@@ -110,8 +110,12 @@ async function processIncomingImage(chatId, fileId, caption) {
             const remaining = state.data.bulkQueue.length - state.data.bulkIndex;
             let repeatCount = 1;
             if (caption && /^\d+$/.test(caption.trim())) {
-                repeatCount = Math.min(Math.max(parseInt(caption.trim()), 1), remaining);
+                repeatCount = parseInt(caption.trim());
+            } else if (state.data.pendingRepeatCount) {
+                repeatCount = state.data.pendingRepeatCount;
             }
+            repeatCount = Math.min(Math.max(repeatCount, 1), remaining);
+            delete state.data.pendingRepeatCount;
             const appliedTo = [];
             for (let i = 0; i < repeatCount; i++) {
                 const item = state.data.bulkQueue[state.data.bulkIndex];
@@ -134,7 +138,7 @@ async function processIncomingImage(chatId, fileId, caption) {
             } else {
                 const next = state.data.bulkQueue[state.data.bulkIndex];
                 bot.editMessageText(
-                    `${appliedText}\n\n📦 ${state.data.bulkIndex + 1}/${state.data.bulkQueue.length}: ${next.name}\n\nRasmini yuboring (agar shu ham bir nechta mahsulotga tegishli bo'lsa, rasm tagiga izoh qilib sonini yozing, mas: 11):`,
+                    `${appliedText}\n\n📦 ${state.data.bulkIndex + 1}/${state.data.bulkQueue.length}: ${next.name}\n\nRasmini yuboring (bir nechtasiga tegishli bo'lsa, avval sonini alohida xabar qilib yuboring, mas: 11):`,
                     { chat_id: chatId, message_id: waitMsg.message_id }
                 );
             }

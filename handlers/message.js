@@ -383,6 +383,15 @@ async function handleIncomingMessage(msg) {
 
     // ─── DRAFTLARGA RASM TO'LDIRISH (rasm bosqichi, photo.js orqali keladi) ──
     if (step === 'draft_photo_item') {
+        // Admin rasmga izoh (caption) qilib emas, alohida xabar qilib son yuborsa ham
+        // ishlaydigan qilamiz — keyingi yuboriladigan rasmga shu son qo'llaniladi.
+        if (/^\d+$/.test(text.trim())) {
+            const n = parseInt(text.trim());
+            data.pendingRepeatCount = n;
+            state.data = data;
+            bot.sendMessage(chatId, `✅ Tushunarli — keyingi yuboradigan rasmingiz ${n} ta mahsulotga qo'llanadi. Endi rasmni yuboring:`);
+            return;
+        }
         bot.sendMessage(chatId, "Iltimos, rasm yuboring (photo formatida).");
         return;
     }
