@@ -1,6 +1,6 @@
 const { bot } = require('../config/adminBot');
 const { db } = require('../config/firebase');
-const { mainKeyboard, backKeyboard, mainBackKeyboard, bulkListKeyboard } = require('../keyboards');
+const { mainKeyboard, backKeyboard, mainBackKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { getStr } = require('../utils/helpers');
 const { formatDateTime } = require('../utils/helpers');
@@ -39,55 +39,10 @@ async function handleCommand(chatId, text) {
     // ─── MAHSULOT QO'SHISH ─────────────────────────────────────────
     if (text === "🛍 Mahsulot qo'shish") {
         const snapshot = await db.collection('categories').get();
-        const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name, topCategory: d.data().topCategory || "Boshqa (turli mahsulotlar)" }));
+        const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name }));
         if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval kategoriya qo'shing.", mainKeyboard); return; }
         userState[chatId] = { step: 'product_name_uz', data: { categoryNames }, steps: [] };
         bot.sendMessage(chatId, "1a. Mahsulot nomini UZ tilida kiriting:", backKeyboard);
-        return;
-    }
-
-    // ─── ROʻYXAT ORQALI OMMAVIY QOʻSHISH ───────────────────────────
-    if (text === "📋 Ro'yxat orqali qo'shish") {
-        const snapshot = await db.collection('categories').get();
-        const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name, topCategory: d.data().topCategory || "Boshqa (turli mahsulotlar)" }));
-        userState[chatId] = { step: 'bulk_paste', data: { categoryNames, bulkQueue: [], bulkCreated: [], bulkIndex: 0, bulkMode: 'create' }, steps: [] };
-        bot.sendMessage(chatId,
-            "📋 Ro'yxat orqali qo'shish\n\n" +
-            "Excel'dan IKKITA ustunni birga belgilang — \"Turkum\" (kategoriya) va \"Nomi\" — va nusxa olib shu yerga joylashtiring. Excel ularni avtomatik TAB bilan ajratib qo'yadi, bot esa har qatorni \"kategoriya + nom\" deb o'qiydi.\n\n" +
-            "Bir nechta xabarga bo'lib yuborsangiz ham bo'ladi (mas: butun ro'yxatni bir yo'la tashlasangiz, Telegram o'zi bir necha xabarga bo'lib yuboradi — muammo emas). Mavjud bo'lmagan kategoriyalar avtomatik yaratiladi.\n\n" +
-            "Hammasini yuborib bo'lgach, \"✅ Barchasi tayyor\" tugmasini bosing.",
-            bulkListKeyboard
-        );
-        return;
-    }
-
-    // ─── DRAFT MAHSULOTLARGA RASM+NARX TO'LDIRISH ──────────────────
-    if (text === "📸 Draftlarni to'ldirish") {
-        const snap = await db.collection('products').where('draft', '==', true).get();
-        if (snap.empty) { bot.sendMessage(chatId, "Draft holatidagi (rasm/narxi yo'q) mahsulot yo'q.", mainKeyboard); return; }
-        const bulkQueue = snap.docs
-            .map(d => ({ productId: d.id, id: d.data().id, name: getStr(d.data().name) }))
-            .sort((a, b) => a.id - b.id);
-        userState[chatId] = { step: 'draft_photo_item', data: { bulkQueue, bulkFixed: [], bulkIndex: 0 }, steps: [] };
-        bot.sendMessage(chatId,
-            `📸 ${bulkQueue.length} ta mahsulotda rasm/narx yo'q.\n\n` +
-            `Avval BARCHA rasmlarni ketma-ket yuborasiz (narx so'ralmaydi, xotirjam yuboraverasiz) — hammasi tugagach, narxlarni alohida so'rayman.`,
-            mainBackKeyboard
-        );
-        bot.sendMessage(chatId, `📦 1/${bulkQueue.length}: ${bulkQueue[0].name}\n\nRasmini yuboring:`);
-        return;
-    }
-
-    // ─── RASM HAVOLASI O'LIK MAHSULOTLARNI TUZATISH ────────────────
-    if (text === "🖼 Buzilgan rasmlarni tuzatish") {
-        const snap = await db.collection('products').where('imageBroken', '==', true).get();
-        if (snap.empty) { bot.sendMessage(chatId, "Buzilgan rasmli mahsulot yo'q.", mainKeyboard); return; }
-        const bulkQueue = snap.docs
-            .map(d => ({ productId: d.id, id: d.data().id, name: getStr(d.data().name) }))
-            .sort((a, b) => a.id - b.id);
-        userState[chatId] = { step: 'fix_image_item', data: { bulkQueue, bulkFixed: [], bulkIndex: 0 }, steps: [] };
-        bot.sendMessage(chatId, `🖼 ${bulkQueue.length} ta mahsulotning rasm havolasi o'lik. Ketma-ket yangilaymiz — faqat rasm kerak, narxga tegilmaydi.`, mainBackKeyboard);
-        bot.sendMessage(chatId, `📦 1/${bulkQueue.length}: ${bulkQueue[0].name}\n\nShu mahsulot uchun yangi rasm yuboring:`);
         return;
     }
 

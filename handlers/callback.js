@@ -234,8 +234,7 @@ function registerCallbackHandler() {
                 const catDoc = await db.collection('categories').doc(String(catId)).get();
                 if (!catDoc.exists) { bot.answerCallbackQuery(cq.id, { text: "Kategoriya topilmadi!" }); return; }
                 const catNameObj = catDoc.data().name;
-                const topCategory = catDoc.data().topCategory || "Boshqa (turli mahsulotlar)";
-                await db.collection('products').doc(String(productId)).update({ category: catNameObj, topCategory });
+                await db.collection('products').doc(String(productId)).update({ category: catNameObj });
                 const catName = getStr(catNameObj);
                 const state = userState[chatId] || { step: 'none', data: {}, steps: [] };
                 state.data.productId = productId; state.data.messageId = messageId;

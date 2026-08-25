@@ -2,9 +2,7 @@ const mainKeyboard = {
     reply_markup: {
         keyboard: [
             [{ text: "🛍 Mahsulot qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
-            [{ text: "📋 Ro'yxat orqali qo'shish" }, { text: "📸 Draftlarni to'ldirish" }],
             [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
-            [{ text: "🖼 Buzilgan rasmlarni tuzatish" }],
             [{ text: "📊 Statistika" }, { text: "💱 USD kurs" }],
             [{ text: "📦 Buyurtmalar" }],
             [{ text: "🖼 Banner qo'shish" }, { text: "🗑 Bannerni o'chirish" }],
@@ -28,20 +26,13 @@ const mainBackKeyboard = {
     },
 };
 
-const bulkListKeyboard = {
-    reply_markup: {
-        keyboard: [["✅ Barchasi tayyor"], ["❌ Bekor qilish"]],
-        resize_keyboard: true,
-    },
-};
-
 const commandButtons = [
-    "🛍 Mahsulot qo'shish", "📋 Ro'yxat orqali qo'shish", "📸 Draftlarni to'ldirish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
-    "🔄 Mahsulotni yangilash", "🖼 Buzilgan rasmlarni tuzatish",
+    "🛍 Mahsulot qo'shish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
+    "🔄 Mahsulotni yangilash",
     "📊 Statistika", "💱 USD kurs",
     "📦 Buyurtmalar", "❌ Bekor qilish",
     "🖼 Banner qo'shish", "🗑 Bannerni o'chirish",
     "⭐ VIP qo'shish", "🗑 VIP o'chirish",
 ];
 
-module.exports = { mainKeyboard, backKeyboard, mainBackKeyboard, bulkListKeyboard, commandButtons };
+module.exports = { mainKeyboard, backKeyboard, mainBackKeyboard, commandButtons };

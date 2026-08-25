@@ -1,6 +1,6 @@
 const { bot, admins } = require('../config/adminBot');
 const { db, admin } = require('../config/firebase');
-const { mainKeyboard, backKeyboard, mainBackKeyboard, bulkListKeyboard, commandButtons } = require('../keyboards');
+const { mainKeyboard, backKeyboard, mainBackKeyboard, commandButtons } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { parseNumberInput, parseDateDDMMYYYY, getNextId, getStr } = require('../utils/helpers');
 const { handleBack } = require('./back');
@@ -8,13 +8,6 @@ const { handleCommand } = require('./command');
 const { handleVipStep } = require('./vip');
 const { showProductView } = require('../views/product');
 const { showCategoryView } = require('../views/category');
-
-function buildBulkImagePrompt(data) {
-    const item = data.bulkQueue[data.bulkIndex];
-    const n = data.bulkIndex + 1;
-    const total = data.bulkQueue.length;
-    return `📦 ${n}/${total}: ${item.name}\n\nShu mahsulot uchun rasm yuboring:`;
-}
 
 function registerMessageHandler() {
     bot.on('message', async (msg) => {
@@ -55,9 +48,6 @@ async function handleIncomingMessage(msg) {
     // chiqaradi. Qo'lda qayta emit qilish rasm 2 marta ishlanishiga (banner/mahsulot
     // rasmi 2 marta yuklanib, 2 marta saqlanishiga) sabab bo'lardi.
     if (photo && !text) { return; }
-    // Rasm fayl (document) sifatida yuborilganda ham xuddi shu — u photo.js'dagi
-    // 'document' listenerda qayta ishlanadi, bu yerda ikki marta javob berilmasin.
-    if (msg.document && !text) { return; }
     if (!userState[chatId] || userState[chatId].step === 'none') {
         bot.sendMessage(chatId, "Tugmalardan tanlang:", mainKeyboard);
         return;
@@ -175,7 +165,6 @@ async function handleIncomingMessage(msg) {
                 const matched = data.categoryNames.find(c => c.label === text);
                 if (!matched) { bot.sendMessage(chatId, "Tugmalardan tanlang!"); return; }
                 data.category = matched.full;
-                data.topCategory = matched.topCategory;
                 state.steps.push(oldStep);
                 state.step = 'product_image';
                 bot.sendMessage(chatId, "5. Rasm yuboring (photo formatida):", mainBackKeyboard);
@@ -223,7 +212,6 @@ async function handleIncomingMessage(msg) {
                     itemsPerBox: data.itemsPerBox || 0,
                     discount: data.discount || 0,
                     category: data.category || '',
-                    topCategory: data.topCategory || "Boshqa (turli mahsulotlar)",
                     image: data.image || '',
                     description: { uz: data.desc_uz || '', ru: data.desc_ru || '', en: data.desc_en || '' },
                     stock: data.stock,
@@ -253,171 +241,6 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
-    // ─── ROʻYXAT ORQALI OMMAVIY QOʻSHISH ────────────────────────────
-    if (step.startsWith('bulk_')) {
-        switch (step) {
-
-            // 1. Ro'yxat matnini qabul qilish (bir nechta xabarga bo'linishi mumkin).
-            // Har qatorda: "Kategoriya[TAB]Nomi" — Excel'da ikkita ustunni (Turkum + Nomi)
-            // birga belgilab nusxa olib joylashtirilsa, ular orasiga avtomatik TAB tushadi.
-            case 'bulk_paste': {
-                if (text === "✅ Barchasi tayyor") {
-                    if (!data.bulkQueue || data.bulkQueue.length === 0) {
-                        bot.sendMessage(chatId, "Hali birorta mahsulot qabul qilinmadi! Avval ro'yxatni yuboring.");
-                        return;
-                    }
-                    const resolved = new Map(); // kategoriya matni (kichik harf) -> { full, topCategory, isNew }
-                    for (const item of data.bulkQueue) {
-                        const key = item.categoryText.trim().toLowerCase();
-                        if (resolved.has(key)) continue;
-                        const matched = data.categoryNames.find(c => c.label.trim().toLowerCase() === key);
-                        if (matched) {
-                            resolved.set(key, { full: matched.full, topCategory: matched.topCategory, isNew: false });
-                        } else {
-                            const catName = item.categoryText.trim();
-                            const topCategory = "Boshqa (turli mahsulotlar)";
-                            const newCatId = await getNextId('categories');
-                            await db.collection('categories').doc(String(newCatId)).set({ id: newCatId, name: catName, icon: '📦', topCategory });
-                            data.categoryNames.push({ label: catName, full: catName, topCategory });
-                            resolved.set(key, { full: catName, topCategory, isNew: true });
-                        }
-                    }
-                    data.bulkQueue.forEach(item => {
-                        const r = resolved.get(item.categoryText.trim().toLowerCase());
-                        item.category = r.full;
-                        item.topCategory = r.topCategory;
-                    });
-                    const newCatCount = [...resolved.values()].filter(v => v.isNew).length;
-                    state.step = 'bulk_item_image';
-                    let doneMsg = `🚀 Jami ${data.bulkQueue.length} ta mahsulot navbatga qo'yildi.`;
-                    if (newCatCount > 0) doneMsg += `\n🆕 ${newCatCount} ta yangi kategoriya avtomatik yaratildi.`;
-                    bot.sendMessage(chatId, doneMsg, mainBackKeyboard);
-                    bot.sendMessage(chatId, buildBulkImagePrompt(data));
-                    break;
-                }
-                if (!text || !text.trim()) { bot.sendMessage(chatId, "Ro'yxatni matn qilib yuboring!"); return; }
-                const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-                const added = [];
-                let skipped = 0;
-                for (const line of lines) {
-                    const tabIdx = line.indexOf('\t');
-                    if (tabIdx === -1) { skipped++; continue; }
-                    const categoryText = line.slice(0, tabIdx).trim();
-                    const name = line.slice(tabIdx + 1).replace(/^\d+[.)\-]?\s*/, '').trim();
-                    if (!categoryText || !name) continue; // sarlavha qatori yoki bo'sh — jimgina o'tkazib yuboriladi
-                    added.push({ categoryText, name });
-                }
-                if (added.length === 0) {
-                    bot.sendMessage(chatId, "❌ Bironta ham \"Kategoriya + Nomi\" (TAB bilan ajratilgan) qator topilmadi. Excel'dan ikkita ustunni (Turkum va Nomi) birga belgilab nusxa oling.");
-                    return;
-                }
-                data.bulkQueue.push(...added);
-                let reply = `✅ ${added.length} ta mahsulot qabul qilindi. Jami: ${data.bulkQueue.length} ta.`;
-                if (skipped > 0) reply += `\n⚠️ ${skipped} ta qator o'tkazib yuborildi (kategoriya TAB bilan ajratilmagan).`;
-                reply += `\n\nYana yuborishingiz mumkin, yoki hammasi bo'lsa "✅ Barchasi tayyor" tugmasini bosing.`;
-                bot.sendMessage(chatId, reply, bulkListKeyboard);
-                break;
-            }
-
-            // 2. Rasm kutilyapti — matn kelsa eslatib qo'yamiz (rasm photo.js orqali keladi)
-            case 'bulk_item_image':
-                bot.sendMessage(chatId, "Iltimos, rasm yuboring (photo formatida).");
-                return;
-
-            // 3. Narx kiritilgach — mahsulotni saqlaymiz va keyingisiga o'tamiz
-            case 'bulk_item_price': {
-                const price = parseNumberInput(text, true);
-                if (price === null || price <= 0) { bot.sendMessage(chatId, "Musbat son kiriting! (mas: 6.53)"); return; }
-                const item = data.bulkQueue[data.bulkIndex];
-                const newId = await getNextId('products');
-                if (newId === -1) { bot.sendMessage(chatId, "❌ ID xato! Partiya to'xtatildi.", mainKeyboard); resetUserState(chatId); return; }
-                const newProduct = {
-                    id: newId,
-                    name: { uz: item.name, ru: item.name, en: item.name },
-                    pricePiece: price,
-                    priceBox: 0,
-                    itemsPerBox: 0,
-                    discount: 0,
-                    category: item.category || '',
-                    topCategory: item.topCategory || "Boshqa (turli mahsulotlar)",
-                    image: item.image || '',
-                    description: { uz: '', ru: '', en: '' },
-                    stock: 999,
-                };
-                try {
-                    await db.collection('products').doc(String(newId)).set(newProduct);
-                    data.bulkCreated.push(item.name);
-                } catch (error) {
-                    console.error("Bulk mahsulot saqlashda xato:", error);
-                    bot.sendMessage(chatId, `❌ "${item.name}" saqlanmadi, o'tkazib yuborildi.`);
-                }
-                data.bulkIndex++;
-                if (data.bulkIndex >= data.bulkQueue.length) {
-                    const namesList = data.bulkCreated.map((n, i) => `${i + 1}. ${n}`);
-                    const namesText = namesList.length > 30
-                        ? namesList.slice(0, 30).join('\n') + `\n... va yana ${namesList.length - 30} ta`
-                        : namesList.join('\n');
-                    const footer = `\n\nℹ️ Narx faqat dona (USD) uchun kiritildi, RU/EN nomlar UZ bilan bir xil, tavsif bo'sh, ombor 999 ta qilib qo'yildi — kerak bo'lsa "🔄 Mahsulotni yangilash" orqali to'g'rilang.`;
-                    bot.sendMessage(chatId,
-                        `🎉 Partiya tugadi!\n✅ ${data.bulkCreated.length}/${data.bulkQueue.length} ta mahsulot qo'shildi:\n` +
-                        namesText + footer,
-                        mainKeyboard
-                    );
-                    resetUserState(chatId);
-                } else {
-                    state.step = 'bulk_item_image';
-                    bot.sendMessage(chatId, buildBulkImagePrompt(data), mainBackKeyboard);
-                }
-                break;
-            }
-        }
-        state.data = data;
-        return;
-    }
-
-    // ─── RASM HAVOLASI O'LIK MAHSULOTLARNI TUZATISH ─────────────────
-    if (step === 'fix_image_item') {
-        bot.sendMessage(chatId, "Iltimos, rasm yuboring (photo formatida).");
-        return;
-    }
-
-    // ─── DRAFTLARGA RASM TO'LDIRISH (rasm bosqichi, photo.js orqali keladi) ──
-    if (step === 'draft_photo_item') {
-        bot.sendMessage(chatId, "Iltimos, rasm yuboring (photo formatida).");
-        return;
-    }
-
-    // ─── DRAFTLARGA NARX TO'LDIRISH (rasmlar tugagach) ──────────────
-    if (step === 'draft_price_item') {
-        const price = parseNumberInput(text, true);
-        if (price === null || price <= 0) { bot.sendMessage(chatId, "Musbat son kiriting! (mas: 6.53)"); return; }
-        const item = data.bulkQueue[data.bulkIndex];
-        try {
-            await db.collection('products').doc(String(item.productId)).update({
-                image: item.image || '',
-                pricePiece: price,
-                draft: admin.firestore.FieldValue.delete(),
-            });
-            data.bulkFixed.push(item.name);
-        } catch (error) {
-            console.error("Draft narxini saqlashda xato:", error);
-            bot.sendMessage(chatId, `❌ "${item.name}" saqlanmadi, o'tkazib yuborildi.`);
-        }
-        data.bulkIndex++;
-        if (data.bulkIndex >= data.bulkQueue.length) {
-            bot.sendMessage(chatId,
-                `🎉 Tugadi! ${data.bulkFixed.length}/${data.bulkQueue.length} ta mahsulot to'liq to'ldirildi va endi mijozlarga ko'rinadi.`,
-                mainKeyboard
-            );
-            resetUserState(chatId);
-        } else {
-            const next = data.bulkQueue[data.bulkIndex];
-            bot.sendMessage(chatId, `💰 ${data.bulkIndex + 1}/${data.bulkQueue.length}: ${next.name}\n\nDona narxini USD da kiriting (mas: 6.53):`);
-        }
-        state.data = data;
-        return;
-    }
-
     // ─── KATEGORIYA QO'SHISH ─────────────────────────────────────────
     if (step.startsWith('category_')) {
         const oldStep = step;
@@ -431,7 +254,7 @@ async function handleIncomingMessage(msg) {
             const newId = await getNextId('categories');
             if (newId === -1) { bot.sendMessage(chatId, "❌ Xato!", mainKeyboard); resetUserState(chatId); return; }
             try {
-                await db.collection('categories').doc(String(newId)).set({ id: newId, name: data.name, icon: data.icon, topCategory: "Boshqa (turli mahsulotlar)" });
+                await db.collection('categories').doc(String(newId)).set({ id: newId, name: data.name, icon: data.icon });
                 bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${data.icon} ${data.name}`, mainKeyboard);
             } catch (error) {
                 bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
