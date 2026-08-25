@@ -100,6 +100,33 @@ async function processIncomingImage(chatId, fileId) {
         } else {
             bot.editMessageText("❌ Rasm yuklashda xato! Qaytadan yuboring.", { chat_id: chatId, message_id: waitMsg.message_id });
         }
+    } else if (state && state.step === 'draft_photo_item') {
+        // Draftlar uchun RASM bosqichi — narx bu yerda so'ralmaydi, hammasi tugagach alohida so'raladi.
+        const waitMsg = await bot.sendMessage(chatId, "Rasm yuklanmoqda... ⏳");
+        const imageUrl = await uploadToImgBB(fileId);
+        if (imageUrl) {
+            const item = state.data.bulkQueue[state.data.bulkIndex];
+            item.image = imageUrl;
+            state.data.bulkIndex++;
+            if (state.data.bulkIndex >= state.data.bulkQueue.length) {
+                state.step = 'draft_price_item';
+                state.data.bulkIndex = 0;
+                const first = state.data.bulkQueue[0];
+                bot.editMessageText(
+                    `✅ Barcha rasmlar qabul qilindi!\n\nEndi narxlarni so'rayman — har biriga USD narxini yozib yuboraverasiz.`,
+                    { chat_id: chatId, message_id: waitMsg.message_id }
+                );
+                bot.sendMessage(chatId, `💰 1/${state.data.bulkQueue.length}: ${first.name}\n\nDona narxini USD da kiriting (mas: 6.53):`);
+            } else {
+                const next = state.data.bulkQueue[state.data.bulkIndex];
+                bot.editMessageText(
+                    `✅ Qabul qilindi!\n\n📦 ${state.data.bulkIndex + 1}/${state.data.bulkQueue.length}: ${next.name}\n\nRasmini yuboring:`,
+                    { chat_id: chatId, message_id: waitMsg.message_id }
+                );
+            }
+        } else {
+            bot.editMessageText("❌ Rasm yuklashda xato! Qaytadan yuboring.", { chat_id: chatId, message_id: waitMsg.message_id });
+        }
     } else {
         const { mainKeyboard } = require('../keyboards');
         bot.sendMessage(chatId, "Rasm kutilmayapti.", mainKeyboard);

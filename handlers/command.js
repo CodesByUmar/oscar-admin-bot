@@ -68,9 +68,13 @@ async function handleCommand(chatId, text) {
         const bulkQueue = snap.docs
             .map(d => ({ productId: d.id, id: d.data().id, name: getStr(d.data().name) }))
             .sort((a, b) => a.id - b.id);
-        userState[chatId] = { step: 'bulk_item_image', data: { bulkQueue, bulkCreated: [], bulkIndex: 0, bulkMode: 'fill' }, steps: [] };
-        bot.sendMessage(chatId, `📸 ${bulkQueue.length} ta mahsulotda rasm/narx yo'q. Ketma-ket to'ldiramiz.`, mainBackKeyboard);
-        bot.sendMessage(chatId, `📦 1/${bulkQueue.length}: ${bulkQueue[0].name}\n\nShu mahsulot uchun rasm yuboring:`);
+        userState[chatId] = { step: 'draft_photo_item', data: { bulkQueue, bulkFixed: [], bulkIndex: 0 }, steps: [] };
+        bot.sendMessage(chatId,
+            `📸 ${bulkQueue.length} ta mahsulotda rasm/narx yo'q.\n\n` +
+            `Avval BARCHA rasmlarni ketma-ket yuborasiz (narx so'ralmaydi, xotirjam yuboraverasiz) — hammasi tugagach, narxlarni alohida so'rayman.`,
+            mainBackKeyboard
+        );
+        bot.sendMessage(chatId, `📦 1/${bulkQueue.length}: ${bulkQueue[0].name}\n\nRasmini yuboring:`);
         return;
     }
 
