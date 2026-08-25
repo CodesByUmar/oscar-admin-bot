@@ -5,7 +5,7 @@ const { userState, resetUserState } = require('../state/userState');
 const { uploadToImgBB } = require('../utils/imgbb');
 const { showProductView } = require('../views/product');
 
-async function processIncomingImage(chatId, fileId, caption) {
+async function processIncomingImage(chatId, fileId) {
     if (!admins.includes(chatId)) return;
     if (!db) return;
     const state = userState[chatId];
@@ -102,43 +102,25 @@ async function processIncomingImage(chatId, fileId, caption) {
         }
     } else if (state && state.step === 'draft_photo_item') {
         // Draftlar uchun RASM bosqichi — narx bu yerda so'ralmaydi, hammasi tugagach alohida so'raladi.
-        // Rasmga izoh (caption) qilib son yozilsa (mas: "11"), o'sha BITTA rasm keyingi
-        // shuncha mahsulotga ham qo'llaniladi — rang variantlari uchun bir xil rasm bo'lsa foydali.
         const waitMsg = await bot.sendMessage(chatId, "Rasm yuklanmoqda... ⏳");
         const imageUrl = await uploadToImgBB(fileId);
         if (imageUrl) {
-            const remaining = state.data.bulkQueue.length - state.data.bulkIndex;
-            let repeatCount = 1;
-            if (caption && /^\d+$/.test(caption.trim())) {
-                repeatCount = parseInt(caption.trim());
-            } else if (state.data.pendingRepeatCount) {
-                repeatCount = state.data.pendingRepeatCount;
-            }
-            repeatCount = Math.min(Math.max(repeatCount, 1), remaining);
-            delete state.data.pendingRepeatCount;
-            const appliedTo = [];
-            for (let i = 0; i < repeatCount; i++) {
-                const item = state.data.bulkQueue[state.data.bulkIndex];
-                item.image = imageUrl;
-                appliedTo.push(item.name);
-                state.data.bulkIndex++;
-            }
-            const appliedText = repeatCount > 1
-                ? `✅ Shu rasm ${repeatCount} ta mahsulotga qo'llandi:\n${appliedTo.map((n, i) => `${i + 1}. ${n}`).join('\n')}`
-                : `✅ Qabul qilindi! (${appliedTo[0]})`;
+            const item = state.data.bulkQueue[state.data.bulkIndex];
+            item.image = imageUrl;
+            state.data.bulkIndex++;
             if (state.data.bulkIndex >= state.data.bulkQueue.length) {
                 state.step = 'draft_price_item';
                 state.data.bulkIndex = 0;
                 const first = state.data.bulkQueue[0];
                 bot.editMessageText(
-                    `${appliedText}\n\n🎉 Barcha rasmlar qabul qilindi! Endi narxlarni so'rayman — har biriga USD narxini yozib yuboraverasiz.`,
+                    `✅ Qabul qilindi!\n\n🎉 Barcha rasmlar qabul qilindi! Endi narxlarni so'rayman — har biriga USD narxini yozib yuboraverasiz.`,
                     { chat_id: chatId, message_id: waitMsg.message_id }
                 );
                 bot.sendMessage(chatId, `💰 1/${state.data.bulkQueue.length}: ${first.name}\n\nDona narxini USD da kiriting (mas: 6.53):`);
             } else {
                 const next = state.data.bulkQueue[state.data.bulkIndex];
                 bot.editMessageText(
-                    `${appliedText}\n\n📦 ${state.data.bulkIndex + 1}/${state.data.bulkQueue.length}: ${next.name}\n\nRasmini yuboring (bir nechtasiga tegishli bo'lsa, avval sonini alohida xabar qilib yuboring, mas: 11):`,
+                    `✅ Qabul qilindi!\n\n📦 ${state.data.bulkIndex + 1}/${state.data.bulkQueue.length}: ${next.name}\n\nRasmini yuboring:`,
                     { chat_id: chatId, message_id: waitMsg.message_id }
                 );
             }
@@ -157,10 +139,10 @@ async function processIncomingImage(chatId, fileId, caption) {
 // qo'yadi va navbat aralashib ketadi (masalan 3/50, 4/50, 2/50, 7/50...).
 const processingChain = new Map(); // chatId -> oxirgi navbatdagi Promise
 
-function enqueueImageProcessing(chatId, fileId, caption) {
+function enqueueImageProcessing(chatId, fileId) {
     const previous = processingChain.get(chatId) || Promise.resolve();
     const next = previous
-        .then(() => processIncomingImage(chatId, fileId, caption))
+        .then(() => processIncomingImage(chatId, fileId))
         .catch((error) => console.error('Rasm navbatida xato:', error));
     processingChain.set(chatId, next);
     return next;
@@ -169,14 +151,14 @@ function enqueueImageProcessing(chatId, fileId, caption) {
 function registerPhotoHandler() {
     bot.on('photo', async (msg) => {
         const fileId = msg.photo[msg.photo.length - 1].file_id;
-        enqueueImageProcessing(msg.chat.id, fileId, msg.caption);
+        enqueueImageProcessing(msg.chat.id, fileId);
     });
     // Rasm "fayl" (document) sifatida siqilmasdan yuborilganda ham qabul qilish —
     // masalan yuqori sifatli mahsulot rasmlarini "Compress: off" bilan yuborishganda.
     bot.on('document', async (msg) => {
         const doc = msg.document;
         if (!doc || !doc.mime_type || !doc.mime_type.startsWith('image/')) return;
-        enqueueImageProcessing(msg.chat.id, doc.file_id, msg.caption);
+        enqueueImageProcessing(msg.chat.id, doc.file_id);
     });
 }
 

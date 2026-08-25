@@ -383,60 +383,36 @@ async function handleIncomingMessage(msg) {
 
     // ─── DRAFTLARGA RASM TO'LDIRISH (rasm bosqichi, photo.js orqali keladi) ──
     if (step === 'draft_photo_item') {
-        // Admin rasmga izoh (caption) qilib emas, alohida xabar qilib son yuborsa ham
-        // ishlaydigan qilamiz — keyingi yuboriladigan rasmga shu son qo'llaniladi.
-        if (/^\d+$/.test(text.trim())) {
-            const n = parseInt(text.trim());
-            data.pendingRepeatCount = n;
-            state.data = data;
-            bot.sendMessage(chatId, `✅ Tushunarli — keyingi yuboradigan rasmingiz ${n} ta mahsulotga qo'llanadi. Endi rasmni yuboring:`);
-            return;
-        }
         bot.sendMessage(chatId, "Iltimos, rasm yuboring (photo formatida).");
         return;
     }
 
     // ─── DRAFTLARGA NARX TO'LDIRISH (rasmlar tugagach) ──────────────
     if (step === 'draft_price_item') {
-        // "6.53" — faqat shu bittasiga. "6.53 11" — shu narx keyingi 11 ta mahsulotga ham
-        // qo'llaniladi (rang variantlari odatda bir xil narxda bo'ladi).
-        const parts = text.trim().split(/\s+/);
-        const price = parseNumberInput(parts[0], true);
-        if (price === null || price <= 0) { bot.sendMessage(chatId, "Musbat son kiriting! (mas: 6.53 yoki bir nechtasiga birdan: 6.53 11)"); return; }
-        const remaining = data.bulkQueue.length - data.bulkIndex;
-        let repeatCount = 1;
-        if (parts[1] && /^\d+$/.test(parts[1])) {
-            repeatCount = Math.min(Math.max(parseInt(parts[1]), 1), remaining);
+        const price = parseNumberInput(text, true);
+        if (price === null || price <= 0) { bot.sendMessage(chatId, "Musbat son kiriting! (mas: 6.53)"); return; }
+        const item = data.bulkQueue[data.bulkIndex];
+        try {
+            await db.collection('products').doc(String(item.productId)).update({
+                image: item.image || '',
+                pricePiece: price,
+                draft: admin.firestore.FieldValue.delete(),
+            });
+            data.bulkFixed.push(item.name);
+        } catch (error) {
+            console.error("Draft narxini saqlashda xato:", error);
+            bot.sendMessage(chatId, `❌ "${item.name}" saqlanmadi, o'tkazib yuborildi.`);
         }
-        const applied = [];
-        for (let i = 0; i < repeatCount; i++) {
-            const item = data.bulkQueue[data.bulkIndex];
-            try {
-                await db.collection('products').doc(String(item.productId)).update({
-                    image: item.image || '',
-                    pricePiece: price,
-                    draft: admin.firestore.FieldValue.delete(),
-                });
-                data.bulkFixed.push(item.name);
-                applied.push(item.name);
-            } catch (error) {
-                console.error("Draft narxini saqlashda xato:", error);
-                bot.sendMessage(chatId, `❌ "${item.name}" saqlanmadi, o'tkazib yuborildi.`);
-            }
-            data.bulkIndex++;
-        }
-        const appliedText = repeatCount > 1
-            ? `✅ $${price} narxi ${repeatCount} ta mahsulotga qo'llandi:\n${applied.map((n, i) => `${i + 1}. ${n}`).join('\n')}`
-            : `✅ Saqlandi ($${price}).`;
+        data.bulkIndex++;
         if (data.bulkIndex >= data.bulkQueue.length) {
             bot.sendMessage(chatId,
-                `${appliedText}\n\n🎉 Tugadi! ${data.bulkFixed.length}/${data.bulkQueue.length} ta mahsulot to'liq to'ldirildi va endi mijozlarga ko'rinadi.`,
+                `🎉 Tugadi! ${data.bulkFixed.length}/${data.bulkQueue.length} ta mahsulot to'liq to'ldirildi va endi mijozlarga ko'rinadi.`,
                 mainKeyboard
             );
             resetUserState(chatId);
         } else {
             const next = data.bulkQueue[data.bulkIndex];
-            bot.sendMessage(chatId, `${appliedText}\n\n💰 ${data.bulkIndex + 1}/${data.bulkQueue.length}: ${next.name}\n\nDona narxini USD da kiriting (mas: 6.53, yoki bir nechtasiga: 6.53 11):`);
+            bot.sendMessage(chatId, `💰 ${data.bulkIndex + 1}/${data.bulkQueue.length}: ${next.name}\n\nDona narxini USD da kiriting (mas: 6.53):`);
         }
         state.data = data;
         return;

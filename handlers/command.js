@@ -71,8 +71,7 @@ async function handleCommand(chatId, text) {
         userState[chatId] = { step: 'draft_photo_item', data: { bulkQueue, bulkFixed: [], bulkIndex: 0 }, steps: [] };
         bot.sendMessage(chatId,
             `📸 ${bulkQueue.length} ta mahsulotda rasm/narx yo'q.\n\n` +
-            `Avval BARCHA rasmlarni ketma-ket yuborasiz (narx so'ralmaydi, xotirjam yuboraverasiz) — hammasi tugagach, narxlarni alohida so'rayman.\n\n` +
-            `💡 Bir nechta mahsulot (mas: rang variantlari) bir xil rasmda bo'lsa: RASMDAN OLDIN alohida xabar qilib faqat son yuboring (mas: "11"), keyin rasmni yuboring — o'sha rasm avtomatik 11 ta mahsulotga qo'llanadi. Narx bosqichida esa "6.53 11" deb (narx va son bir xabarda, orasida bo'shliq) yozsangiz, narx ham 11 taga birdan qo'llanadi.`,
+            `Avval BARCHA rasmlarni ketma-ket yuborasiz (narx so'ralmaydi, xotirjam yuboraverasiz) — hammasi tugagach, narxlarni alohida so'rayman.`,
             mainBackKeyboard
         );
         bot.sendMessage(chatId, `📦 1/${bulkQueue.length}: ${bulkQueue[0].name}\n\nRasmini yuboring:`);
