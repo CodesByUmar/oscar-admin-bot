@@ -55,6 +55,9 @@ async function handleIncomingMessage(msg) {
     // chiqaradi. Qo'lda qayta emit qilish rasm 2 marta ishlanishiga (banner/mahsulot
     // rasmi 2 marta yuklanib, 2 marta saqlanishiga) sabab bo'lardi.
     if (photo && !text) { return; }
+    // Rasm fayl (document) sifatida yuborilganda ham xuddi shu — u photo.js'dagi
+    // 'document' listenerda qayta ishlanadi, bu yerda ikki marta javob berilmasin.
+    if (msg.document && !text) { return; }
     if (!userState[chatId] || userState[chatId].step === 'none') {
         bot.sendMessage(chatId, "Tugmalardan tanlang:", mainKeyboard);
         return;
