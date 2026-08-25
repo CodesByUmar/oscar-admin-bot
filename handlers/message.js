@@ -389,30 +389,45 @@ async function handleIncomingMessage(msg) {
 
     // ─── DRAFTLARGA NARX TO'LDIRISH (rasmlar tugagach) ──────────────
     if (step === 'draft_price_item') {
-        const price = parseNumberInput(text, true);
-        if (price === null || price <= 0) { bot.sendMessage(chatId, "Musbat son kiriting! (mas: 6.53)"); return; }
-        const item = data.bulkQueue[data.bulkIndex];
-        try {
-            await db.collection('products').doc(String(item.productId)).update({
-                image: item.image || '',
-                pricePiece: price,
-                draft: admin.firestore.FieldValue.delete(),
-            });
-            data.bulkFixed.push(item.name);
-        } catch (error) {
-            console.error("Draft narxini saqlashda xato:", error);
-            bot.sendMessage(chatId, `❌ "${item.name}" saqlanmadi, o'tkazib yuborildi.`);
+        // "6.53" — faqat shu bittasiga. "6.53 11" — shu narx keyingi 11 ta mahsulotga ham
+        // qo'llaniladi (rang variantlari odatda bir xil narxda bo'ladi).
+        const parts = text.trim().split(/\s+/);
+        const price = parseNumberInput(parts[0], true);
+        if (price === null || price <= 0) { bot.sendMessage(chatId, "Musbat son kiriting! (mas: 6.53 yoki bir nechtasiga birdan: 6.53 11)"); return; }
+        const remaining = data.bulkQueue.length - data.bulkIndex;
+        let repeatCount = 1;
+        if (parts[1] && /^\d+$/.test(parts[1])) {
+            repeatCount = Math.min(Math.max(parseInt(parts[1]), 1), remaining);
         }
-        data.bulkIndex++;
+        const applied = [];
+        for (let i = 0; i < repeatCount; i++) {
+            const item = data.bulkQueue[data.bulkIndex];
+            try {
+                await db.collection('products').doc(String(item.productId)).update({
+                    image: item.image || '',
+                    pricePiece: price,
+                    draft: admin.firestore.FieldValue.delete(),
+                });
+                data.bulkFixed.push(item.name);
+                applied.push(item.name);
+            } catch (error) {
+                console.error("Draft narxini saqlashda xato:", error);
+                bot.sendMessage(chatId, `❌ "${item.name}" saqlanmadi, o'tkazib yuborildi.`);
+            }
+            data.bulkIndex++;
+        }
+        const appliedText = repeatCount > 1
+            ? `✅ $${price} narxi ${repeatCount} ta mahsulotga qo'llandi:\n${applied.map((n, i) => `${i + 1}. ${n}`).join('\n')}`
+            : `✅ Saqlandi ($${price}).`;
         if (data.bulkIndex >= data.bulkQueue.length) {
             bot.sendMessage(chatId,
-                `🎉 Tugadi! ${data.bulkFixed.length}/${data.bulkQueue.length} ta mahsulot to'liq to'ldirildi va endi mijozlarga ko'rinadi.`,
+                `${appliedText}\n\n🎉 Tugadi! ${data.bulkFixed.length}/${data.bulkQueue.length} ta mahsulot to'liq to'ldirildi va endi mijozlarga ko'rinadi.`,
                 mainKeyboard
             );
             resetUserState(chatId);
         } else {
             const next = data.bulkQueue[data.bulkIndex];
-            bot.sendMessage(chatId, `💰 ${data.bulkIndex + 1}/${data.bulkQueue.length}: ${next.name}\n\nDona narxini USD da kiriting (mas: 6.53):`);
+            bot.sendMessage(chatId, `${appliedText}\n\n💰 ${data.bulkIndex + 1}/${data.bulkQueue.length}: ${next.name}\n\nDona narxini USD da kiriting (mas: 6.53, yoki bir nechtasiga: 6.53 11):`);
         }
         state.data = data;
         return;
