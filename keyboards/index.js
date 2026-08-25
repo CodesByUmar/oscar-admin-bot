@@ -2,7 +2,7 @@ const mainKeyboard = {
     reply_markup: {
         keyboard: [
             [{ text: "🛍 Mahsulot qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
-            [{ text: "📋 Ro'yxat orqali qo'shish" }],
+            [{ text: "📋 Ro'yxat orqali qo'shish" }, { text: "📸 Draftlarni to'ldirish" }],
             [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
             [{ text: "📊 Statistika" }, { text: "💱 USD kurs" }],
             [{ text: "📦 Buyurtmalar" }],
@@ -35,7 +35,7 @@ const bulkListKeyboard = {
 };
 
 const commandButtons = [
-    "🛍 Mahsulot qo'shish", "📋 Ro'yxat orqali qo'shish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
+    "🛍 Mahsulot qo'shish", "📋 Ro'yxat orqali qo'shish", "📸 Draftlarni to'ldirish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
     "🔄 Mahsulotni yangilash",
     "📊 Statistika", "💱 USD kurs",
     "📦 Buyurtmalar", "❌ Bekor qilish",

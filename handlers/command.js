@@ -50,7 +50,7 @@ async function handleCommand(chatId, text) {
     if (text === "📋 Ro'yxat orqali qo'shish") {
         const snapshot = await db.collection('categories').get();
         const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name }));
-        userState[chatId] = { step: 'bulk_paste', data: { categoryNames, bulkQueue: [], bulkCreated: [], bulkIndex: 0 }, steps: [] };
+        userState[chatId] = { step: 'bulk_paste', data: { categoryNames, bulkQueue: [], bulkCreated: [], bulkIndex: 0, bulkMode: 'create' }, steps: [] };
         bot.sendMessage(chatId,
             "📋 Ro'yxat orqali qo'shish\n\n" +
             "Excel'dan IKKITA ustunni birga belgilang — \"Turkum\" (kategoriya) va \"Nomi\" — va nusxa olib shu yerga joylashtiring. Excel ularni avtomatik TAB bilan ajratib qo'yadi, bot esa har qatorni \"kategoriya + nom\" deb o'qiydi.\n\n" +
@@ -58,6 +58,17 @@ async function handleCommand(chatId, text) {
             "Hammasini yuborib bo'lgach, \"✅ Barchasi tayyor\" tugmasini bosing.",
             bulkListKeyboard
         );
+        return;
+    }
+
+    // ─── DRAFT MAHSULOTLARGA RASM+NARX TO'LDIRISH ──────────────────
+    if (text === "📸 Draftlarni to'ldirish") {
+        const snap = await db.collection('products').where('draft', '==', true).orderBy('id', 'asc').get();
+        if (snap.empty) { bot.sendMessage(chatId, "Draft holatidagi (rasm/narxi yo'q) mahsulot yo'q.", mainKeyboard); return; }
+        const bulkQueue = snap.docs.map(d => ({ productId: d.id, name: getStr(d.data().name) }));
+        userState[chatId] = { step: 'bulk_item_image', data: { bulkQueue, bulkCreated: [], bulkIndex: 0, bulkMode: 'fill' }, steps: [] };
+        bot.sendMessage(chatId, `📸 ${bulkQueue.length} ta mahsulotda rasm/narx yo'q. Ketma-ket to'ldiramiz.`, mainBackKeyboard);
+        bot.sendMessage(chatId, `📦 1/${bulkQueue.length}: ${bulkQueue[0].name}\n\nShu mahsulot uchun rasm yuboring:`);
         return;
     }
 
