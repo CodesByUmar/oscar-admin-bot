@@ -27,6 +27,13 @@ const mainBackKeyboard = {
     },
 };
 
+const bulkListKeyboard = {
+    reply_markup: {
+        keyboard: [["✅ Barchasi tayyor"], ["❌ Bekor qilish"]],
+        resize_keyboard: true,
+    },
+};
+
 const commandButtons = [
     "🛍 Mahsulot qo'shish", "📋 Ro'yxat orqali qo'shish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
     "🔄 Mahsulotni yangilash",
@@ -36,4 +43,4 @@ const commandButtons = [
     "⭐ VIP qo'shish", "🗑 VIP o'chirish",
 ];
 
-module.exports = { mainKeyboard, backKeyboard, mainBackKeyboard, commandButtons };
+module.exports = { mainKeyboard, backKeyboard, mainBackKeyboard, bulkListKeyboard, commandButtons };

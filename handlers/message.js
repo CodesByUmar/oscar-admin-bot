@@ -1,6 +1,6 @@
 const { bot, admins } = require('../config/adminBot');
 const { db, admin } = require('../config/firebase');
-const { mainKeyboard, backKeyboard, mainBackKeyboard, commandButtons } = require('../keyboards');
+const { mainKeyboard, backKeyboard, mainBackKeyboard, bulkListKeyboard, commandButtons } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { parseNumberInput, parseDateDDMMYYYY, getNextId, getStr } = require('../utils/helpers');
 const { handleBack } = require('./back');
@@ -255,36 +255,50 @@ async function handleIncomingMessage(msg) {
     if (step.startsWith('bulk_')) {
         switch (step) {
 
-            // 1. Ro'yxat matnini qabul qilish va navbat yasash
+            // 1. Ro'yxat matnini qabul qilish (bir nechta xabarga bo'linishi mumkin)
             case 'bulk_paste': {
-                if (!text || !text.trim()) { bot.sendMessage(chatId, "Ro'yxatni matn qilib yuboring!"); return; }
+                if (text === "✅ Barchasi tayyor") {
+                    if (!data.bulkQueue || data.bulkQueue.length === 0) {
+                        bot.sendMessage(chatId, "Hali birorta ro'yxat yubormadingiz! Avval nomlarni yuboring.");
+                        return;
+                    }
+                    state.step = 'bulk_item_image';
+                    bot.sendMessage(chatId, `🚀 Jami ${data.bulkQueue.length} ta mahsulot navbatga qo'yildi. Boshladik!`, mainBackKeyboard);
+                    bot.sendMessage(chatId, buildBulkImagePrompt(data));
+                    break;
+                }
+                if (!text || !text.trim()) { bot.sendMessage(chatId, "Nomlarni matn qilib yuboring!"); return; }
                 const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-                const queue = lines
+                const chunk = lines
                     .map(line => ({ name: line.replace(/^\d+[.)\-]?\s*/, '').trim() || line }))
                     .filter(item => item.name.length > 0);
-                if (queue.length === 0) { bot.sendMessage(chatId, "Ro'yxat bo'sh chiqdi! Qaytadan yuboring."); return; }
-                data.bulkQueue = queue;
-                data.bulkIndex = 0;
-                data.bulkCreated = [];
-                state.step = 'bulk_category';
+                if (chunk.length === 0) { bot.sendMessage(chatId, "Bu yerdan mahsulot nomi topilmadi!"); return; }
+                data.pendingChunk = chunk;
+                state.step = 'bulk_chunk_category';
                 const ckb = {
                     reply_markup: {
-                        keyboard: data.categoryNames.map(c => [{ text: c.label }]).concat([["Orqaga"]]),
+                        keyboard: data.categoryNames.map(c => [{ text: c.label }]).concat([["❌ Bekor qilish"]]),
                         resize_keyboard: true,
                         one_time_keyboard: true,
                     },
                 };
-                bot.sendMessage(chatId, `✅ ${queue.length} ta mahsulot aniqlandi.\n\nBularning barchasi uchun bitta kategoriya tanlang:`, ckb);
+                bot.sendMessage(chatId, `${chunk.length} ta nom topildi. Shular uchun kategoriyani tanlang:`, ckb);
                 break;
             }
 
-            // 2. Butun partiya uchun bitta kategoriya
-            case 'bulk_category': {
+            // 2. Shu yuborilgan guruh (chunk) uchun kategoriya
+            case 'bulk_chunk_category': {
                 const matched = data.categoryNames.find(c => c.label === text);
                 if (!matched) { bot.sendMessage(chatId, "Tugmalardan tanlang!"); return; }
-                data.bulkCategory = matched.full;
-                state.step = 'bulk_item_image';
-                bot.sendMessage(chatId, buildBulkImagePrompt(data), mainBackKeyboard);
+                const withCategory = data.pendingChunk.map(item => ({ ...item, category: matched.full }));
+                data.bulkQueue.push(...withCategory);
+                data.pendingChunk = null;
+                state.step = 'bulk_paste';
+                bot.sendMessage(chatId,
+                    `✅ Qo'shildi (${withCategory.length} ta, "${matched.label}"). Jami: ${data.bulkQueue.length} ta.\n\n` +
+                    `Yana ro'yxat yuborishingiz mumkin, yoki hammasi bo'lsa "✅ Barchasi tayyor" tugmasini bosing.`,
+                    bulkListKeyboard
+                );
                 break;
             }
 
@@ -307,7 +321,7 @@ async function handleIncomingMessage(msg) {
                     priceBox: 0,
                     itemsPerBox: 0,
                     discount: 0,
-                    category: data.bulkCategory,
+                    category: item.category || '',
                     image: item.image || '',
                     description: { uz: '', ru: '', en: '' },
                     stock: 999,
@@ -321,9 +335,13 @@ async function handleIncomingMessage(msg) {
                 }
                 data.bulkIndex++;
                 if (data.bulkIndex >= data.bulkQueue.length) {
+                    const namesList = data.bulkCreated.map((n, i) => `${i + 1}. ${n}`);
+                    const namesText = namesList.length > 30
+                        ? namesList.slice(0, 30).join('\n') + `\n... va yana ${namesList.length - 30} ta`
+                        : namesList.join('\n');
                     bot.sendMessage(chatId,
                         `🎉 Partiya tugadi!\n✅ ${data.bulkCreated.length}/${data.bulkQueue.length} ta mahsulot qo'shildi:\n` +
-                        data.bulkCreated.map((n, i) => `${i + 1}. ${n}`).join('\n') +
+                        namesText +
                         `\n\nℹ️ Narx faqat dona (USD) uchun kiritildi, RU/EN nomlar UZ bilan bir xil, tavsif bo'sh, ombor 999 ta qilib qo'yildi — kerak bo'lsa "🔄 Mahsulotni yangilash" orqali to'g'rilang.`,
                         mainKeyboard
                     );

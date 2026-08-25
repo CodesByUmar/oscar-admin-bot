@@ -1,6 +1,6 @@
 const { bot } = require('../config/adminBot');
 const { db } = require('../config/firebase');
-const { mainKeyboard, backKeyboard, mainBackKeyboard } = require('../keyboards');
+const { mainKeyboard, backKeyboard, mainBackKeyboard, bulkListKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { getStr } = require('../utils/helpers');
 const { formatDateTime } = require('../utils/helpers');
@@ -51,12 +51,12 @@ async function handleCommand(chatId, text) {
         const snapshot = await db.collection('categories').get();
         const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name }));
         if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval kategoriya qo'shing.", mainKeyboard); return; }
-        userState[chatId] = { step: 'bulk_paste', data: { categoryNames }, steps: [] };
+        userState[chatId] = { step: 'bulk_paste', data: { categoryNames, bulkQueue: [], bulkCreated: [], bulkIndex: 0 }, steps: [] };
         bot.sendMessage(chatId,
             "📋 Ro'yxat orqali qo'shish\n\n" +
-            "Mahsulot nomlari ro'yxatini BITTA xabar qilib yuboring — har bir nom alohida qatorda. Oldidagi raqamlar bo'lsa muammo emas, avtomatik olib tashlanadi.\n\n" +
-            "Masalan:\n116 Shpatel obchiy katta\n117 Shpatel obchiy kichik\n118 Klin (Gayka) 1mm",
-            mainBackKeyboard
+            "Mahsulot nomlarini yuboring — bitta xabarda ham, bir nechta xabarga bo'lib ham (mas: har bir kategoriya guruhini alohida xabar qilib). Har bir xabardan keyin o'sha guruh uchun kategoriya so'raladi.\n\n" +
+            "Oldidagi raqamlar bo'lsa muammo emas, avtomatik olib tashlanadi. Hammasini yuborib bo'lgach, \"✅ Barchasi tayyor\" tugmasini bosing.",
+            bulkListKeyboard
         );
         return;
     }
