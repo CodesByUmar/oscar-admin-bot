@@ -63,9 +63,11 @@ async function handleCommand(chatId, text) {
 
     // ─── DRAFT MAHSULOTLARGA RASM+NARX TO'LDIRISH ──────────────────
     if (text === "📸 Draftlarni to'ldirish") {
-        const snap = await db.collection('products').where('draft', '==', true).orderBy('id', 'asc').get();
+        const snap = await db.collection('products').where('draft', '==', true).get();
         if (snap.empty) { bot.sendMessage(chatId, "Draft holatidagi (rasm/narxi yo'q) mahsulot yo'q.", mainKeyboard); return; }
-        const bulkQueue = snap.docs.map(d => ({ productId: d.id, name: getStr(d.data().name) }));
+        const bulkQueue = snap.docs
+            .map(d => ({ productId: d.id, id: d.data().id, name: getStr(d.data().name) }))
+            .sort((a, b) => a.id - b.id);
         userState[chatId] = { step: 'bulk_item_image', data: { bulkQueue, bulkCreated: [], bulkIndex: 0, bulkMode: 'fill' }, steps: [] };
         bot.sendMessage(chatId, `📸 ${bulkQueue.length} ta mahsulotda rasm/narx yo'q. Ketma-ket to'ldiramiz.`, mainBackKeyboard);
         bot.sendMessage(chatId, `📦 1/${bulkQueue.length}: ${bulkQueue[0].name}\n\nShu mahsulot uchun rasm yuboring:`);
