@@ -74,6 +74,19 @@ async function handleCommand(chatId, text) {
         return;
     }
 
+    // ─── RASM HAVOLASI O'LIK MAHSULOTLARNI TUZATISH ────────────────
+    if (text === "🖼 Buzilgan rasmlarni tuzatish") {
+        const snap = await db.collection('products').where('imageBroken', '==', true).get();
+        if (snap.empty) { bot.sendMessage(chatId, "Buzilgan rasmli mahsulot yo'q.", mainKeyboard); return; }
+        const bulkQueue = snap.docs
+            .map(d => ({ productId: d.id, id: d.data().id, name: getStr(d.data().name) }))
+            .sort((a, b) => a.id - b.id);
+        userState[chatId] = { step: 'fix_image_item', data: { bulkQueue, bulkFixed: [], bulkIndex: 0 }, steps: [] };
+        bot.sendMessage(chatId, `🖼 ${bulkQueue.length} ta mahsulotning rasm havolasi o'lik. Ketma-ket yangilaymiz — faqat rasm kerak, narxga tegilmaydi.`, mainBackKeyboard);
+        bot.sendMessage(chatId, `📦 1/${bulkQueue.length}: ${bulkQueue[0].name}\n\nShu mahsulot uchun yangi rasm yuboring:`);
+        return;
+    }
+
     // ─── KATEGORIYA ────────────────────────────────────────────────
     if (text === "📂 Kategoriya qo'shish") {
         userState[chatId] = { step: 'category_name', data: {}, steps: [] };

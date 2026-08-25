@@ -392,6 +392,12 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
+    // ─── RASM HAVOLASI O'LIK MAHSULOTLARNI TUZATISH ─────────────────
+    if (step === 'fix_image_item') {
+        bot.sendMessage(chatId, "Iltimos, rasm yuboring (photo formatida).");
+        return;
+    }
+
     // ─── KATEGORIYA QO'SHISH ─────────────────────────────────────────
     if (step.startsWith('category_')) {
         const oldStep = step;

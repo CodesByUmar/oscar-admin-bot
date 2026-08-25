@@ -68,6 +68,38 @@ async function processIncomingImage(chatId, fileId) {
         } else {
             bot.editMessageText("❌ Rasm yuklashda xato! Qaytadan yuboring.", { chat_id: chatId, message_id: waitMsg.message_id });
         }
+    } else if (state && state.step === 'fix_image_item') {
+        const waitMsg = await bot.sendMessage(chatId, "Rasm yuklanmoqda... ⏳");
+        const imageUrl = await uploadToImgBB(fileId);
+        if (imageUrl) {
+            const item = state.data.bulkQueue[state.data.bulkIndex];
+            try {
+                await db.collection('products').doc(String(item.productId)).update({
+                    image: imageUrl,
+                    imageBroken: admin.firestore.FieldValue.delete(),
+                });
+                state.data.bulkFixed.push(item.name);
+            } catch (error) {
+                console.error("Rasmni tuzatishda xato:", error);
+            }
+            state.data.bulkIndex++;
+            if (state.data.bulkIndex >= state.data.bulkQueue.length) {
+                bot.editMessageText(
+                    `🎉 Tugadi! ${state.data.bulkFixed.length}/${state.data.bulkQueue.length} ta rasm yangilandi.`,
+                    { chat_id: chatId, message_id: waitMsg.message_id }
+                );
+                bot.sendMessage(chatId, "Davom eting.", mainKeyboard);
+                resetUserState(chatId);
+            } else {
+                const next = state.data.bulkQueue[state.data.bulkIndex];
+                bot.editMessageText(
+                    `✅ Yangilandi!\n\n📦 ${state.data.bulkIndex + 1}/${state.data.bulkQueue.length}: ${next.name}\n\nShu mahsulot uchun yangi rasm yuboring:`,
+                    { chat_id: chatId, message_id: waitMsg.message_id }
+                );
+            }
+        } else {
+            bot.editMessageText("❌ Rasm yuklashda xato! Qaytadan yuboring.", { chat_id: chatId, message_id: waitMsg.message_id });
+        }
     } else {
         const { mainKeyboard } = require('../keyboards');
         bot.sendMessage(chatId, "Rasm kutilmayapti.", mainKeyboard);

@@ -4,6 +4,7 @@ const mainKeyboard = {
             [{ text: "🛍 Mahsulot qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
             [{ text: "📋 Ro'yxat orqali qo'shish" }, { text: "📸 Draftlarni to'ldirish" }],
             [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
+            [{ text: "🖼 Buzilgan rasmlarni tuzatish" }],
             [{ text: "📊 Statistika" }, { text: "💱 USD kurs" }],
             [{ text: "📦 Buyurtmalar" }],
             [{ text: "🖼 Banner qo'shish" }, { text: "🗑 Bannerni o'chirish" }],
@@ -36,7 +37,7 @@ const bulkListKeyboard = {
 
 const commandButtons = [
     "🛍 Mahsulot qo'shish", "📋 Ro'yxat orqali qo'shish", "📸 Draftlarni to'ldirish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
-    "🔄 Mahsulotni yangilash",
+    "🔄 Mahsulotni yangilash", "🖼 Buzilgan rasmlarni tuzatish",
     "📊 Statistika", "💱 USD kurs",
     "📦 Buyurtmalar", "❌ Bekor qilish",
     "🖼 Banner qo'shish", "🗑 Bannerni o'chirish",
