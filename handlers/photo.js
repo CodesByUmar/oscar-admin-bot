@@ -106,17 +106,32 @@ async function processIncomingImage(chatId, fileId) {
     }
 }
 
+// Bitta chat uchun rasmlarni KETMA-KET ishlash — aks holda admin bir nechta
+// rasmni tez-tez yuborsa, ularning bot.on() ishlovchilari bir-biriga qоплаб
+// (parallel) ishga tushib, state.data.bulkIndex'ni bir-biridan "o'g'irlab"
+// qo'yadi va navbat aralashib ketadi (masalan 3/50, 4/50, 2/50, 7/50...).
+const processingChain = new Map(); // chatId -> oxirgi navbatdagi Promise
+
+function enqueueImageProcessing(chatId, fileId) {
+    const previous = processingChain.get(chatId) || Promise.resolve();
+    const next = previous
+        .then(() => processIncomingImage(chatId, fileId))
+        .catch((error) => console.error('Rasm navbatida xato:', error));
+    processingChain.set(chatId, next);
+    return next;
+}
+
 function registerPhotoHandler() {
     bot.on('photo', async (msg) => {
         const fileId = msg.photo[msg.photo.length - 1].file_id;
-        await processIncomingImage(msg.chat.id, fileId);
+        enqueueImageProcessing(msg.chat.id, fileId);
     });
     // Rasm "fayl" (document) sifatida siqilmasdan yuborilganda ham qabul qilish —
     // masalan yuqori sifatli mahsulot rasmlarini "Compress: off" bilan yuborishganda.
     bot.on('document', async (msg) => {
         const doc = msg.document;
         if (!doc || !doc.mime_type || !doc.mime_type.startsWith('image/')) return;
-        await processIncomingImage(msg.chat.id, doc.file_id);
+        enqueueImageProcessing(msg.chat.id, doc.file_id);
     });
 }
 
