@@ -255,59 +255,71 @@ async function handleIncomingMessage(msg) {
     if (step.startsWith('bulk_')) {
         switch (step) {
 
-            // 1. Ro'yxat matnini qabul qilish (bir nechta xabarga bo'linishi mumkin)
+            // 1. Ro'yxat matnini qabul qilish (bir nechta xabarga bo'linishi mumkin).
+            // Har qatorda: "Kategoriya[TAB]Nomi" — Excel'da ikkita ustunni (Turkum + Nomi)
+            // birga belgilab nusxa olib joylashtirilsa, ular orasiga avtomatik TAB tushadi.
             case 'bulk_paste': {
                 if (text === "✅ Barchasi tayyor") {
                     if (!data.bulkQueue || data.bulkQueue.length === 0) {
-                        bot.sendMessage(chatId, "Hali birorta ro'yxat yubormadingiz! Avval nomlarni yuboring.");
+                        bot.sendMessage(chatId, "Hali birorta mahsulot qabul qilinmadi! Avval ro'yxatni yuboring.");
                         return;
                     }
+                    const resolved = new Map(); // kategoriya matni (kichik harf) -> { full, isNew }
+                    for (const item of data.bulkQueue) {
+                        const key = item.categoryText.trim().toLowerCase();
+                        if (resolved.has(key)) continue;
+                        const matched = data.categoryNames.find(c => c.label.trim().toLowerCase() === key);
+                        if (matched) {
+                            resolved.set(key, { full: matched.full, isNew: false });
+                        } else {
+                            const catName = item.categoryText.trim();
+                            const newCatId = await getNextId('categories');
+                            await db.collection('categories').doc(String(newCatId)).set({ id: newCatId, name: catName, icon: '📦' });
+                            data.categoryNames.push({ label: catName, full: catName });
+                            resolved.set(key, { full: catName, isNew: true });
+                        }
+                    }
+                    data.bulkQueue.forEach(item => {
+                        item.category = resolved.get(item.categoryText.trim().toLowerCase()).full;
+                    });
+                    const newCatCount = [...resolved.values()].filter(v => v.isNew).length;
                     state.step = 'bulk_item_image';
-                    bot.sendMessage(chatId, `🚀 Jami ${data.bulkQueue.length} ta mahsulot navbatga qo'yildi. Boshladik!`, mainBackKeyboard);
+                    let doneMsg = `🚀 Jami ${data.bulkQueue.length} ta mahsulot navbatga qo'yildi.`;
+                    if (newCatCount > 0) doneMsg += `\n🆕 ${newCatCount} ta yangi kategoriya avtomatik yaratildi.`;
+                    bot.sendMessage(chatId, doneMsg, mainBackKeyboard);
                     bot.sendMessage(chatId, buildBulkImagePrompt(data));
                     break;
                 }
-                if (!text || !text.trim()) { bot.sendMessage(chatId, "Nomlarni matn qilib yuboring!"); return; }
+                if (!text || !text.trim()) { bot.sendMessage(chatId, "Ro'yxatni matn qilib yuboring!"); return; }
                 const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-                const chunk = lines
-                    .map(line => ({ name: line.replace(/^\d+[.)\-]?\s*/, '').trim() || line }))
-                    .filter(item => item.name.length > 0);
-                if (chunk.length === 0) { bot.sendMessage(chatId, "Bu yerdan mahsulot nomi topilmadi!"); return; }
-                data.pendingChunk = chunk;
-                state.step = 'bulk_chunk_category';
-                const ckb = {
-                    reply_markup: {
-                        keyboard: data.categoryNames.map(c => [{ text: c.label }]).concat([["❌ Bekor qilish"]]),
-                        resize_keyboard: true,
-                        one_time_keyboard: true,
-                    },
-                };
-                bot.sendMessage(chatId, `${chunk.length} ta nom topildi. Shular uchun kategoriyani tanlang:`, ckb);
+                const added = [];
+                let skipped = 0;
+                for (const line of lines) {
+                    const tabIdx = line.indexOf('\t');
+                    if (tabIdx === -1) { skipped++; continue; }
+                    const categoryText = line.slice(0, tabIdx).trim();
+                    const name = line.slice(tabIdx + 1).replace(/^\d+[.)\-]?\s*/, '').trim();
+                    if (!categoryText || !name) continue; // sarlavha qatori yoki bo'sh — jimgina o'tkazib yuboriladi
+                    added.push({ categoryText, name });
+                }
+                if (added.length === 0) {
+                    bot.sendMessage(chatId, "❌ Bironta ham \"Kategoriya + Nomi\" (TAB bilan ajratilgan) qator topilmadi. Excel'dan ikkita ustunni (Turkum va Nomi) birga belgilab nusxa oling.");
+                    return;
+                }
+                data.bulkQueue.push(...added);
+                let reply = `✅ ${added.length} ta mahsulot qabul qilindi. Jami: ${data.bulkQueue.length} ta.`;
+                if (skipped > 0) reply += `\n⚠️ ${skipped} ta qator o'tkazib yuborildi (kategoriya TAB bilan ajratilmagan).`;
+                reply += `\n\nYana yuborishingiz mumkin, yoki hammasi bo'lsa "✅ Barchasi tayyor" tugmasini bosing.`;
+                bot.sendMessage(chatId, reply, bulkListKeyboard);
                 break;
             }
 
-            // 2. Shu yuborilgan guruh (chunk) uchun kategoriya
-            case 'bulk_chunk_category': {
-                const matched = data.categoryNames.find(c => c.label === text);
-                if (!matched) { bot.sendMessage(chatId, "Tugmalardan tanlang!"); return; }
-                const withCategory = data.pendingChunk.map(item => ({ ...item, category: matched.full }));
-                data.bulkQueue.push(...withCategory);
-                data.pendingChunk = null;
-                state.step = 'bulk_paste';
-                bot.sendMessage(chatId,
-                    `✅ Qo'shildi (${withCategory.length} ta, "${matched.label}"). Jami: ${data.bulkQueue.length} ta.\n\n` +
-                    `Yana ro'yxat yuborishingiz mumkin, yoki hammasi bo'lsa "✅ Barchasi tayyor" tugmasini bosing.`,
-                    bulkListKeyboard
-                );
-                break;
-            }
-
-            // 3. Rasm kutilyapti — matn kelsa eslatib qo'yamiz (rasm photo.js orqali keladi)
+            // 2. Rasm kutilyapti — matn kelsa eslatib qo'yamiz (rasm photo.js orqali keladi)
             case 'bulk_item_image':
                 bot.sendMessage(chatId, "Iltimos, rasm yuboring (photo formatida).");
                 return;
 
-            // 4. Narx kiritilgach — mahsulotni saqlaymiz va keyingisiga o'tamiz
+            // 3. Narx kiritilgach — mahsulotni saqlaymiz va keyingisiga o'tamiz
             case 'bulk_item_price': {
                 const price = parseNumberInput(text, true);
                 if (price === null || price <= 0) { bot.sendMessage(chatId, "Musbat son kiriting! (mas: 6.53)"); return; }

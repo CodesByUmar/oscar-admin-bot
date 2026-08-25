@@ -50,12 +50,12 @@ async function handleCommand(chatId, text) {
     if (text === "📋 Ro'yxat orqali qo'shish") {
         const snapshot = await db.collection('categories').get();
         const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name }));
-        if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval kategoriya qo'shing.", mainKeyboard); return; }
         userState[chatId] = { step: 'bulk_paste', data: { categoryNames, bulkQueue: [], bulkCreated: [], bulkIndex: 0 }, steps: [] };
         bot.sendMessage(chatId,
             "📋 Ro'yxat orqali qo'shish\n\n" +
-            "Mahsulot nomlarini yuboring — bitta xabarda ham, bir nechta xabarga bo'lib ham (mas: har bir kategoriya guruhini alohida xabar qilib). Har bir xabardan keyin o'sha guruh uchun kategoriya so'raladi.\n\n" +
-            "Oldidagi raqamlar bo'lsa muammo emas, avtomatik olib tashlanadi. Hammasini yuborib bo'lgach, \"✅ Barchasi tayyor\" tugmasini bosing.",
+            "Excel'dan IKKITA ustunni birga belgilang — \"Turkum\" (kategoriya) va \"Nomi\" — va nusxa olib shu yerga joylashtiring. Excel ularni avtomatik TAB bilan ajratib qo'yadi, bot esa har qatorni \"kategoriya + nom\" deb o'qiydi.\n\n" +
+            "Bir nechta xabarga bo'lib yuborsangiz ham bo'ladi (mas: butun ro'yxatni bir yo'la tashlasangiz, Telegram o'zi bir necha xabarga bo'lib yuboradi — muammo emas). Mavjud bo'lmagan kategoriyalar avtomatik yaratiladi.\n\n" +
+            "Hammasini yuborib bo'lgach, \"✅ Barchasi tayyor\" tugmasini bosing.",
             bulkListKeyboard
         );
         return;
