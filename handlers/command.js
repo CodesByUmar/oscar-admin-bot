@@ -46,6 +46,21 @@ async function handleCommand(chatId, text) {
         return;
     }
 
+    // ─── ROʻYXAT ORQALI OMMAVIY QOʻSHISH ───────────────────────────
+    if (text === "📋 Ro'yxat orqali qo'shish") {
+        const snapshot = await db.collection('categories').get();
+        const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name }));
+        if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval kategoriya qo'shing.", mainKeyboard); return; }
+        userState[chatId] = { step: 'bulk_paste', data: { categoryNames }, steps: [] };
+        bot.sendMessage(chatId,
+            "📋 Ro'yxat orqali qo'shish\n\n" +
+            "Mahsulot nomlari ro'yxatini BITTA xabar qilib yuboring — har bir nom alohida qatorda. Oldidagi raqamlar bo'lsa muammo emas, avtomatik olib tashlanadi.\n\n" +
+            "Masalan:\n116 Shpatel obchiy katta\n117 Shpatel obchiy kichik\n118 Klin (Gayka) 1mm",
+            mainBackKeyboard
+        );
+        return;
+    }
+
     // ─── KATEGORIYA ────────────────────────────────────────────────
     if (text === "📂 Kategoriya qo'shish") {
         userState[chatId] = { step: 'category_name', data: {}, steps: [] };

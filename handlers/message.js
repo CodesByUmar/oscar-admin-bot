@@ -9,6 +9,13 @@ const { handleVipStep } = require('./vip');
 const { showProductView } = require('../views/product');
 const { showCategoryView } = require('../views/category');
 
+function buildBulkImagePrompt(data) {
+    const item = data.bulkQueue[data.bulkIndex];
+    const n = data.bulkIndex + 1;
+    const total = data.bulkQueue.length;
+    return `📦 ${n}/${total}: ${item.name}\n\nShu mahsulot uchun rasm yuboring:`;
+}
+
 function registerMessageHandler() {
     bot.on('message', async (msg) => {
         try {
@@ -234,6 +241,94 @@ async function handleIncomingMessage(msg) {
                     bot.sendMessage(chatId, `❌ Mahsulot qo'shilmadi!\nSabab: ${error.message || 'noma\'lum xato'}`, mainKeyboard);
                 }
                 resetUserState(chatId);
+                break;
+            }
+        }
+        state.data = data;
+        return;
+    }
+
+    // ─── ROʻYXAT ORQALI OMMAVIY QOʻSHISH ────────────────────────────
+    if (step.startsWith('bulk_')) {
+        switch (step) {
+
+            // 1. Ro'yxat matnini qabul qilish va navbat yasash
+            case 'bulk_paste': {
+                if (!text || !text.trim()) { bot.sendMessage(chatId, "Ro'yxatni matn qilib yuboring!"); return; }
+                const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+                const queue = lines
+                    .map(line => ({ name: line.replace(/^\d+[.)\-]?\s*/, '').trim() || line }))
+                    .filter(item => item.name.length > 0);
+                if (queue.length === 0) { bot.sendMessage(chatId, "Ro'yxat bo'sh chiqdi! Qaytadan yuboring."); return; }
+                data.bulkQueue = queue;
+                data.bulkIndex = 0;
+                data.bulkCreated = [];
+                state.step = 'bulk_category';
+                const ckb = {
+                    reply_markup: {
+                        keyboard: data.categoryNames.map(c => [{ text: c.label }]).concat([["Orqaga"]]),
+                        resize_keyboard: true,
+                        one_time_keyboard: true,
+                    },
+                };
+                bot.sendMessage(chatId, `✅ ${queue.length} ta mahsulot aniqlandi.\n\nBularning barchasi uchun bitta kategoriya tanlang:`, ckb);
+                break;
+            }
+
+            // 2. Butun partiya uchun bitta kategoriya
+            case 'bulk_category': {
+                const matched = data.categoryNames.find(c => c.label === text);
+                if (!matched) { bot.sendMessage(chatId, "Tugmalardan tanlang!"); return; }
+                data.bulkCategory = matched.full;
+                state.step = 'bulk_item_image';
+                bot.sendMessage(chatId, buildBulkImagePrompt(data), mainBackKeyboard);
+                break;
+            }
+
+            // 3. Rasm kutilyapti — matn kelsa eslatib qo'yamiz (rasm photo.js orqali keladi)
+            case 'bulk_item_image':
+                bot.sendMessage(chatId, "Iltimos, rasm yuboring (photo formatida).");
+                return;
+
+            // 4. Narx kiritilgach — mahsulotni saqlaymiz va keyingisiga o'tamiz
+            case 'bulk_item_price': {
+                const price = parseNumberInput(text, true);
+                if (price === null || price <= 0) { bot.sendMessage(chatId, "Musbat son kiriting! (mas: 6.53)"); return; }
+                const item = data.bulkQueue[data.bulkIndex];
+                const newId = await getNextId('products');
+                if (newId === -1) { bot.sendMessage(chatId, "❌ ID xato! Partiya to'xtatildi.", mainKeyboard); resetUserState(chatId); return; }
+                const newProduct = {
+                    id: newId,
+                    name: { uz: item.name, ru: item.name, en: item.name },
+                    pricePiece: price,
+                    priceBox: 0,
+                    itemsPerBox: 0,
+                    discount: 0,
+                    category: data.bulkCategory,
+                    image: item.image || '',
+                    description: { uz: '', ru: '', en: '' },
+                    stock: 999,
+                };
+                try {
+                    await db.collection('products').doc(String(newId)).set(newProduct);
+                    data.bulkCreated.push(item.name);
+                } catch (error) {
+                    console.error("Bulk mahsulot saqlashda xato:", error);
+                    bot.sendMessage(chatId, `❌ "${item.name}" saqlanmadi, o'tkazib yuborildi.`);
+                }
+                data.bulkIndex++;
+                if (data.bulkIndex >= data.bulkQueue.length) {
+                    bot.sendMessage(chatId,
+                        `🎉 Partiya tugadi!\n✅ ${data.bulkCreated.length}/${data.bulkQueue.length} ta mahsulot qo'shildi:\n` +
+                        data.bulkCreated.map((n, i) => `${i + 1}. ${n}`).join('\n') +
+                        `\n\nℹ️ Narx faqat dona (USD) uchun kiritildi, RU/EN nomlar UZ bilan bir xil, tavsif bo'sh, ombor 999 ta qilib qo'yildi — kerak bo'lsa "🔄 Mahsulotni yangilash" orqali to'g'rilang.`,
+                        mainKeyboard
+                    );
+                    resetUserState(chatId);
+                } else {
+                    state.step = 'bulk_item_image';
+                    bot.sendMessage(chatId, buildBulkImagePrompt(data), mainBackKeyboard);
+                }
                 break;
             }
         }

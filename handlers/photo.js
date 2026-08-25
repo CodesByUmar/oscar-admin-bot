@@ -57,6 +57,20 @@ function registerPhotoHandler() {
             } else {
                 bot.editMessageText("❌ Rasm yuklashda xato!", { chat_id: chatId, message_id: waitMsg.message_id });
             }
+        } else if (state && state.step === 'bulk_item_image') {
+            const waitMsg = await bot.sendMessage(chatId, "Rasm yuklanmoqda... ⏳");
+            const imageUrl = await uploadToImgBB(fileId);
+            if (imageUrl) {
+                const item = state.data.bulkQueue[state.data.bulkIndex];
+                item.image = imageUrl;
+                state.step = 'bulk_item_price';
+                bot.editMessageText(
+                    `✅ Rasm yuklandi!\n\n"${item.name}" uchun dona narxini USD da kiriting (mas: 6.53):`,
+                    { chat_id: chatId, message_id: waitMsg.message_id }
+                );
+            } else {
+                bot.editMessageText("❌ Rasm yuklashda xato! Qaytadan yuboring.", { chat_id: chatId, message_id: waitMsg.message_id });
+            }
         } else {
             const { mainKeyboard } = require('../keyboards');
             bot.sendMessage(chatId, "Rasm kutilmayapti.", mainKeyboard);
