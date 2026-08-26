@@ -83,11 +83,18 @@ async function handleCommand(chatId, text) {
     // ─── STATISTIKA ────────────────────────────────────────────────
     if (text === "📊 Statistika") {
         try {
-            const [p, c, o, vip, rateDoc] = await Promise.all([
-                db.collection('products').get(),
-                db.collection('categories').get(),
+            // Mahsulot/kategoriya/VIP soni uchun to'liq hujjatlarni emas,
+            // faqat sonini o'qiydigan count() so'rovi ishlatiladi — bular
+            // Firestore'dan bitta hujjat o'qish narxida keladi. "Mijozlar"
+            // (buyurtma qilgan noyob kishilar soni) esa har bir buyurtmadagi
+            // telegramChatId/customerPhone bo'yicha dublikatlarni yig'ish
+            // kerak bo'lgani uchun (Firestore'da COUNT DISTINCT yo'q) barcha
+            // buyurtmalarni o'qishga to'g'ri keladi.
+            const [pCount, cCount, o, vipCount, rateDoc] = await Promise.all([
+                db.collection('products').count().get(),
+                db.collection('categories').count().get(),
                 db.collection('orders').get(),
-                db.collection('VIP_Clients').get(),
+                db.collection('VIP_Clients').count().get(),
                 db.collection('settings').doc('usd_rate').get(),
             ]);
             const rate = rateDoc.exists ? (rateDoc.data().rate || 'Kiritilmagan') : 'Kiritilmagan';
@@ -101,11 +108,11 @@ async function handleCommand(chatId, text) {
 
             bot.sendMessage(chatId,
                 `📊 Statistika:\n` +
-                `🔹 Mahsulotlar: ${p.size}\n` +
-                `🔹 Kategoriyalar: ${c.size}\n` +
+                `🔹 Mahsulotlar: ${pCount.data().count}\n` +
+                `🔹 Kategoriyalar: ${cCount.data().count}\n` +
                 `🔹 Buyurtmalar: ${o.size}\n` +
                 `🔹 Mijozlar: ${uniqueCustomers.size}\n` +
-                `🔹 VIP: ${vip.size}\n` +
+                `🔹 VIP: ${vipCount.data().count}\n` +
                 `💱 USD kurs: 1 USD = ${typeof rate === 'number' ? rate.toLocaleString('uz-UZ') : rate} so'm`,
                 mainKeyboard
             );
