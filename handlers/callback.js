@@ -296,6 +296,36 @@ function registerCallbackHandler() {
             return;
         }
 
+        // Nomi/Tavsifni har bir tilda ALOHIDA ko'rish va tahrirlash —
+        // avval "Nomi"/"Tavsif" tugmasi hammasini (uz/ru/en) qaytadan
+        // yozdirar edi, joriy qiymatlarni ko'rsatmasdan. callback_data:
+        // update_ml_{name|description}_{uz|ru|en}_{productId}
+        if (data.startsWith('update_ml_')) {
+            const rest = data.replace('update_ml_', '');
+            const parts = rest.split('_');
+            const id = parseInt(parts[parts.length - 1]);
+            const lang = parts[parts.length - 2];
+            const field = parts.slice(0, parts.length - 2).join('_');
+            try {
+                const doc = await db.collection('products').doc(String(id)).get();
+                if (!doc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
+                const fieldData = doc.data()[field];
+                const currentValue = (fieldData && typeof fieldData === 'object') ? (fieldData[lang] || '') : (lang === 'uz' ? getStr(fieldData) : '');
+                const cur = userState[chatId] || { step: 'none', data: {}, steps: [] };
+                userState[chatId] = {
+                    step: 'update_ml_field',
+                    data: { productId: id, mlField: field, lang, selectedCategory: cur.data.selectedCategory, messageId },
+                    steps: cur.steps || [],
+                };
+                const langLabel = { uz: "O'ZBEKCHA", ru: "RUSCHA", en: "INGLIZCHA" }[lang] || lang;
+                const fieldLabel = field === 'name' ? 'Nomi' : 'Tavsifi';
+                const preview = currentValue ? `\n\nJoriy qiymat: "${currentValue}"` : '\n\n(Hozircha bo\'sh)';
+                bot.sendMessage(chatId, `${fieldLabel} (${langLabel}) uchun yangi matn kiriting:${preview}`, backKeyboard);
+                bot.answerCallbackQuery(cq.id);
+            } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
+        }
+
         if (data.startsWith('update_field_')) {
             if (data.startsWith('update_field_discountStart_') || data.startsWith('update_field_discountEnd_')) {
                 const isStart = data.startsWith('update_field_discountStart_');
@@ -312,13 +342,7 @@ function registerCallbackHandler() {
             const id = parseInt(parts[3]);
             const cur = userState[chatId] || { step: 'none', data: {}, steps: [] };
             const preserve = { selectedCategory: cur.data.selectedCategory, messageId };
-            if (fieldType === 'name') {
-                userState[chatId] = { step: 'update_product_name_uz', data: { productId: id, ...preserve }, steps: cur.steps || [] };
-                bot.sendMessage(chatId, "1/3. Yangi nomni O'ZBEKCHA kiriting:", backKeyboard);
-            } else if (fieldType === 'description') {
-                userState[chatId] = { step: 'update_product_description_uz', data: { productId: id, ...preserve }, steps: cur.steps || [] };
-                bot.sendMessage(chatId, "1/3. Yangi tavsifni O'ZBEKCHA kiriting:", backKeyboard);
-            } else if (fieldType === 'image') {
+            if (fieldType === 'image') {
                 userState[chatId] = { step: 'update_product_image', data: { productId: id, ...preserve }, steps: cur.steps || [] };
                 const { mainBackKeyboard } = require('../keyboards');
                 bot.sendMessage(chatId, 'Yangi rasm yuboring:', mainBackKeyboard);

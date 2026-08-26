@@ -12,8 +12,12 @@ async function showProductView(chatId, productId, messageId) {
             return;
         }
         const p = doc.data();
-        const name = getStr(p.name, 'Noma\'lum');
         const category = getStr(p.category, 'Yo\'q');
+        // Ba'zi eski yozuvlarda name/description oddiy matn bo'lishi mumkin,
+        // shuning uchun {uz,ru,en} obyekti kutilganda ehtiyot bo'lib olamiz.
+        const nameML = (p.name && typeof p.name === 'object') ? p.name : { uz: getStr(p.name) };
+        const descML = (p.description && typeof p.description === 'object') ? p.description : { uz: getStr(p.description) };
+        const shortVal = (v) => v ? (v.length > 20 ? v.substring(0, 20) + '…' : v) : 'Yo\'q';
         const price = p.price || p.pricePiece || 0;
         const priceBox = p.priceBox || 0;
         const startDateText = formatTimestamp(p.discountStartDate);
@@ -21,15 +25,23 @@ async function showProductView(chatId, productId, messageId) {
         const updateKeyboard = {
             reply_markup: {
                 inline_keyboard: [
-                    [{ text: `Nomi: ${name}`, callback_data: `update_field_name_${productId}` }],
+                    [
+                        { text: `🇺🇿 Nomi: ${shortVal(nameML.uz)}`, callback_data: `update_ml_name_uz_${productId}` },
+                        { text: `🇷🇺 Nomi: ${shortVal(nameML.ru)}`, callback_data: `update_ml_name_ru_${productId}` },
+                    ],
+                    [{ text: `🇬🇧 Nomi: ${shortVal(nameML.en)}`, callback_data: `update_ml_name_en_${productId}` }],
                     [{ text: `Narx: $${price} (dona, USD)`, callback_data: `update_field_price_${productId}` }],
                     [{ text: `Narx: $${priceBox} (karobka, USD)`, callback_data: `update_field_priceBox_${productId}` }],
                     [{ text: `Chegirma: ${p.discount || 0}%`, callback_data: `update_field_discount_${productId}` }],
                     [{ text: `📅 Chegirma boshlanishi: ${startDateText}`, callback_data: `update_field_discountStart_${productId}` }],
                     [{ text: `📅 Chegirma tugashi: ${endDateText}`, callback_data: `update_field_discountEnd_${productId}` }],
                     [{ text: `Stock: ${(p.stock || 0).toLocaleString()} dona`, callback_data: `update_field_stock_${productId}` }],
-                    // YANGI:
-                    [{ text: `Tavsif: ${p.description ? getStr(p.description).substring(0, 20) + '...' : 'Yo\'q'}`, callback_data: `update_field_description_${productId}` }], [{ text: `Rasm: ${p.image ? 'Bor' : 'Yo\'q'}`, callback_data: `update_field_image_${productId}` }],
+                    [
+                        { text: `🇺🇿 Tavsif: ${shortVal(descML.uz)}`, callback_data: `update_ml_description_uz_${productId}` },
+                        { text: `🇷🇺 Tavsif: ${shortVal(descML.ru)}`, callback_data: `update_ml_description_ru_${productId}` },
+                    ],
+                    [{ text: `🇬🇧 Tavsif: ${shortVal(descML.en)}`, callback_data: `update_ml_description_en_${productId}` }],
+                    [{ text: `Rasm: ${p.image ? 'Bor' : 'Yo\'q'}`, callback_data: `update_field_image_${productId}` }],
                     [{ text: `📂 Kategoriya: ${category}`, callback_data: `update_field_category_${productId}` }],
                     [{ text: "🗑 Mahsulotni o'chirish", callback_data: `delete_product_${productId}` }],
                     [{ text: "⬅️ Orqaga", callback_data: 'back_to_prev' }],
@@ -37,7 +49,10 @@ async function showProductView(chatId, productId, messageId) {
             },
         };
         const message =
-            `📝 Mahsulot: ${name} (ID: ${productId})\n` +
+            `📝 Mahsulot (ID: ${productId})\n` +
+            `🇺🇿 ${nameML.uz || 'Yo\'q'}\n` +
+            `🇷🇺 ${nameML.ru || 'Yo\'q'}\n` +
+            `🇬🇧 ${nameML.en || 'Yo\'q'}\n\n` +
             `• Narx: $${price} (dona, USD)\n` +
             `• Narx: $${priceBox} (karobka, USD)\n` +
             `• Chegirma: ${p.discount || 0}%\n` +
@@ -45,8 +60,6 @@ async function showProductView(chatId, productId, messageId) {
             `• Chegirma tugashi: ${endDateText}\n` +
             `• Stock: ${(p.stock || 0).toLocaleString()} dona\n` +
             `• Kategoriya: ${category}\n` +
-            // YANGI:
-            `• Tavsif: ${p.description ? getStr(p.description) : 'Belgilanmagan'}\n` +
             `• Rasm: ${p.image ? 'URL mavjud' : 'Yo\'q'}\n` +
             `Qaysi maydonni yangilashni xohlaysiz?`;
         if (messageId) {
