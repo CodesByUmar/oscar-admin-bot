@@ -9,6 +9,20 @@ const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
 const { getStr, formatDateTime } = require('../utils/helpers');
 const { getUserBot } = require('../bots/userBot');
 
+async function notifyCustomer(telegramChatId, orderId, text) {
+    if (!telegramChatId) return;
+    try {
+        const userBot = getUserBot();
+        if (userBot) {
+            await userBot.sendMessage(Number(telegramChatId), text);
+        } else {
+            console.log('User bot ishga tushmagan, mijozga status xabari yuborilmadi.');
+        }
+    } catch (err) {
+        console.log(`Mijozga (${telegramChatId}) status xabarini (buyurtma ${orderId}) yuborib bo'lmadi:`, err.message);
+    }
+}
+
 // Telefonni topish: 1) orderdagi customerPhone 2) telegram_users fallback
 async function resolveCustomerPhone(o) {
     if (o.customerPhone) return o.customerPhone;
@@ -123,13 +137,52 @@ function registerCallbackHandler() {
                 }
                 const adminName = cq.from.first_name || "Admin";
                 const statusText = isConfirm ? `✅ Tasdiqlandi — ${adminName}` : `❌ Bekor qilindi — ${adminName}`;
-                bot.editMessageText(`${cq.message.text}\n\n=================\n${statusText}`, { chat_id: chatId, message_id: messageId });
+                const newKeyboard = isConfirm
+                    ? { inline_keyboard: [[{ text: "🚚 Yetkazildi deb belgilash", callback_data: `deliver_order_${orderId}` }]] }
+                    : { inline_keyboard: [] };
+                bot.editMessageText(`${cq.message.text}\n\n=================\n${statusText}`, { chat_id: chatId, message_id: messageId, reply_markup: newKeyboard });
                 bot.answerCallbackQuery(cq.id, { text: isConfirm ? "Tasdiqlandi" : "Bekor qilindi" });
                 admins.forEach(aId => {
                     if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} ${isConfirm ? 'tasdiqlandi' : 'bekor'} → ${adminName}`);
                 });
+
+                notifyCustomer(orderData.telegramChatId, orderId,
+                    isConfirm
+                        ? `✅ Buyurtmangiz tasdiqlandi!\n\n🆔 ${orderId}\n\nTez orada yetkazib beriladi.`
+                        : `❌ Afsuski, buyurtmangiz bekor qilindi.\n\n🆔 ${orderId}\n\nSavollar bo'lsa, qo'llab-quvvatlash xizmatiga murojaat qiling.`
+                );
             } catch (error) {
                 console.error("Buyurtma xato:", error);
+                bot.answerCallbackQuery(cq.id, { text: "Xato!" });
+            }
+            return;
+        }
+
+        if (data.startsWith('deliver_order_')) {
+            const orderId = data.replace('deliver_order_', '');
+            try {
+                const orderRef = db.collection('orders').doc(orderId);
+                const doc = await orderRef.get();
+                if (!doc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
+                const orderData = doc.data();
+                if (orderData.status !== 'confirmed') {
+                    bot.answerCallbackQuery(cq.id, { text: `Bu buyurtma hali qabul qilinmagan yoki allaqachon ${orderData.status}!` });
+                    return;
+                }
+                await orderRef.update({ status: 'delivered' });
+                const adminName = cq.from.first_name || "Admin";
+                bot.editMessageText(`${cq.message.text}\n\n🚚 Yetkazildi — ${adminName}`, {
+                    chat_id: chatId, message_id: messageId, reply_markup: { inline_keyboard: [] },
+                });
+                bot.answerCallbackQuery(cq.id, { text: "Yetkazildi deb belgilandi" });
+                admins.forEach(aId => {
+                    if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} yetkazildi → ${adminName}`);
+                });
+                notifyCustomer(orderData.telegramChatId, orderId,
+                    `🚚 Buyurtmangiz yetkazib berildi!\n\n🆔 ${orderId}\n\nXaridingiz uchun rahmat!`
+                );
+            } catch (error) {
+                console.error("Yetkazildi belgilashda xato:", error);
                 bot.answerCallbackQuery(cq.id, { text: "Xato!" });
             }
             return;
