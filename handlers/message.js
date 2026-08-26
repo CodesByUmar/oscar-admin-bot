@@ -76,6 +76,54 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
+    // ─── QIDIRUV ──────────────────────────────────────────────────────
+    if (step === 'search_query') {
+        const query = text.trim();
+        if (!query) { bot.sendMessage(chatId, "Qidiruv so'zini kiriting:"); return; }
+        try {
+            const snapshot = await db.collection('products').get();
+            const q = query.toLowerCase();
+            const isNumeric = /^\d+$/.test(query);
+            const matches = [];
+            snapshot.docs.forEach((doc) => {
+                const p = doc.data();
+                const names = [p.name && p.name.uz, p.name && p.name.ru, p.name && p.name.en].filter(Boolean);
+                const nameMatch = names.some((n) => n.toLowerCase().includes(q));
+                const idMatch = isNumeric && String(p.id) === query;
+                if (nameMatch || idMatch) matches.push({ id: p.id, name: getStr(p.name, "Noma'lum") });
+            });
+
+            resetUserState(chatId);
+
+            if (matches.length === 0) {
+                bot.sendMessage(chatId, `"${query}" bo'yicha hech narsa topilmadi.`, mainKeyboard);
+                return;
+            }
+            if (matches.length === 1) {
+                await showProductView(chatId, matches[0].id);
+                return;
+            }
+            const LIMIT = 25;
+            const shown = matches.slice(0, LIMIT);
+            const kb = { reply_markup: { inline_keyboard: [] } };
+            for (let i = 0; i < shown.length; i += 2) {
+                const label = (p) => `${p.name.substring(0, 30)} (#${p.id})`;
+                const row = [{ text: label(shown[i]), callback_data: `update_product_${shown[i].id}` }];
+                if (i + 1 < shown.length) row.push({ text: label(shown[i + 1]), callback_data: `update_product_${shown[i + 1].id}` });
+                kb.reply_markup.inline_keyboard.push(row);
+            }
+            const extra = matches.length > LIMIT
+                ? `\n\n(Jami ${matches.length} ta topildi, birinchi ${LIMIT} tasi ko'rsatilmoqda — aniqroq so'z bilan qidiring)`
+                : '';
+            bot.sendMessage(chatId, `"${query}" bo'yicha ${matches.length} ta mahsulot topildi:${extra}`, kb);
+        } catch (error) {
+            console.error("Qidiruvda xato:", error);
+            bot.sendMessage(chatId, "❌ Qidirishda xato yuz berdi!", mainKeyboard);
+            resetUserState(chatId);
+        }
+        return;
+    }
+
     // ─── MAHSULOT QO'SHISH (3 tilda) ────────────────────────────────
     if (step.startsWith('product_')) {
         const oldStep = step;

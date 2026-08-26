@@ -62,6 +62,11 @@ async function handleCommand(chatId, text) {
         await showProductUpdateCategorySelect(chatId);
         return;
     }
+    if (text === "🔍 Qidiruv") {
+        userState[chatId] = { step: 'search_query', data: {}, steps: [] };
+        bot.sendMessage(chatId, "🔍 Mahsulot nomini (istalgan tilda) yoki ID raqamini kiriting:", backKeyboard);
+        return;
+    }
 
     // ─── USD KURS ──────────────────────────────────────────────────
     if (text === "💱 USD kurs") {
