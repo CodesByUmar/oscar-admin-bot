@@ -21,7 +21,10 @@ function enqueuePhotoProcessing(chatId, fileId) {
 }
 
 async function processIncomingPhoto(chatId, fileId) {
-        if (!admins.includes(chatId)) return;
+        if (!admins.includes(chatId)) {
+            bot.sendMessage(chatId, `Bu bot faqat administratorlar uchun.\nSizning ID: ${chatId}`);
+            return;
+        }
         if (!db) return;
         const state = userState[chatId];
         if (state && state.step === 'banner_image') {
