@@ -7,5 +7,5 @@ rasmlar
 *.txt
 *.xlsx
 bulk-upload-images.js
-export-prosucts-excel.js
+export-products-excel.js
 update-descriptions.js

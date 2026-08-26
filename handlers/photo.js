@@ -5,12 +5,24 @@ const { userState, resetUserState } = require('../state/userState');
 const { uploadToImgBB } = require('../utils/imgbb');
 const { showProductView } = require('../views/product');
 
-function registerPhotoHandler() {
-    bot.on('photo', async (msg) => {
-        const chatId = msg.chat.id;
+// Bitta chat uchun rasmlarni KETMA-KET ishlash — aks holda admin bir nechta
+// rasmni tez-tez yuborsa, ularning bot.on('photo') ishlovchilari bir-biriga
+// qоплаб (parallel) ishga tushib, umumiy state.data'ni bir-biridan "o'g'irlab"
+// qo'yadi va navbat aralashib ketadi.
+const processingChain = new Map(); // chatId -> oxirgi navbatdagi Promise
+
+function enqueuePhotoProcessing(chatId, fileId) {
+    const previous = processingChain.get(chatId) || Promise.resolve();
+    const next = previous
+        .then(() => processIncomingPhoto(chatId, fileId))
+        .catch((error) => console.error('Rasm navbatida xato:', error));
+    processingChain.set(chatId, next);
+    return next;
+}
+
+async function processIncomingPhoto(chatId, fileId) {
         if (!admins.includes(chatId)) return;
         if (!db) return;
-        const fileId = msg.photo[msg.photo.length - 1].file_id;
         const state = userState[chatId];
         if (state && state.step === 'banner_image') {
             const waitMsg = await bot.sendMessage(chatId, "Banner yuklanmoqda... ⏳");
@@ -61,6 +73,12 @@ function registerPhotoHandler() {
             const { mainKeyboard } = require('../keyboards');
             bot.sendMessage(chatId, "Rasm kutilmayapti.", mainKeyboard);
         }
+}
+
+function registerPhotoHandler() {
+    bot.on('photo', async (msg) => {
+        const fileId = msg.photo[msg.photo.length - 1].file_id;
+        enqueuePhotoProcessing(msg.chat.id, fileId);
     });
 }
 

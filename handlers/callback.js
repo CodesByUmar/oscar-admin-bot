@@ -135,6 +135,15 @@ function registerCallbackHandler() {
             return;
         }
 
+        if (data === 'close_orders_list') {
+            try {
+                await bot.editMessageReplyMarkup({ inline_keyboard: [] }, { chat_id: chatId, message_id: messageId });
+            } catch (error) { /* xabar allaqachon o'zgargan bo'lishi mumkin, e'tibor bermaymiz */ }
+            bot.sendMessage(chatId, "🏠 Asosiy menyu", mainKeyboard);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+
         if (data === 'back_to_prev') { await handleInlineBack(chatId, messageId); bot.answerCallbackQuery(cq.id); return; }
 
         if (data.startsWith('cat_select_')) {

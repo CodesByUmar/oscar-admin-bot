@@ -15,6 +15,28 @@ async function getNextId(collectionName) {
     }
 }
 
+// getNextId + alohida .set() ikki admin bir vaqtda yangi mahsulot/kategoriya
+// qo'shsa, ikkalasi ham bir xil ID o'qib, biri ikkinchisining yozuvini
+// ustidan yozib qo'yishi mumkin edi. Shu sabab ID olish va yozish bitta
+// Firestore tranzaksiyasi ichida, atomik qilib bajariladi.
+async function createWithNextId(collectionName, buildDoc) {
+    if (!db) throw new Error("DB ulanmagan");
+    return db.runTransaction(async (tx) => {
+        const snapshot = await tx.get(
+            db.collection(collectionName).orderBy('id', 'desc').limit(1)
+        );
+        let lastIdNum = 0;
+        if (!snapshot.empty) {
+            const parsed = parseInt(snapshot.docs[0].data().id);
+            if (!isNaN(parsed) && parsed > 0) lastIdNum = parsed;
+        }
+        const newId = lastIdNum + 1;
+        const docData = buildDoc(newId);
+        tx.set(db.collection(collectionName).doc(String(newId)), docData);
+        return docData;
+    });
+}
+
 function parseNumberInput(input, isPrice = false) {
     if (typeof input !== 'string') return null;
     let normalized = input.replace(/,/g, '.');
@@ -98,6 +120,7 @@ function getStr(val, fallback = '') {
 
 module.exports = {
     getNextId,
+    createWithNextId,
     parseNumberInput,
     formatTimestamp,
     formatDateTime,

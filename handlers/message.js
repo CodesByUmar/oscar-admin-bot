@@ -2,7 +2,7 @@ const { bot, admins } = require('../config/adminBot');
 const { db, admin } = require('../config/firebase');
 const { mainKeyboard, backKeyboard, mainBackKeyboard, commandButtons } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
-const { parseNumberInput, parseDateDDMMYYYY, getNextId, getStr } = require('../utils/helpers');
+const { parseNumberInput, parseDateDDMMYYYY, createWithNextId, getStr } = require('../utils/helpers');
 const { handleBack } = require('./back');
 const { handleCommand } = require('./command');
 const { handleVipStep } = require('./vip');
@@ -202,10 +202,8 @@ async function handleIncomingMessage(msg) {
             case 'product_stock': {
                 if (!/^\d+$/.test(text) || parseInt(text) < 0) { bot.sendMessage(chatId, "0 yoki musbat son!"); return; }
                 data.stock = parseInt(text);
-                const newId = await getNextId('products');
-                if (newId === -1) { bot.sendMessage(chatId, "❌ ID xato!", mainKeyboard); resetUserState(chatId); return; }
-                const newProduct = {
-                    id: newId,
+                const buildProduct = (id) => ({
+                    id,
                     name: { uz: data.name_uz || '', ru: data.name_ru || '', en: data.name_en || '' },
                     pricePiece: data.pricePiece || 0,
                     priceBox: data.priceBox || 0,
@@ -215,9 +213,9 @@ async function handleIncomingMessage(msg) {
                     image: data.image || '',
                     description: { uz: data.desc_uz || '', ru: data.desc_ru || '', en: data.desc_en || '' },
                     stock: data.stock,
-                };
+                });
                 try {
-                    await db.collection('products').doc(String(newId)).set(newProduct);
+                    const newProduct = await createWithNextId('products', buildProduct);
                     bot.sendMessage(chatId,
                         `✅ Mahsulot qo'shildi!\n\n` +
                         `📦 UZ: ${newProduct.name.uz}\n` +
@@ -251,10 +249,8 @@ async function handleIncomingMessage(msg) {
             bot.sendMessage(chatId, "2/2. Ikonka (emoji, mas: 🔧):", backKeyboard);
         } else if (step === 'category_icon') {
             data.icon = text;
-            const newId = await getNextId('categories');
-            if (newId === -1) { bot.sendMessage(chatId, "❌ Xato!", mainKeyboard); resetUserState(chatId); return; }
             try {
-                await db.collection('categories').doc(String(newId)).set({ id: newId, name: data.name, icon: data.icon });
+                await createWithNextId('categories', (id) => ({ id, name: data.name, icon: data.icon }));
                 bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${data.icon} ${data.name}`, mainKeyboard);
             } catch (error) {
                 bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
