@@ -4,6 +4,7 @@ const { db } = require('../config/firebase');
 const { userState, resetUserState } = require('../state/userState');
 const { mainKeyboard, backKeyboard } = require('../keyboards');
 const { getUserBot } = require('../bots/userBot');
+const { hashPassword } = require('../utils/password');
 
 function registerVipCommands() {
     // /addvip command
@@ -141,7 +142,7 @@ async function handleVipStep(chatId, text) {
 
             await db.collection('VIP_Clients').doc(telegramId).set({
                 login: login,
-                password: password,
+                password: hashPassword(password),
                 username: username,
                 telegram_id: telegramId,
                 isVip: true,

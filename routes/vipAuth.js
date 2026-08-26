@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { db } = require('../config/firebase');
+const { verifyPassword, isHashed, hashPassword } = require('../utils/password');
 
 // MUHIM: Parol tekshiruvi endi FAQAT shu yerda, server tomonida (Admin SDK
 // orqali) bo'ladi. Mini-app (brauzer) endi VIP_Clients collection'ini
@@ -32,8 +33,16 @@ router.post('/vip-login', async (req, res) => {
         const vipDoc = snap.docs[0];
         const data = vipDoc.data();
 
-        if (data.password !== password) {
+        if (!verifyPassword(password, data.password)) {
             return res.status(401).json({ error: "Login yoki parol noto'g'ri" });
+        }
+
+        // Eski (hash'lanmagan) yozuv bo'lsa, muvaffaqiyatli kirishdan so'ng
+        // uni sekin-asta hash'langan formatga o'tkazamiz.
+        if (!isHashed(data.password)) {
+            vipDoc.ref.update({ password: hashPassword(password) }).catch((err) => {
+                console.error("VIP parolini hash'lashda xato:", err.message);
+            });
         }
 
         return res.json({ user: toSafeUser(vipDoc.id, data) });
