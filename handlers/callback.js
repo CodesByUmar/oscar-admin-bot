@@ -6,7 +6,7 @@ const { handleInlineBack } = require('./back');
 const { showCategoryView, showCategoryUpdateSelect } = require('../views/category');
 const { showProductView, showProductUpdateCategorySelect, showProductsInCategory, getProductsInCategory } = require('../views/product');
 const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
-const { getStr, formatDateTime } = require('../utils/helpers');
+const { getStr, formatDateTime, resolveCustomerPhone } = require('../utils/helpers');
 const { getUserBot } = require('../bots/userBot');
 
 async function notifyCustomer(telegramChatId, orderId, text) {
@@ -21,17 +21,6 @@ async function notifyCustomer(telegramChatId, orderId, text) {
     } catch (err) {
         console.log(`Mijozga (${telegramChatId}) status xabarini (buyurtma ${orderId}) yuborib bo'lmadi:`, err.message);
     }
-}
-
-// Telefonni topish: 1) orderdagi customerPhone 2) telegram_users fallback
-async function resolveCustomerPhone(o) {
-    if (o.customerPhone) return o.customerPhone;
-    if (!o.telegramChatId || !db) return null;
-    try {
-        const userDoc = await db.collection('telegram_users').doc(String(o.telegramChatId)).get();
-        if (userDoc.exists && userDoc.data().phone) return userDoc.data().phone;
-    } catch (e) { console.error('Telefon fallback xato:', e.message); }
-    return null;
 }
 
 function registerCallbackHandler() {

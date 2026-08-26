@@ -2,6 +2,7 @@ const { bot, admins } = require('../config/orderBot');
 const { db, admin } = require('../config/firebase');
 const { getPaymentMethodText } = require('../paymentMethods');
 const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
+const { resolveCustomerPhone } = require('../utils/helpers');
 
 function registerOrderListener() {
     if (!db || !bot) return;
@@ -32,17 +33,6 @@ function nameToStr(name) {
     if (typeof name === 'string') return name;
     if (name && typeof name === 'object') return name.uz || name.ru || name.en || Object.values(name)[0] || "Noma'lum mahsulot";
     return "Noma'lum mahsulot";
-}
-
-// Telefonni topish: 1) orderdagi customerPhone 2) telegram_users fallback
-async function resolveCustomerPhone(orderData) {
-    if (orderData.customerPhone) return orderData.customerPhone;
-    if (!orderData.telegramChatId || !db) return null;
-    try {
-        const userDoc = await db.collection('telegram_users').doc(String(orderData.telegramChatId)).get();
-        if (userDoc.exists && userDoc.data().phone) return userDoc.data().phone;
-    } catch (e) { console.error('Telefon fallback xato:', e.message); }
-    return null;
 }
 
 // Mijoz bloki: VIP -> faqat login + telefon; oddiy -> kiritgan ismi + telefon

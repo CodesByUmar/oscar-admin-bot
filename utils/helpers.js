@@ -111,6 +111,19 @@ function parseDateDDMMYYYY(text) {
     return dateObj;
 }
 
+// Telefonni topish: 1) orderdagi customerPhone 2) telegram_users fallback.
+// listeners/orders.js va handlers/callback.js'da so'zma-so'z takrorlangan
+// edi — bu yerga bir marta chiqarildi.
+async function resolveCustomerPhone(orderData) {
+    if (orderData.customerPhone) return orderData.customerPhone;
+    if (!orderData.telegramChatId || !db) return null;
+    try {
+        const userDoc = await db.collection('telegram_users').doc(String(orderData.telegramChatId)).get();
+        if (userDoc.exists && userDoc.data().phone) return userDoc.data().phone;
+    } catch (e) { console.error('Telefon fallback xato:', e.message); }
+    return null;
+}
+
 function getStr(val, fallback = '') {
     if (val === null || val === undefined) return fallback;
     if (typeof val === 'string') return val;
@@ -121,6 +134,7 @@ function getStr(val, fallback = '') {
 module.exports = {
     getNextId,
     createWithNextId,
+    resolveCustomerPhone,
     parseNumberInput,
     formatTimestamp,
     formatDateTime,
