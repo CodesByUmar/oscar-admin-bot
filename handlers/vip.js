@@ -196,8 +196,7 @@ async function handleVipStep(chatId, text) {
         if (/^\d+$/.test(input)) {
             const telegramId = input;
             try {
-                const docRef = db.collection('VIP_Clients').doc(telegramId);
-                const docSnap = await docRef.get();
+                const docSnap = await db.collection('VIP_Clients').doc(telegramId).get();
 
                 if (!docSnap.exists) {
                     bot.sendMessage(chatId, `❌ ID: ${telegramId} - bu foydalanuvchi VIP ro'yxatida topilmadi.`, mainKeyboard);
@@ -205,20 +204,11 @@ async function handleVipStep(chatId, text) {
                     return true;
                 }
 
-                const docData = docSnap.data();
-                await docRef.delete();
-
-                bot.sendMessage(
-                    chatId,
-                    `✅ VIP o'chirildi!\n\n` +
-                    `👤 Ism: ${docData.username || 'Noma\'lum'}\n` +
-                    `🆔 Telegram ID: ${telegramId}`,
-                    mainKeyboard
-                );
+                sendVipDeleteConfirmation(chatId, telegramId, docSnap.data());
                 resetUserState(chatId);
                 return true;
             } catch (error) {
-                console.error('VIP o\'chirishda xato:', error);
+                console.error('VIP qidirishda xato:', error);
                 bot.sendMessage(chatId, '❌ Xato yuz berdi! Qayta urinib ko\'ring.', mainKeyboard);
                 resetUserState(chatId);
                 return true;
@@ -245,8 +235,7 @@ async function handleVipStep(chatId, text) {
                     return true;
                 }
 
-                const docRef = db.collection('VIP_Clients').doc(telegramId);
-                const docSnap = await docRef.get();
+                const docSnap = await db.collection('VIP_Clients').doc(telegramId).get();
 
                 if (!docSnap.exists) {
                     bot.sendMessage(chatId, `❌ @${username} VIP ro'yxatida topilmadi.`, mainKeyboard);
@@ -254,20 +243,11 @@ async function handleVipStep(chatId, text) {
                     return true;
                 }
 
-                const docData = docSnap.data();
-                await docRef.delete();
-
-                bot.sendMessage(
-                    chatId,
-                    `✅ VIP o'chirildi!\n\n` +
-                    `👤 Ism: ${docData.username || username}\n` +
-                    `🆔 Telegram ID: ${telegramId}`,
-                    mainKeyboard
-                );
+                sendVipDeleteConfirmation(chatId, telegramId, docSnap.data());
                 resetUserState(chatId);
                 return true;
             } catch (error) {
-                console.error('VIP o\'chirishda xato:', error);
+                console.error('VIP qidirishda xato:', error);
                 bot.sendMessage(chatId, '❌ Xato yuz berdi! Qayta urinib ko\'ring.', mainKeyboard);
                 resetUserState(chatId);
                 return true;
@@ -279,6 +259,24 @@ async function handleVipStep(chatId, text) {
     }
 
     return false;
+}
+
+function sendVipDeleteConfirmation(chatId, telegramId, docData) {
+    bot.sendMessage(
+        chatId,
+        `⚠️ Quyidagi VIP mijozni o'chirishni tasdiqlaysizmi?\n\n` +
+        `👤 Ism: ${docData.username || 'Noma\'lum'}\n` +
+        `🆔 Telegram ID: ${telegramId}\n\n` +
+        `Bu amalni ortga qaytarib bo'lmaydi.`,
+        {
+            reply_markup: {
+                inline_keyboard: [[
+                    { text: "✅ Ha, o'chirish", callback_data: `confirm_delete_vip_${telegramId}` },
+                    { text: "❌ Yo'q", callback_data: 'cancel_delete_vip' },
+                ]],
+            },
+        }
+    );
 }
 
 module.exports = { registerVipCommands, handleVipStep };

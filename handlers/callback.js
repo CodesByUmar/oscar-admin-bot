@@ -8,6 +8,7 @@ const { showProductView, showProductUpdateCategorySelect, showProductsInCategory
 const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
 const { getStr, formatDateTime, resolveCustomerPhone } = require('../utils/helpers');
 const { getUserBot } = require('../bots/userBot');
+const { showBannerDeleteList } = require('./command');
 
 async function notifyCustomer(telegramChatId, orderId, text) {
     if (!telegramChatId) return;
@@ -219,13 +220,42 @@ function registerCallbackHandler() {
                 const cat = doc.data();
                 const count = await getProductsInCategory(cat.name);
                 if (count === 0) {
-                    await db.collection('categories').doc(String(id)).delete();
-                    bot.editMessageText(`✅ "${cat.name}" o'chirildi.`, { chat_id: chatId, message_id: messageId });
+                    bot.editMessageText(
+                        `⚠️ "${getStr(cat.name)}" kategoriyasini o'chirishni tasdiqlaysizmi? Bu amalni ortga qaytarib bo'lmaydi.`,
+                        {
+                            chat_id: chatId, message_id: messageId,
+                            reply_markup: {
+                                inline_keyboard: [[
+                                    { text: "✅ Ha, o'chirish", callback_data: `confirm_delete_category_${id}` },
+                                    { text: "❌ Yo'q", callback_data: `cancel_delete_category_${id}` },
+                                ]],
+                            },
+                        }
+                    );
                 } else {
-                    bot.editMessageText(`⚠️ "${cat.name}" ichida ${count} ta mahsulot bor. Avval ularni boshqa kategoriyaga o'tkazing yoki o'chiring.`, { chat_id: chatId, message_id: messageId });
+                    bot.editMessageText(`⚠️ "${getStr(cat.name)}" ichida ${count} ta mahsulot bor. Avval ularni boshqa kategoriyaga o'tkazing yoki o'chiring.`, { chat_id: chatId, message_id: messageId });
                 }
                 bot.answerCallbackQuery(cq.id);
             } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
+        }
+
+        if (data.startsWith('confirm_delete_category_')) {
+            const id = parseInt(data.replace('confirm_delete_category_', ''));
+            try {
+                const doc = await db.collection('categories').doc(String(id)).get();
+                const catName = doc.exists ? getStr(doc.data().name) : 'Noma\'lum';
+                await db.collection('categories').doc(String(id)).delete();
+                bot.editMessageText(`✅ "${catName}" o'chirildi.`, { chat_id: chatId, message_id: messageId });
+                bot.answerCallbackQuery(cq.id);
+            } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
+        }
+
+        if (data.startsWith('cancel_delete_category_')) {
+            const id = parseInt(data.replace('cancel_delete_category_', ''));
+            await showCategoryView(chatId, id, messageId);
+            bot.answerCallbackQuery(cq.id);
             return;
         }
         if (data.startsWith('select_category_')) {
@@ -356,11 +386,35 @@ function registerCallbackHandler() {
 
         if (data.startsWith('delete_banner_')) {
             const id = data.replace('delete_banner_', '');
+            bot.editMessageText(
+                "⚠️ Bu bannerni o'chirishni tasdiqlaysizmi? Bu amalni ortga qaytarib bo'lmaydi.",
+                {
+                    chat_id: chatId, message_id: messageId,
+                    reply_markup: {
+                        inline_keyboard: [[
+                            { text: "✅ Ha, o'chirish", callback_data: `confirm_delete_banner_${id}` },
+                            { text: "❌ Yo'q", callback_data: `cancel_delete_banner` },
+                        ]],
+                    },
+                }
+            );
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+
+        if (data.startsWith('confirm_delete_banner_')) {
+            const id = data.replace('confirm_delete_banner_', '');
             try {
                 await db.collection('banners').doc(id).delete();
                 bot.editMessageText(`✅ Banner o'chirildi.`, { chat_id: chatId, message_id: messageId });
                 bot.answerCallbackQuery(cq.id);
             } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
+        }
+
+        if (data === 'cancel_delete_banner') {
+            await showBannerDeleteList(chatId, messageId);
+            bot.answerCallbackQuery(cq.id);
             return;
         }
 
@@ -370,10 +424,57 @@ function registerCallbackHandler() {
                 const doc = await db.collection('products').doc(String(id)).get();
                 if (!doc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
                 const p = doc.data();
-                await db.collection('products').doc(String(id)).delete();
-                bot.editMessageText(`✅ "${p.name}" o'chirildi.`, { chat_id: chatId, message_id: messageId });
+                bot.editMessageText(
+                    `⚠️ "${getStr(p.name)}" mahsulotini o'chirishni tasdiqlaysizmi? Bu amalni ortga qaytarib bo'lmaydi.`,
+                    {
+                        chat_id: chatId, message_id: messageId,
+                        reply_markup: {
+                            inline_keyboard: [[
+                                { text: "✅ Ha, o'chirish", callback_data: `confirm_delete_product_${id}` },
+                                { text: "❌ Yo'q", callback_data: `cancel_delete_product_${id}` },
+                            ]],
+                        },
+                    }
+                );
                 bot.answerCallbackQuery(cq.id);
             } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
+        }
+
+        if (data.startsWith('confirm_delete_product_')) {
+            const id = parseInt(data.replace('confirm_delete_product_', ''));
+            try {
+                const doc = await db.collection('products').doc(String(id)).get();
+                const pName = doc.exists ? getStr(doc.data().name) : 'Noma\'lum';
+                await db.collection('products').doc(String(id)).delete();
+                bot.editMessageText(`✅ "${pName}" o'chirildi.`, { chat_id: chatId, message_id: messageId });
+                bot.answerCallbackQuery(cq.id);
+            } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
+        }
+
+        if (data.startsWith('cancel_delete_product_')) {
+            const id = parseInt(data.replace('cancel_delete_product_', ''));
+            await showProductView(chatId, id, messageId);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+
+        if (data.startsWith('confirm_delete_vip_')) {
+            const telegramId = data.replace('confirm_delete_vip_', '');
+            try {
+                const doc = await db.collection('VIP_Clients').doc(telegramId).get();
+                const vipName = doc.exists ? (doc.data().username || 'Noma\'lum') : 'Noma\'lum';
+                await db.collection('VIP_Clients').doc(telegramId).delete();
+                bot.editMessageText(`✅ VIP o'chirildi!\n\n👤 Ism: ${vipName}\n🆔 Telegram ID: ${telegramId}`, { chat_id: chatId, message_id: messageId });
+                bot.answerCallbackQuery(cq.id);
+            } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
+        }
+
+        if (data === 'cancel_delete_vip') {
+            bot.editMessageText("Bekor qilindi.", { chat_id: chatId, message_id: messageId });
+            bot.answerCallbackQuery(cq.id);
             return;
         }
     });

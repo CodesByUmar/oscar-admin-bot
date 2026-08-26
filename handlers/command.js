@@ -165,17 +165,7 @@ async function handleCommand(chatId, text) {
 
     // ─── BANNERNI O'CHIRISH ──────────────────────────────────────
     if (text === "🗑 Bannerni o'chirish") {
-        try {
-            const snapshot = await db.collection('banners').orderBy('order', 'asc').get();
-            if (snapshot.empty) { bot.sendMessage(chatId, "Bannerlar yo'q.", mainKeyboard); return; }
-            const kb = { inline_keyboard: [] };
-            snapshot.docs.forEach((doc, i) => {
-                kb.inline_keyboard.push([{ text: `🖼 Banner ${i + 1}`, callback_data: `delete_banner_${doc.id}` }]);
-            });
-            bot.sendMessage(chatId, "🗑 O'chirmoqchi bo'lgan bannerni tanlang:", { reply_markup: kb });
-        } catch (error) {
-            bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
-        }
+        await showBannerDeleteList(chatId);
         return;
     }
 
@@ -189,4 +179,27 @@ async function handleCommand(chatId, text) {
     bot.sendMessage(chatId, "Tugmalardan tanlang:", mainKeyboard);
 }
 
-module.exports = { handleCommand, handleVipStep };
+// Callback.js'dagi "Bekor qilish" tugmasi bosilganda ham shu ro'yxatga
+// qaytarish uchun eksport qilingan (delete_banner_ oqimida takrorlanmasin).
+async function showBannerDeleteList(chatId, messageId = null) {
+    try {
+        const snapshot = await db.collection('banners').orderBy('order', 'asc').get();
+        if (snapshot.empty) {
+            const text = "Bannerlar yo'q.";
+            if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
+            else bot.sendMessage(chatId, text, mainKeyboard);
+            return;
+        }
+        const kb = { inline_keyboard: [] };
+        snapshot.docs.forEach((doc, i) => {
+            kb.inline_keyboard.push([{ text: `🖼 Banner ${i + 1}`, callback_data: `delete_banner_${doc.id}` }]);
+        });
+        const text = "🗑 O'chirmoqchi bo'lgan bannerni tanlang:";
+        if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId, reply_markup: kb });
+        else bot.sendMessage(chatId, text, { reply_markup: kb });
+    } catch (error) {
+        bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
+    }
+}
+
+module.exports = { handleCommand, handleVipStep, showBannerDeleteList };
