@@ -1,4 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
+const { silenceUnhandledRejections } = require('../utils/botErrorLogging');
 
 const USER_BOT_TOKEN = process.env.USER_BOT_TOKEN;
 
@@ -19,6 +20,7 @@ function startUserBot() {
     // bo'lishi SHART — aks holda ikkita process bir vaqtda bir xil tokenga
     // ulanishga urinadi va Telegram "409 Conflict" xatosini beradi.
     const userBot = new TelegramBot(USER_BOT_TOKEN, { polling: false });
+    silenceUnhandledRejections(userBot, 'userBot');
     userBotInstance = userBot;
     console.log("✅ User bot ishga tushdi (faqat xabar yuborish uchun, polling o'chirilgan)...");
 }

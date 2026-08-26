@@ -1,4 +1,5 @@
 const TelegramBot = require('node-telegram-bot-api');
+const { silenceUnhandledRejections } = require('../utils/botErrorLogging');
 
 const TOKEN = process.env.ORDER_BOT_TOKEN;
 const admins = (process.env.ORDER_ADMIN_IDS || process.env.ADMIN_IDS || '')
@@ -12,6 +13,7 @@ if (TOKEN) {
     bot.on('polling_error', (error) => {
         console.error('orderBot polling xatosi:', error.code, error.message);
     });
+    silenceUnhandledRejections(bot, 'orderBot');
     console.log("✅ Order bot (3-bot) ishga tushdi...");
 } else {
     console.warn("⚠️ ORDER_BOT_TOKEN topilmadi — buyurtma boti ishlamaydi.");
