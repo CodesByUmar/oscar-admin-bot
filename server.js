@@ -30,7 +30,7 @@ function startServer() {
     app.use('/api', corsMiddleware, vipAuthRouter);
 
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
+    return app.listen(PORT, () => {
         console.log(`✅ Server ${PORT}-portda ishlamoqda`);
     });
 }
