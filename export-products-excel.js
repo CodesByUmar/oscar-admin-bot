@@ -22,6 +22,7 @@ require("dotenv").config();
 const admin = require("firebase-admin");
 const axios = require("axios");
 const ExcelJS = require("exceljs");
+const fs = require("fs");
 
 const FAST_MODE = process.argv.includes("--fast"); // havolalarni real tekshirmaydi, faqat maydon borligini ko'radi
 const CONCURRENCY = 15; // bir vaqtda nechta havola tekshirilsin (tezlik/xavfsizlik muvozanati)
@@ -186,7 +187,14 @@ async function main() {
     xs.getColumn(1).font = { bold: true };
     xs.getRow(1).font = { bold: true, size: 13 };
 
-    const faylNomi = `mahsulotlar-tekshiruvi-${new Date().toISOString().slice(0, 10)}.xlsx`;
+    // Bir kunda ikki marta ishga tushirilsa, avvalgi hisobotni jimgina
+    // ustidan yozib yubormaslik uchun — fayl allaqachon bo'lsa, vaqt
+    // qo'shib alohida nom bilan saqlanadi.
+    let faylNomi = `mahsulotlar-tekshiruvi-${new Date().toISOString().slice(0, 10)}.xlsx`;
+    if (fs.existsSync(faylNomi)) {
+        const vaqtBelgisi = new Date().toISOString().slice(11, 19).replace(/:/g, "-");
+        faylNomi = `mahsulotlar-tekshiruvi-${new Date().toISOString().slice(0, 10)}_${vaqtBelgisi}.xlsx`;
+    }
     await wb.xlsx.writeFile(faylNomi);
 
     console.log("📊 XULOSA:");
