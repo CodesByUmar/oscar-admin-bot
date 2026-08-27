@@ -1,7 +1,8 @@
 require('dotenv').config();
-require('./config/firebase');
+const { db } = require('./config/firebase');
 const { bot: adminBotInstance } = require('./config/adminBot');
 const { bot: orderBotInstance } = require('./config/orderBot');
+const { loadPersistedStates, persistAllStates } = require('./state/userState');
 
 const { registerOrderListener } = require('./listeners/orders');
 const { registerOrderBotCallbacks } = require('./handlers/orderBotCallback');
@@ -31,6 +32,11 @@ registerVipCommands();
 startUserBot();
 const httpServer = startServer();
 
+// Oldingi (deploy'dan oldingi) konteynerda tugallanmagan admin
+// jarayonlarini tiklaymiz (pastdagi gracefulShutdown ularni saqlab
+// ketgan bo'ladi).
+loadPersistedStates(db);
+
 console.log("Bot ishga tushdi va polling boshlandi...");
 
 // Railway har bir deploy'da eski konteynerga SIGTERM yuboradi. Buni
@@ -45,14 +51,20 @@ async function gracefulShutdown(signal) {
     isShuttingDown = true;
     console.log(`${signal} qabul qilindi — botlar tartibli to'xtatilmoqda...`);
 
+    // Firestore yoki server yopilishi osilib qolsa ham, konteyner cheksiz
+    // kutib qolmasligi uchun umumiy "so'nggi chora" vaqti — nechta amal
+    // bajarilishidan qat'iy nazar, process shu vaqtda albatta tugaydi.
+    const failsafe = setTimeout(() => process.exit(0), 8000);
+    failsafe.unref();
+
     await Promise.allSettled([
         adminBotInstance && adminBotInstance.stopPolling(),
         orderBotInstance && orderBotInstance.stopPolling(),
+        persistAllStates(db),
     ]);
 
     if (httpServer) {
         httpServer.close(() => process.exit(0));
-        setTimeout(() => process.exit(0), 5000).unref();
     } else {
         process.exit(0);
     }
