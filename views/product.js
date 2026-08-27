@@ -18,7 +18,7 @@ async function showProductView(chatId, productId, messageId) {
         const nameML = (p.name && typeof p.name === 'object') ? p.name : { uz: getStr(p.name) };
         const descML = (p.description && typeof p.description === 'object') ? p.description : { uz: getStr(p.description) };
         const shortVal = (v) => v ? (v.length > 20 ? v.substring(0, 20) + '…' : v) : 'Yo\'q';
-        const price = p.price || p.pricePiece || 0;
+        const price = p.pricePiece || 0;
         const priceBox = p.priceBox || 0;
         const startDateText = formatTimestamp(p.discountStartDate);
         const endDateText = formatTimestamp(p.discountEndDate);
@@ -28,7 +28,7 @@ async function showProductView(chatId, productId, messageId) {
                 { text: `🇷🇺 Nomi: ${shortVal(nameML.ru)}`, callback_data: `update_ml_name_ru_${productId}` },
             ],
             [{ text: `🇬🇧 Nomi: ${shortVal(nameML.en)}`, callback_data: `update_ml_name_en_${productId}` }],
-            [{ text: `Narx: $${price} (dona, USD)`, callback_data: `update_field_price_${productId}` }],
+            [{ text: `Narx: $${price} (dona, USD)`, callback_data: `update_field_pricePiece_${productId}` }],
             [{ text: `Narx: $${priceBox} (karobka, USD)`, callback_data: `update_field_priceBox_${productId}` }],
             [{ text: `Chegirma: ${p.discount || 0}%`, callback_data: `update_field_discount_${productId}` }],
             [{ text: `📅 Chegirma boshlanishi: ${startDateText}`, callback_data: `update_field_discountStart_${productId}` }],

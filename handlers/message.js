@@ -368,7 +368,7 @@ async function handleIncomingMessage(msg) {
         const stateData = state.data;
         const fieldType = stateData.field;
         let value;
-        if (fieldType === 'pricePiece' || fieldType === 'priceBox' || fieldType === 'price') {
+        if (fieldType === 'pricePiece' || fieldType === 'priceBox') {
             const parsed = parseNumberInput(text, true);
             if (parsed === null || parsed < 0) { bot.sendMessage(chatId, "0 yoki musbat son kiriting! (mas: 6.53)"); return; }
             value = parsed;
@@ -380,8 +380,7 @@ async function handleIncomingMessage(msg) {
             value = parseInt(text);
         } else { bot.sendMessage(chatId, "Xato!"); resetUserState(chatId); return; }
         try {
-            const actualField = fieldType === 'price' ? 'pricePiece' : fieldType;
-            await db.collection('products').doc(String(stateData.productId)).update({ [actualField]: value });
+            await db.collection('products').doc(String(stateData.productId)).update({ [fieldType]: value });
             state.step = 'product_update_view';
             await showProductView(chatId, stateData.productId, stateData.messageId);
             bot.sendMessage(chatId, `✅ Yangilandi: ${value}`, backKeyboard);
