@@ -1,6 +1,6 @@
 const { bot } = require('../config/adminBot');
 const { db } = require('../config/firebase');
-const { mainKeyboard, backKeyboard, mainBackKeyboard } = require('../keyboards');
+const { mainKeyboard, backKeyboard, mainBackKeyboard, isSuperAdmin, getMainKeyboard, getMainBackKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { getStr } = require('../utils/helpers');
 const { formatDateTime } = require('../utils/helpers');
@@ -17,12 +17,19 @@ async function handleCommand(chatId, text) {
             chatId,
             "⚠️ Siz hozir boshqa jarayon o'rtasidasiz (masalan mahsulot yoki kategoriya qo'shish).\n\n" +
             "Avval uni tugating yoki \"❌ Bekor qilish\" tugmasini bosing — aks holda kiritgan ma'lumotlaringiz yo'qoladi.",
-            mainBackKeyboard
+            getMainBackKeyboard(chatId)
         );
         return;
     }
     resetUserState(chatId);
-    if (!db) { bot.sendMessage(chatId, "❌ Database ulanmagan.", mainKeyboard); return; }
+    if (!db) { bot.sendMessage(chatId, "❌ Database ulanmagan.", getMainKeyboard(chatId)); return; }
+
+    // ─── FAQAT SUPER ADMIN UCHUN ────────────────────────────────────
+    const superAdminOnly = ["⭐ VIP qo'shish", "🗑 VIP o'chirish", "💱 USD kurs", "📊 Statistika", "🗑 Bannerni o'chirish"];
+    if (superAdminOnly.includes(text) && !isSuperAdmin(chatId)) {
+        bot.sendMessage(chatId, "⛔ Bu amal faqat super adminlar uchun.", getMainKeyboard(chatId));
+        return;
+    }
 
     // ─── VIP ──────────────────────────────────────────────────────────
     if (text === "⭐ VIP qo'shish") {
@@ -40,7 +47,7 @@ async function handleCommand(chatId, text) {
     if (text === "🛍 Mahsulot qo'shish") {
         const snapshot = await db.collection('categories').get();
         const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name }));
-        if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval kategoriya qo'shing.", mainKeyboard); return; }
+        if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval kategoriya qo'shing.", getMainKeyboard(chatId)); return; }
         userState[chatId] = { step: 'product_name_uz', data: { categoryNames }, steps: [] };
         bot.sendMessage(chatId, "1a. Mahsulot nomini UZ tilida kiriting:", backKeyboard);
         return;
@@ -132,7 +139,7 @@ async function handleCommand(chatId, text) {
     if (text === "📦 Buyurtmalar") {
         try {
             const snapshot = await db.collection('orders').orderBy('createdAt', 'desc').limit(10).get();
-            if (snapshot.empty) { bot.sendMessage(chatId, "Buyurtmalar yo'q.", mainKeyboard); return; }
+            if (snapshot.empty) { bot.sendMessage(chatId, "Buyurtmalar yo'q.", getMainKeyboard(chatId)); return; }
             const kb = { inline_keyboard: [] };
             snapshot.docs.forEach(doc => {
                 const o = doc.data();
@@ -151,7 +158,7 @@ async function handleCommand(chatId, text) {
             kb.inline_keyboard.push([{ text: "🔙 Bosh menyu", callback_data: "close_orders_list" }]);
             bot.sendMessage(chatId, "📦 So'nggi 10 ta buyurtma:", { reply_markup: kb });
         } catch (error) {
-            bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
+            bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
         }
         return;
     }
@@ -172,11 +179,11 @@ async function handleCommand(chatId, text) {
     // ─── BEKOR QILISH ──────────────────────────────────────────────
     if (text === "❌ Bekor qilish") {
         resetUserState(chatId);
-        bot.sendMessage(chatId, "Bekor qilindi.", mainKeyboard);
+        bot.sendMessage(chatId, "Bekor qilindi.", getMainKeyboard(chatId));
         return;
     }
 
-    bot.sendMessage(chatId, "Tugmalardan tanlang:", mainKeyboard);
+    bot.sendMessage(chatId, "Tugmalardan tanlang:", getMainKeyboard(chatId));
 }
 
 // Callback.js'dagi "Bekor qilish" tugmasi bosilganda ham shu ro'yxatga

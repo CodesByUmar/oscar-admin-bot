@@ -1,6 +1,6 @@
 const { bot, admins } = require('../config/adminBot');
 const { db, admin } = require('../config/firebase');
-const { backKeyboard, mainKeyboard } = require('../keyboards');
+const { backKeyboard, getMainKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { uploadToImgBB } = require('../utils/imgbb');
 const { showProductView } = require('../views/product');
@@ -41,7 +41,7 @@ async function processIncomingPhoto(chatId, fileId) {
                     });
                     resetUserState(chatId);
                     bot.editMessageText("✅ Banner qo'shildi! Mini-appda darhol ko'rinadi.", { chat_id: chatId, message_id: waitMsg.message_id });
-                    bot.sendMessage(chatId, "Davom eting.", mainKeyboard);
+                    bot.sendMessage(chatId, "Davom eting.", getMainKeyboard(chatId));
                 } catch (error) {
                     bot.editMessageText("❌ Bannerni saqlashda xato!", { chat_id: chatId, message_id: waitMsg.message_id });
                 }
@@ -73,8 +73,8 @@ async function processIncomingPhoto(chatId, fileId) {
                 bot.editMessageText("❌ Rasm yuklashda xato!", { chat_id: chatId, message_id: waitMsg.message_id });
             }
         } else {
-            const { mainKeyboard } = require('../keyboards');
-            bot.sendMessage(chatId, "Rasm kutilmayapti.", mainKeyboard);
+            const { getMainKeyboard } = require('../keyboards');
+            bot.sendMessage(chatId, "Rasm kutilmayapti.", getMainKeyboard(chatId));
         }
 }
 

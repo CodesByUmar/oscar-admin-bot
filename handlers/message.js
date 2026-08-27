@@ -1,6 +1,6 @@
 const { bot, admins } = require('../config/adminBot');
 const { db, admin } = require('../config/firebase');
-const { mainKeyboard, backKeyboard, mainBackKeyboard, commandButtons } = require('../keyboards');
+const { mainKeyboard, backKeyboard, mainBackKeyboard, commandButtons, getMainKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { parseNumberInput, parseDateDDMMYYYY, createWithNextId, getStr } = require('../utils/helpers');
 const { handleBack } = require('./back');
@@ -16,7 +16,7 @@ function registerMessageHandler() {
         } catch (error) {
             console.error("❌ message handlerida kutilmagan xato:", error);
             try {
-                await bot.sendMessage(msg.chat.id, "❌ Kutilmagan xato yuz berdi. Iltimos, qaytadan urinib ko'ring yoki /start bosing.", mainKeyboard);
+                await bot.sendMessage(msg.chat.id, "❌ Kutilmagan xato yuz berdi. Iltimos, qaytadan urinib ko'ring yoki /start bosing.", getMainKeyboard(msg.chat.id));
             } catch (_) { }
         }
     });
@@ -35,10 +35,10 @@ async function handleIncomingMessage(msg) {
     if (text && text.startsWith('/')) {
         if (text === '/start') {
             resetUserState(chatId);
-            bot.sendMessage(chatId, "Xush kelibsiz! Shop-bot admin paneli.", mainKeyboard);
+            bot.sendMessage(chatId, "Xush kelibsiz! Shop-bot admin paneli.", getMainKeyboard(chatId));
         } else if (text === '/addvip' || text === '/removevip') {
             return;
-        } else bot.sendMessage(chatId, "Noma'lum buyruq. /start ni bosing.", mainKeyboard);
+        } else bot.sendMessage(chatId, "Noma'lum buyruq. /start ni bosing.", getMainKeyboard(chatId));
         return;
     }
     if (text === "Orqaga") { await handleBack(chatId); return; }
@@ -49,7 +49,7 @@ async function handleIncomingMessage(msg) {
     // rasmi 2 marta yuklanib, 2 marta saqlanishiga) sabab bo'lardi.
     if (photo && !text) { return; }
     if (!userState[chatId] || userState[chatId].step === 'none') {
-        bot.sendMessage(chatId, "Tugmalardan tanlang:", mainKeyboard);
+        bot.sendMessage(chatId, "Tugmalardan tanlang:", getMainKeyboard(chatId));
         return;
     }
 
@@ -96,7 +96,7 @@ async function handleIncomingMessage(msg) {
             resetUserState(chatId);
 
             if (matches.length === 0) {
-                bot.sendMessage(chatId, `"${query}" bo'yicha hech narsa topilmadi.`, mainKeyboard);
+                bot.sendMessage(chatId, `"${query}" bo'yicha hech narsa topilmadi.`, getMainKeyboard(chatId));
                 return;
             }
             if (matches.length === 1) {
@@ -118,7 +118,7 @@ async function handleIncomingMessage(msg) {
             bot.sendMessage(chatId, `"${query}" bo'yicha ${matches.length} ta mahsulot topildi:${extra}`, kb);
         } catch (error) {
             console.error("Qidiruvda xato:", error);
-            bot.sendMessage(chatId, "❌ Qidirishda xato yuz berdi!", mainKeyboard);
+            bot.sendMessage(chatId, "❌ Qidirishda xato yuz berdi!", getMainKeyboard(chatId));
             resetUserState(chatId);
         }
         return;
@@ -273,11 +273,11 @@ async function handleIncomingMessage(msg) {
                         `🏷 Chegirma: ${newProduct.discount}%\n` +
                         `📂 Kategoriya: ${getStr(newProduct.category)}\n` +
                         `📊 Stock: ${newProduct.stock} ta`,
-                        mainKeyboard
+                        getMainKeyboard(chatId)
                     );
                 } catch (error) {
                     console.error("Mahsulot saqlashda xato:", error);
-                    bot.sendMessage(chatId, `❌ Mahsulot qo'shilmadi!\nSabab: ${error.message || 'noma\'lum xato'}`, mainKeyboard);
+                    bot.sendMessage(chatId, `❌ Mahsulot qo'shilmadi!\nSabab: ${error.message || 'noma\'lum xato'}`, getMainKeyboard(chatId));
                 }
                 resetUserState(chatId);
                 break;
@@ -299,9 +299,9 @@ async function handleIncomingMessage(msg) {
             data.icon = text;
             try {
                 await createWithNextId('categories', (id) => ({ id, name: data.name, icon: data.icon }));
-                bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${data.icon} ${data.name}`, mainKeyboard);
+                bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${data.icon} ${data.name}`, getMainKeyboard(chatId));
             } catch (error) {
-                bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
+                bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
             }
             resetUserState(chatId);
         }
@@ -326,7 +326,7 @@ async function handleIncomingMessage(msg) {
             state.step = 'category_update_view';
             await showCategoryView(chatId, state.data.categoryId, state.data.messageId);
             bot.sendMessage(chatId, `✅ Nom yangilandi: ${text}`, backKeyboard);
-        } catch (error) { bot.sendMessage(chatId, "❌ Xato!", mainKeyboard); resetUserState(chatId); }
+        } catch (error) { bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId)); resetUserState(chatId); }
         return;
     }
     if (state.step === 'update_category_icon') {
@@ -335,7 +335,7 @@ async function handleIncomingMessage(msg) {
             state.step = 'category_update_view';
             await showCategoryView(chatId, state.data.categoryId, state.data.messageId);
             bot.sendMessage(chatId, `✅ Ikonka yangilandi: ${text}`, backKeyboard);
-        } catch (error) { bot.sendMessage(chatId, "❌ Xato!", mainKeyboard); resetUserState(chatId); }
+        } catch (error) { bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId)); resetUserState(chatId); }
         return;
     }
 
@@ -348,7 +348,7 @@ async function handleIncomingMessage(msg) {
                 state.step = 'product_update_view';
                 await showProductView(chatId, stateData.productId, stateData.messageId);
                 bot.sendMessage(chatId, `✅ ${stateData.dateLabel} o'chirildi.`, backKeyboard);
-            } catch (error) { bot.sendMessage(chatId, "❌ Xato!", mainKeyboard); resetUserState(chatId); }
+            } catch (error) { bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId)); resetUserState(chatId); }
             return;
         }
         const dateObj = parseDateDDMMYYYY(text);
@@ -359,7 +359,7 @@ async function handleIncomingMessage(msg) {
             state.step = 'product_update_view';
             await showProductView(chatId, stateData.productId, stateData.messageId);
             bot.sendMessage(chatId, `✅ ${stateData.dateLabel} yangilandi: ${text}`, backKeyboard);
-        } catch (error) { bot.sendMessage(chatId, "❌ Xato!", mainKeyboard); resetUserState(chatId); }
+        } catch (error) { bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId)); resetUserState(chatId); }
         return;
     }
 
@@ -385,7 +385,7 @@ async function handleIncomingMessage(msg) {
             state.step = 'product_update_view';
             await showProductView(chatId, stateData.productId, stateData.messageId);
             bot.sendMessage(chatId, `✅ Yangilandi: ${value}`, backKeyboard);
-        } catch (error) { bot.sendMessage(chatId, "❌ Xato!", mainKeyboard); resetUserState(chatId); }
+        } catch (error) { bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId)); resetUserState(chatId); }
         return;
     }
     if (state.step === 'update_ml_field') {
@@ -399,7 +399,7 @@ async function handleIncomingMessage(msg) {
             bot.sendMessage(chatId, `✅ ${fieldLabel} (${lang.toUpperCase()}) yangilandi`, backKeyboard);
         } catch (error) {
             console.error("Ko'p tilli maydonni yangilashda xato:", error);
-            bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
+            bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
             resetUserState(chatId);
         }
         return;
@@ -411,7 +411,7 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
-    bot.sendMessage(chatId, "Tushunmadim. Tugmalardan tanlang:", mainKeyboard);
+    bot.sendMessage(chatId, "Tushunmadim. Tugmalardan tanlang:", getMainKeyboard(chatId));
 }
 
 module.exports = { registerMessageHandler };

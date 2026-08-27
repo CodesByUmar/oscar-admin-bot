@@ -1,6 +1,6 @@
 const { bot } = require('../config/adminBot');
 const { db } = require('../config/firebase');
-const { mainKeyboard } = require('../keyboards');
+const { getMainKeyboard, isSuperAdmin } = require('../keyboards');
 const { getStr } = require('../utils/helpers');
 
 async function showCategoryView(chatId, categoryId, messageId) {
@@ -8,22 +8,24 @@ async function showCategoryView(chatId, categoryId, messageId) {
         const doc = await db.collection('categories').doc(String(categoryId)).get();
         if (!doc.exists) {
             if (messageId) bot.editMessageText("Kategoriya topilmadi!", { chat_id: chatId, message_id: messageId });
-            bot.sendMessage(chatId, "Bosh menyu.", mainKeyboard);
+            bot.sendMessage(chatId, "Bosh menyu.", getMainKeyboard(chatId));
             return;
         }
         const c = doc.data();
         const name = getStr(c.name, 'Noma\'lum');
         const icon = c.icon || c.icon_url || '';
-        const updateKeyboard = {
-            reply_markup: {
-                inline_keyboard: [
-                    [{ text: `Nomi: ${name}`, callback_data: `cat_update_name_${categoryId}` }],
-                    [{ text: `Ikonka: ${icon || 'Yo\'q'}`, callback_data: `cat_update_icon_${categoryId}` }],
-                    [{ text: "🗑 Kategoriyani o'chirish", callback_data: `delete_category_${categoryId}` }],
-                    [{ text: "⬅️ Orqaga", callback_data: 'back_to_prev' }],
-                ],
-            },
-        };
+        const inlineRows = [
+            [{ text: `Nomi: ${name}`, callback_data: `cat_update_name_${categoryId}` }],
+            [{ text: `Ikonka: ${icon || 'Yo\'q'}`, callback_data: `cat_update_icon_${categoryId}` }],
+        ];
+        // O'chirish tugmasi faqat super adminlarga ko'rinadi — haqiqiy
+        // cheklov callback.js'da ham bor, bu shunchaki keraksiz tugmani
+        // yashiradi.
+        if (isSuperAdmin(chatId)) {
+            inlineRows.push([{ text: "🗑 Kategoriyani o'chirish", callback_data: `delete_category_${categoryId}` }]);
+        }
+        inlineRows.push([{ text: "⬅️ Orqaga", callback_data: 'back_to_prev' }]);
+        const updateKeyboard = { reply_markup: { inline_keyboard: inlineRows } };
         const message = `📝 Kategoriya: ${icon} ${name} (ID: ${categoryId})\nQaysi maydonni yangilashni xohlaysiz?`;
         if (messageId) {
             bot.editMessageText(message, { chat_id: chatId, message_id: messageId, reply_markup: updateKeyboard.reply_markup });
@@ -41,7 +43,7 @@ async function showCategoryUpdateSelect(chatId, messageId = null) {
         if (snapshot.empty) {
             const text = "Hech qanday kategoriya topilmadi.";
             if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
-            bot.sendMessage(chatId, "Bosh menyu.", mainKeyboard);
+            bot.sendMessage(chatId, "Bosh menyu.", getMainKeyboard(chatId));
             return;
         }
         const cats = snapshot.docs.map(d => {

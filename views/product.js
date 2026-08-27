@@ -1,6 +1,6 @@
 const { bot } = require('../config/adminBot');
 const { db } = require('../config/firebase');
-const { mainKeyboard } = require('../keyboards');
+const { getMainKeyboard, isSuperAdmin } = require('../keyboards');
 const { formatTimestamp, getStr } = require('../utils/helpers');
 const { userState, resetUserState } = require('../state/userState');
 
@@ -22,32 +22,34 @@ async function showProductView(chatId, productId, messageId) {
         const priceBox = p.priceBox || 0;
         const startDateText = formatTimestamp(p.discountStartDate);
         const endDateText = formatTimestamp(p.discountEndDate);
-        const updateKeyboard = {
-            reply_markup: {
-                inline_keyboard: [
-                    [
-                        { text: `🇺🇿 Nomi: ${shortVal(nameML.uz)}`, callback_data: `update_ml_name_uz_${productId}` },
-                        { text: `🇷🇺 Nomi: ${shortVal(nameML.ru)}`, callback_data: `update_ml_name_ru_${productId}` },
-                    ],
-                    [{ text: `🇬🇧 Nomi: ${shortVal(nameML.en)}`, callback_data: `update_ml_name_en_${productId}` }],
-                    [{ text: `Narx: $${price} (dona, USD)`, callback_data: `update_field_price_${productId}` }],
-                    [{ text: `Narx: $${priceBox} (karobka, USD)`, callback_data: `update_field_priceBox_${productId}` }],
-                    [{ text: `Chegirma: ${p.discount || 0}%`, callback_data: `update_field_discount_${productId}` }],
-                    [{ text: `📅 Chegirma boshlanishi: ${startDateText}`, callback_data: `update_field_discountStart_${productId}` }],
-                    [{ text: `📅 Chegirma tugashi: ${endDateText}`, callback_data: `update_field_discountEnd_${productId}` }],
-                    [{ text: `Stock: ${(p.stock || 0).toLocaleString()} dona`, callback_data: `update_field_stock_${productId}` }],
-                    [
-                        { text: `🇺🇿 Tavsif: ${shortVal(descML.uz)}`, callback_data: `update_ml_description_uz_${productId}` },
-                        { text: `🇷🇺 Tavsif: ${shortVal(descML.ru)}`, callback_data: `update_ml_description_ru_${productId}` },
-                    ],
-                    [{ text: `🇬🇧 Tavsif: ${shortVal(descML.en)}`, callback_data: `update_ml_description_en_${productId}` }],
-                    [{ text: `Rasm: ${p.image ? 'Bor' : 'Yo\'q'}`, callback_data: `update_field_image_${productId}` }],
-                    [{ text: `📂 Kategoriya: ${category}`, callback_data: `update_field_category_${productId}` }],
-                    [{ text: "🗑 Mahsulotni o'chirish", callback_data: `delete_product_${productId}` }],
-                    [{ text: "⬅️ Orqaga", callback_data: 'back_to_prev' }],
-                ],
-            },
-        };
+        const inlineRows = [
+            [
+                { text: `🇺🇿 Nomi: ${shortVal(nameML.uz)}`, callback_data: `update_ml_name_uz_${productId}` },
+                { text: `🇷🇺 Nomi: ${shortVal(nameML.ru)}`, callback_data: `update_ml_name_ru_${productId}` },
+            ],
+            [{ text: `🇬🇧 Nomi: ${shortVal(nameML.en)}`, callback_data: `update_ml_name_en_${productId}` }],
+            [{ text: `Narx: $${price} (dona, USD)`, callback_data: `update_field_price_${productId}` }],
+            [{ text: `Narx: $${priceBox} (karobka, USD)`, callback_data: `update_field_priceBox_${productId}` }],
+            [{ text: `Chegirma: ${p.discount || 0}%`, callback_data: `update_field_discount_${productId}` }],
+            [{ text: `📅 Chegirma boshlanishi: ${startDateText}`, callback_data: `update_field_discountStart_${productId}` }],
+            [{ text: `📅 Chegirma tugashi: ${endDateText}`, callback_data: `update_field_discountEnd_${productId}` }],
+            [{ text: `Stock: ${(p.stock || 0).toLocaleString()} dona`, callback_data: `update_field_stock_${productId}` }],
+            [
+                { text: `🇺🇿 Tavsif: ${shortVal(descML.uz)}`, callback_data: `update_ml_description_uz_${productId}` },
+                { text: `🇷🇺 Tavsif: ${shortVal(descML.ru)}`, callback_data: `update_ml_description_ru_${productId}` },
+            ],
+            [{ text: `🇬🇧 Tavsif: ${shortVal(descML.en)}`, callback_data: `update_ml_description_en_${productId}` }],
+            [{ text: `Rasm: ${p.image ? 'Bor' : 'Yo\'q'}`, callback_data: `update_field_image_${productId}` }],
+            [{ text: `📂 Kategoriya: ${category}`, callback_data: `update_field_category_${productId}` }],
+        ];
+        // O'chirish tugmasi faqat super adminlarga ko'rinadi — haqiqiy
+        // cheklov callback.js'da ham bor, bu shunchaki keraksiz tugmani
+        // yashiradi.
+        if (isSuperAdmin(chatId)) {
+            inlineRows.push([{ text: "🗑 Mahsulotni o'chirish", callback_data: `delete_product_${productId}` }]);
+        }
+        inlineRows.push([{ text: "⬅️ Orqaga", callback_data: 'back_to_prev' }]);
+        const updateKeyboard = { reply_markup: { inline_keyboard: inlineRows } };
         const message =
             `📝 Mahsulot (ID: ${productId})\n` +
             `🇺🇿 ${nameML.uz || 'Yo\'q'}\n` +
@@ -78,7 +80,7 @@ async function showProductUpdateCategorySelect(chatId, messageId = null) {
         if (snapshot.empty) {
             const text = "Hech qanday kategoriya topilmadi.";
             if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
-            bot.sendMessage(chatId, "Bosh menyu.", mainKeyboard);
+            bot.sendMessage(chatId, "Bosh menyu.", getMainKeyboard(chatId));
             return;
         }
         const cats = snapshot.docs.map(d => {
@@ -112,7 +114,7 @@ async function showProductsInCategory(chatId, categoryName, messageId = null) {
             if (messageId) {
                 bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
             } else {
-                bot.sendMessage(chatId, text, mainKeyboard);
+                bot.sendMessage(chatId, text, getMainKeyboard(chatId));
             }
             resetUserState(chatId);
             return;

@@ -2,7 +2,7 @@
 const { bot, admins } = require('../config/adminBot');
 const { db } = require('../config/firebase');
 const { userState, resetUserState } = require('../state/userState');
-const { mainKeyboard, backKeyboard } = require('../keyboards');
+const { mainKeyboard, backKeyboard, isSuperAdmin, getMainKeyboard } = require('../keyboards');
 const { getUserBot } = require('../bots/userBot');
 const { hashPassword } = require('../utils/password');
 
@@ -11,6 +11,7 @@ function registerVipCommands() {
     bot.onText(/\/addvip/, async (msg) => {
         const chatId = msg.chat.id;
         if (!admins.includes(chatId)) return;
+        if (!isSuperAdmin(chatId)) { bot.sendMessage(chatId, "⛔ Bu amal faqat super adminlar uchun.", getMainKeyboard(chatId)); return; }
         resetUserState(chatId);
         userState[chatId] = { step: 'vip_add_id', data: {}, steps: [] };
         bot.sendMessage(chatId, '👤 VIP qo\'shish\n\nTelegram ID yoki @username kiriting:', backKeyboard);
@@ -20,6 +21,7 @@ function registerVipCommands() {
     bot.onText(/\/removevip/, async (msg) => {
         const chatId = msg.chat.id;
         if (!admins.includes(chatId)) return;
+        if (!isSuperAdmin(chatId)) { bot.sendMessage(chatId, "⛔ Bu amal faqat super adminlar uchun.", getMainKeyboard(chatId)); return; }
         resetUserState(chatId);
         userState[chatId] = { step: 'vip_remove_id', data: {}, steps: [] };
         bot.sendMessage(chatId, '🗑 VIP o\'chirish\n\nTelegram ID kiriting:', backKeyboard);

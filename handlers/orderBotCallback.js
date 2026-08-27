@@ -1,6 +1,7 @@
 const { bot, admins } = require('../config/orderBot');
 const { db } = require('../config/firebase');
 const { getUserBot } = require('../bots/userBot');
+const { isSuperAdmin } = require('../keyboards');
 
 function registerOrderBotCallbacks() {
     if (!bot) return;
@@ -13,6 +14,12 @@ function registerOrderBotCallbacks() {
 
         if (!data || !admins.includes(chatId)) {
             bot.answerCallbackQuery(cq.id, { text: "Ruxsat yo'q!" });
+            return;
+        }
+
+        // Buyurtmani tasdiqlash/bekor qilish/yetkazish — faqat super admin.
+        if ((data.startsWith('confirm_order_') || data.startsWith('cancel_order_') || data.startsWith('deliver_order_')) && !isSuperAdmin(chatId)) {
+            bot.answerCallbackQuery(cq.id, { text: "⛔ Bu amal faqat super adminlar uchun." });
             return;
         }
 

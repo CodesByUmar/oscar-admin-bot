@@ -1,3 +1,5 @@
+const { superAdmins } = require('../config/adminBot');
+
 const mainKeyboard = {
     reply_markup: {
         keyboard: [
@@ -8,6 +10,23 @@ const mainKeyboard = {
             [{ text: "📦 Buyurtmalar" }],
             [{ text: "🖼 Banner qo'shish" }, { text: "🗑 Bannerni o'chirish" }],
             [{ text: "⭐ VIP qo'shish" }, { text: "🗑 VIP o'chirish" }],
+        ],
+        resize_keyboard: true,
+    },
+};
+
+// Xodim (super admin bo'lmagan) uchun — o'chirish, VIP, USD kurs,
+// statistika tugmalari yo'q. Bu faqat ko'rinish qulayligi uchun; haqiqiy
+// cheklov har bir handlerning o'zida (superAdmins.includes(chatId))
+// tekshiriladi.
+const staffKeyboard = {
+    reply_markup: {
+        keyboard: [
+            [{ text: "🛍 Mahsulot qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
+            [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
+            [{ text: "🔍 Qidiruv" }],
+            [{ text: "📦 Buyurtmalar" }],
+            [{ text: "🖼 Banner qo'shish" }],
         ],
         resize_keyboard: true,
     },
@@ -27,6 +46,28 @@ const mainBackKeyboard = {
     },
 };
 
+const staffBackKeyboard = {
+    reply_markup: {
+        keyboard: [
+            ...staffKeyboard.reply_markup.keyboard,
+            [{ text: "❌ Bekor qilish" }, { text: "Orqaga" }],
+        ],
+        resize_keyboard: true,
+    },
+};
+
+function isSuperAdmin(chatId) {
+    return superAdmins.includes(chatId);
+}
+
+function getMainKeyboard(chatId) {
+    return isSuperAdmin(chatId) ? mainKeyboard : staffKeyboard;
+}
+
+function getMainBackKeyboard(chatId) {
+    return isSuperAdmin(chatId) ? mainBackKeyboard : staffBackKeyboard;
+}
+
 const commandButtons = [
     "🛍 Mahsulot qo'shish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
     "🔄 Mahsulotni yangilash", "🔍 Qidiruv",
@@ -36,4 +77,7 @@ const commandButtons = [
     "⭐ VIP qo'shish", "🗑 VIP o'chirish",
 ];
 
-module.exports = { mainKeyboard, backKeyboard, mainBackKeyboard, commandButtons };
+module.exports = {
+    mainKeyboard, staffKeyboard, backKeyboard, mainBackKeyboard, staffBackKeyboard,
+    commandButtons, isSuperAdmin, getMainKeyboard, getMainBackKeyboard,
+};

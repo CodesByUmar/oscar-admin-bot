@@ -1,6 +1,6 @@
 const { bot, admins } = require('../config/adminBot');
 const { db } = require('../config/firebase');
-const { mainKeyboard, backKeyboard } = require('../keyboards');
+const { backKeyboard, isSuperAdmin, getMainKeyboard } = require('../keyboards');
 const { userState } = require('../state/userState');
 const { handleInlineBack } = require('./back');
 const { showCategoryView, showCategoryUpdateSelect } = require('../views/category');
@@ -31,6 +31,21 @@ function registerCallbackHandler() {
         const data = cq.data;
         if (!data || !admins.includes(chatId)) { bot.answerCallbackQuery(cq.id, { text: "Ruxsat yo'q!" }); return; }
         if (!db) { bot.answerCallbackQuery(cq.id, { text: "Database yo'q." }); return; }
+
+        // O'chirish, buyurtma tasdiqlash/bekor/yetkazish — faqat super admin.
+        // ("cancel_*" hech narsani o'chirmaydi/o'zgartirmaydi, shuning uchun
+        // cheklanmagan — bekor qilish har doim ruxsat etilgan.)
+        const superAdminOnlyPrefixes = [
+            'delete_product_', 'confirm_delete_product_',
+            'delete_category_', 'confirm_delete_category_',
+            'delete_banner_', 'confirm_delete_banner_',
+            'confirm_delete_vip_',
+            'confirm_order_', 'cancel_order_', 'deliver_order_',
+        ];
+        if (superAdminOnlyPrefixes.some((p) => data.startsWith(p)) && !isSuperAdmin(chatId)) {
+            bot.answerCallbackQuery(cq.id, { text: "⛔ Bu amal faqat super adminlar uchun." });
+            return;
+        }
 
         if (data.startsWith('order_detail_')) {
             const orderId = data.replace('order_detail_', '');
@@ -72,7 +87,7 @@ function registerCallbackHandler() {
                 }
                 // YANGI:
                 const msg = `📋 BUYURTMA\n\n🆔 ${orderId}\n🕐 Vaqt: ${formatDateTime(o.createdAt)}\n${customerBlock}${bonusText}${deliveryText}\n🛍 Mahsulotlar:\n${itemsText}\n\n💰 Jami: ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm\n📊 Status: ${statusEmoji} ${statusText}`; const kb = { inline_keyboard: [] };
-                if (o.status === 'pending') kb.inline_keyboard.push([{ text: "✅ Tasdiqlash", callback_data: `confirm_order_${orderId}` }, { text: "❌ Bekor", callback_data: `cancel_order_${orderId}` }]);
+                if (o.status === 'pending' && isSuperAdmin(chatId)) kb.inline_keyboard.push([{ text: "✅ Tasdiqlash", callback_data: `confirm_order_${orderId}` }, { text: "❌ Bekor", callback_data: `cancel_order_${orderId}` }]);
                 kb.inline_keyboard.push([{ text: "⬅️ Orqaga", callback_data: "back_to_orders" }]);
                 bot.editMessageText(msg, { chat_id: chatId, message_id: messageId, reply_markup: kb });
                 bot.answerCallbackQuery(cq.id);
@@ -182,7 +197,7 @@ function registerCallbackHandler() {
             try {
                 await bot.editMessageReplyMarkup({ inline_keyboard: [] }, { chat_id: chatId, message_id: messageId });
             } catch (error) { /* xabar allaqachon o'zgargan bo'lishi mumkin, e'tibor bermaymiz */ }
-            bot.sendMessage(chatId, "🏠 Asosiy menyu", mainKeyboard);
+            bot.sendMessage(chatId, "🏠 Asosiy menyu", getMainKeyboard(chatId));
             bot.answerCallbackQuery(cq.id);
             return;
         }
