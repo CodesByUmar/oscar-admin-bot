@@ -10,13 +10,7 @@ async function handleProductStep(chatId, currentStep, isBack = false) {
     state.step = currentStep;
     switch (currentStep) {
         case 'product_name_uz':
-            bot.sendMessage(chatId, "1a. Mahsulot nomini UZ tilida kiriting:", backKeyboard);
-            break;
-        case 'product_name_ru':
-            bot.sendMessage(chatId, "1b. Mahsulot nomini RU tilida kiriting:", backKeyboard);
-            break;
-        case 'product_name_en':
-            bot.sendMessage(chatId, "1c. Mahsulot nomini EN tilida kiriting:", backKeyboard);
+            bot.sendMessage(chatId, "1a. Mahsulot nomini UZ tilida kiriting (RU/EN avtomatik tarjima qilinadi):", backKeyboard);
             break;
         case 'product_price_piece':
             bot.sendMessage(chatId, "2. Dona narxini USD da kiriting (mas: 3.5):", backKeyboard);
@@ -45,13 +39,7 @@ async function handleProductStep(chatId, currentStep, isBack = false) {
             bot.sendMessage(chatId, "5. Rasm yuboring (photo formatida):", mainBackKeyboard);
             break;
         case 'product_description_uz':
-            bot.sendMessage(chatId, "6a. Tavsifni UZ tilida kiriting:", backKeyboard);
-            break;
-        case 'product_description_ru':
-            bot.sendMessage(chatId, "6b. Tavsifni RU tilida kiriting:", backKeyboard);
-            break;
-        case 'product_description_en':
-            bot.sendMessage(chatId, "6c. Tavsifni EN tilida kiriting:", backKeyboard);
+            bot.sendMessage(chatId, "6a. Tavsifni UZ tilida kiriting (RU/EN avtomatik tarjima qilinadi):", backKeyboard);
             break;
         case 'product_stock':
             bot.sendMessage(chatId, "7. Ombordagi miqdor (mas: 50):", backKeyboard);

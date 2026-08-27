@@ -8,6 +8,7 @@ const { handleCommand } = require('./command');
 const { handleVipStep } = require('./vip');
 const { showProductView } = require('../views/product');
 const { showCategoryView } = require('../views/category');
+const { translateToRuEn } = require('../utils/translate');
 
 function registerMessageHandler() {
     bot.on('message', async (msg) => {
@@ -129,32 +130,24 @@ async function handleIncomingMessage(msg) {
         const oldStep = step;
         switch (step) {
 
-            // 1. Nom UZ
-            case 'product_name_uz':
+            // 1. Nom UZ — RU/EN endi qo'lda so'ralmaydi, Gemini orqali
+            // avtomatik tarjima qilinadi (ko'rinmasdan).
+            case 'product_name_uz': {
                 if (!text || text.trim().length < 2) { bot.sendMessage(chatId, "Kamida 2 belgi kiriting!"); return; }
                 data.name_uz = text.trim();
-                state.steps.push(oldStep);
-                state.step = 'product_name_ru';
-                bot.sendMessage(chatId, "1b. Mahsulot nomini RU tilida kiriting:", backKeyboard);
-                break;
-
-            // 1b. Nom RU
-            case 'product_name_ru':
-                if (!text || text.trim().length < 2) { bot.sendMessage(chatId, "Kamida 2 belgi kiriting!"); return; }
-                data.name_ru = text.trim();
-                state.steps.push(oldStep);
-                state.step = 'product_name_en';
-                bot.sendMessage(chatId, "1c. Mahsulot nomini EN tilida kiriting:", backKeyboard);
-                break;
-
-            // 1c. Nom EN
-            case 'product_name_en':
-                if (!text || text.trim().length < 2) { bot.sendMessage(chatId, "Kamida 2 belgi kiriting!"); return; }
-                data.name_en = text.trim();
+                const waitMsg = await bot.sendMessage(chatId, "🌐 RU/EN tarjima qilinmoqda...");
+                const { ru, en } = await translateToRuEn(data.name_uz);
+                data.name_ru = ru;
+                data.name_en = en;
                 state.steps.push(oldStep);
                 state.step = 'product_price_piece';
+                bot.editMessageText(
+                    `✅ Tarjima:\n🇷🇺 ${ru || 'xato — bo\'sh qoldirildi'}\n🇬🇧 ${en || 'xato — bo\'sh qoldirildi'}`,
+                    { chat_id: chatId, message_id: waitMsg.message_id }
+                );
                 bot.sendMessage(chatId, "2. Dona narxini USD da kiriting (mas: 6.53):", backKeyboard);
                 break;
+            }
 
             // 2. Narx (pricePiece, USD)
             case 'product_price_piece': {
@@ -222,29 +215,22 @@ async function handleIncomingMessage(msg) {
             case 'product_image':
                 return;
 
-            // 6. Tavsif UZ
-            case 'product_description_uz':
+            // 6. Tavsif UZ — RU/EN endi qo'lda so'ralmaydi, avtomatik tarjima
+            case 'product_description_uz': {
                 data.desc_uz = text.trim();
-                state.steps.push(oldStep);
-                state.step = 'product_description_ru';
-                bot.sendMessage(chatId, "6b. Tavsifni RU tilida kiriting:", backKeyboard);
-                break;
-
-            // 6b. Tavsif RU
-            case 'product_description_ru':
-                data.desc_ru = text.trim();
-                state.steps.push(oldStep);
-                state.step = 'product_description_en';
-                bot.sendMessage(chatId, "6c. Tavsifni EN tilida kiriting:", backKeyboard);
-                break;
-
-            // 6c. Tavsif EN → so'ng stock
-            case 'product_description_en':
-                data.desc_en = text.trim();
+                const waitMsg = await bot.sendMessage(chatId, "🌐 RU/EN tarjima qilinmoqda...");
+                const { ru, en } = await translateToRuEn(data.desc_uz);
+                data.desc_ru = ru;
+                data.desc_en = en;
                 state.steps.push(oldStep);
                 state.step = 'product_stock';
+                bot.editMessageText(
+                    `✅ Tavsif tarjima qilindi.`,
+                    { chat_id: chatId, message_id: waitMsg.message_id }
+                );
                 bot.sendMessage(chatId, "7. Ombordagi miqdor (mas: 50):", backKeyboard);
                 break;
+            }
 
             // 7. Stock → saqlash
             case 'product_stock': {
