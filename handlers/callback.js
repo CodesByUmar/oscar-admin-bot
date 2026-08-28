@@ -1,12 +1,12 @@
 const { bot, admins } = require('../config/adminBot');
-const { db } = require('../config/firebase');
+const { db, admin } = require('../config/firebase');
 const { backKeyboard, isSuperAdmin, getMainKeyboard } = require('../keyboards');
 const { userState } = require('../state/userState');
 const { handleInlineBack } = require('./back');
 const { showCategoryView, showCategoryUpdateSelect } = require('../views/category');
 const { showProductView, showProductUpdateCategorySelect, showProductsInCategory, getProductsInCategory } = require('../views/product');
 const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
-const { getStr, formatDateTime, resolveCustomerPhone } = require('../utils/helpers');
+const { getStr, formatDateTime, resolveCustomerPhone, getAdminDisplayName } = require('../utils/helpers');
 const { getUserBot } = require('../bots/userBot');
 const { showBannerDeleteList } = require('./command');
 
@@ -128,7 +128,12 @@ function registerCallbackHandler() {
                 if (!doc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
                 const orderData = doc.data();
                 if (orderData.status !== 'pending') { bot.answerCallbackQuery(cq.id, { text: `Allaqachon ${orderData.status}!` }); return; }
-                await orderRef.update({ status: isConfirm ? 'confirmed' : 'cancelled' });
+                const adminDisplayName = getAdminDisplayName(cq.from);
+                await orderRef.update({
+                    status: isConfirm ? 'confirmed' : 'cancelled',
+                    [isConfirm ? 'confirmedBy' : 'cancelledBy']: { id: cq.from.id, name: adminDisplayName },
+                    [isConfirm ? 'confirmedAt' : 'cancelledAt']: admin.firestore.FieldValue.serverTimestamp(),
+                });
                 if (isConfirm && orderData.telegramChatId) {
                     const customerRef = db.collection('customers').doc(String(orderData.telegramChatId));
                     const customerDoc = await customerRef.get();
@@ -140,15 +145,14 @@ function registerCallbackHandler() {
                         console.log(`✅ Mijoz ${orderData.telegramChatId}: ordersCount ${currentCount} → ${newCount}`);
                     }
                 }
-                const adminName = cq.from.first_name || "Admin";
-                const statusText = isConfirm ? `✅ Tasdiqlandi — ${adminName}` : `❌ Bekor qilindi — ${adminName}`;
+                const statusText = isConfirm ? `✅ Tasdiqlandi — ${adminDisplayName}` : `❌ Bekor qilindi — ${adminDisplayName}`;
                 const newKeyboard = isConfirm
                     ? { inline_keyboard: [[{ text: "🚚 Yetkazildi deb belgilash", callback_data: `deliver_order_${orderId}` }]] }
                     : { inline_keyboard: [] };
                 bot.editMessageText(`${cq.message.text}\n\n=================\n${statusText}`, { chat_id: chatId, message_id: messageId, reply_markup: newKeyboard });
                 bot.answerCallbackQuery(cq.id, { text: isConfirm ? "Tasdiqlandi" : "Bekor qilindi" });
                 admins.forEach(aId => {
-                    if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} ${isConfirm ? 'tasdiqlandi' : 'bekor'} → ${adminName}`);
+                    if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} ${isConfirm ? 'tasdiqlandi' : 'bekor'} → ${adminDisplayName}`);
                 });
 
                 notifyCustomer(orderData.telegramChatId, orderId,
@@ -174,14 +178,18 @@ function registerCallbackHandler() {
                     bot.answerCallbackQuery(cq.id, { text: `Bu buyurtma hali qabul qilinmagan yoki allaqachon ${orderData.status}!` });
                     return;
                 }
-                await orderRef.update({ status: 'delivered' });
-                const adminName = cq.from.first_name || "Admin";
-                bot.editMessageText(`${cq.message.text}\n\n🚚 Yetkazildi — ${adminName}`, {
+                const deliveredByName = getAdminDisplayName(cq.from);
+                await orderRef.update({
+                    status: 'delivered',
+                    deliveredBy: { id: cq.from.id, name: deliveredByName },
+                    deliveredAt: admin.firestore.FieldValue.serverTimestamp(),
+                });
+                bot.editMessageText(`${cq.message.text}\n\n🚚 Yetkazildi — ${deliveredByName}`, {
                     chat_id: chatId, message_id: messageId, reply_markup: { inline_keyboard: [] },
                 });
                 bot.answerCallbackQuery(cq.id, { text: "Yetkazildi deb belgilandi" });
                 admins.forEach(aId => {
-                    if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} yetkazildi → ${adminName}`);
+                    if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} yetkazildi → ${deliveredByName}`);
                 });
                 notifyCustomer(orderData.telegramChatId, orderId,
                     `🚚 Buyurtmangiz yetkazib berildi!\n\n🆔 ${orderId}\n\nXaridingiz uchun rahmat!`

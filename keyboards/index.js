@@ -7,7 +7,7 @@ const mainKeyboard = {
             [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
             [{ text: "🔍 Qidiruv" }],
             [{ text: "📊 Statistika" }, { text: "💱 USD kurs" }],
-            [{ text: "📦 Buyurtmalar" }],
+            [{ text: "📦 Buyurtmalar" }, { text: "📅 Oylik hisobot" }],
             [{ text: "🖼 Banner qo'shish" }, { text: "🗑 Bannerni o'chirish" }],
             [{ text: "⭐ VIP qo'shish" }, { text: "🗑 VIP o'chirish" }],
         ],
@@ -71,7 +71,7 @@ function getMainBackKeyboard(chatId) {
 const commandButtons = [
     "🛍 Mahsulot qo'shish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
     "🔄 Mahsulotni yangilash", "🔍 Qidiruv",
-    "📊 Statistika", "💱 USD kurs",
+    "📊 Statistika", "💱 USD kurs", "📅 Oylik hisobot",
     "📦 Buyurtmalar", "❌ Bekor qilish",
     "🖼 Banner qo'shish", "🗑 Bannerni o'chirish",
     "⭐ VIP qo'shish", "🗑 VIP o'chirish",

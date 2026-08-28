@@ -124,6 +124,16 @@ async function resolveCustomerPhone(orderData) {
     return null;
 }
 
+// Buyurtmani kim tasdiqladi/yetkazdi/bekor qildi — hisobotlarda va
+// bildirishnomalarda ko'rsatish uchun. @username borsa shuni, bo'lmasa
+// ism-familiyani, hech biri bo'lmasa Telegram ID'ni qaytaradi.
+function getAdminDisplayName(from) {
+    if (!from) return "Noma'lum admin";
+    if (from.username) return `@${from.username}`;
+    const fullName = [from.first_name, from.last_name].filter(Boolean).join(' ');
+    return fullName || `ID:${from.id}`;
+}
+
 function getStr(val, fallback = '') {
     if (val === null || val === undefined) return fallback;
     if (typeof val === 'string') return val;
@@ -139,5 +149,6 @@ module.exports = {
     formatTimestamp,
     formatDateTime,
     parseDateDDMMYYYY,
-    getStr
+    getStr,
+    getAdminDisplayName
 };

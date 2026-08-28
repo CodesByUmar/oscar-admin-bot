@@ -7,6 +7,7 @@ const { formatDateTime } = require('../utils/helpers');
 const { showCategoryUpdateSelect } = require('../views/category');
 const { showProductUpdateCategorySelect } = require('../views/product');
 const { handleVipStep } = require('./vip');
+const { generateMonthlyReportBuffer } = require('../utils/monthlyReport');
 
 
 
@@ -25,7 +26,7 @@ async function handleCommand(chatId, text) {
     if (!db) { bot.sendMessage(chatId, "❌ Database ulanmagan.", getMainKeyboard(chatId)); return; }
 
     // ─── FAQAT SUPER ADMIN UCHUN ────────────────────────────────────
-    const superAdminOnly = ["⭐ VIP qo'shish", "🗑 VIP o'chirish", "💱 USD kurs", "📊 Statistika", "🗑 Bannerni o'chirish"];
+    const superAdminOnly = ["⭐ VIP qo'shish", "🗑 VIP o'chirish", "💱 USD kurs", "📊 Statistika", "🗑 Bannerni o'chirish", "📅 Oylik hisobot"];
     if (superAdminOnly.includes(text) && !isSuperAdmin(chatId)) {
         bot.sendMessage(chatId, "⛔ Bu amal faqat super adminlar uchun.", getMainKeyboard(chatId));
         return;
@@ -131,6 +132,24 @@ async function handleCommand(chatId, text) {
         } catch (error) {
             console.error("Statistika xato:", error);
             bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
+        }
+        return;
+    }
+
+    // ─── OYLIK HISOBOT (Excel) ───────────────────────────────────────
+    if (text === "📅 Oylik hisobot") {
+        const waitMsg = await bot.sendMessage(chatId, "📊 Hisobot tayyorlanmoqda...");
+        try {
+            const { buffer, filename, orderCount } = await generateMonthlyReportBuffer();
+            if (orderCount === 0) {
+                bot.editMessageText("Bu oyda hali buyurtma yo'q.", { chat_id: chatId, message_id: waitMsg.message_id });
+                return;
+            }
+            await bot.sendDocument(chatId, buffer, {}, { filename, contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            bot.editMessageText(`✅ Hisobot tayyor (${orderCount} ta buyurtma).`, { chat_id: chatId, message_id: waitMsg.message_id });
+        } catch (error) {
+            console.error("Oylik hisobot xato:", error);
+            bot.editMessageText("❌ Hisobot tayyorlashda xato!", { chat_id: chatId, message_id: waitMsg.message_id });
         }
         return;
     }
