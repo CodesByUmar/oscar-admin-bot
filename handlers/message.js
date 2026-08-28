@@ -6,6 +6,7 @@ const { parseNumberInput, parseDateDDMMYYYY, createWithNextId, getStr } = requir
 const { handleBack } = require('./back');
 const { handleCommand } = require('./command');
 const { handleVipStep } = require('./vip');
+const { handleAdminAddStep } = require('./adminManagement');
 const { showProductView } = require('../views/product');
 const { showCategoryView } = require('../views/category');
 
@@ -407,6 +408,12 @@ async function handleIncomingMessage(msg) {
     // ─── VIP ─────────────────────────────────────────────────────────
     if (step && step.startsWith('vip_')) {
         await handleVipStep(chatId, text);
+        return;
+    }
+
+    // ─── ADMIN QO'SHISH ──────────────────────────────────────────────
+    if (step === 'admin_add_id') {
+        await handleAdminAddStep(chatId, text);
         return;
     }
 

@@ -32,6 +32,13 @@ async function handleCommand(chatId, text) {
         return;
     }
 
+    // ─── ADMIN QO'SHISH (istalgan admin ishlata oladi, super admin shart emas) ──
+    if (text === "➕ Admin qo'shish") {
+        userState[chatId] = { step: 'admin_add_id', data: {}, steps: [] };
+        bot.sendMessage(chatId, "➕ Yangi admin qo'shish\n\nTelegram ID yoki @username kiriting:", backKeyboard);
+        return;
+    }
+
     // ─── VIP ──────────────────────────────────────────────────────────
     if (text === "⭐ VIP qo'shish") {
         userState[chatId] = { step: 'vip_add_id', data: {}, steps: [] };

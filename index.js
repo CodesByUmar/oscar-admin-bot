@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { db } = require('./config/firebase');
-const { bot: adminBotInstance } = require('./config/adminBot');
+const { bot: adminBotInstance, loadDynamicAdmins } = require('./config/adminBot');
 const { bot: orderBotInstance } = require('./config/orderBot');
 const { loadPersistedStates, persistAllStates } = require('./state/userState');
 
@@ -23,6 +23,7 @@ process.on('uncaughtException', (error) => {
     console.error('❌ Uncaught Exception:', error);
 });
 
+loadDynamicAdmins(); // Firestore'dan qo'shilgan adminlarni operativ xotiraga yuklaydi
 registerOrderListener();
 registerOrderBotCallbacks();
 registerMessageHandler();

@@ -281,4 +281,4 @@ function sendVipDeleteConfirmation(chatId, telegramId, docData) {
     );
 }
 
-module.exports = { registerVipCommands, handleVipStep };
+module.exports = { registerVipCommands, handleVipStep, findTelegramUser, buildDisplayName };
