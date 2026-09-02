@@ -5,6 +5,7 @@ const { userState } = require('../state/userState');
 const { handleInlineBack } = require('./back');
 const { showCategoryView, showCategoryUpdateSelect } = require('../views/category');
 const { showProductView, showProductUpdateCategorySelect, showProductsInCategory, getProductsInCategory } = require('../views/product');
+const { showCategoryTranslationList, showCategoryTranslationEdit } = require('../views/categoryTranslation');
 const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
 const { getStr, formatDateTime, resolveCustomerPhone, getAdminDisplayName } = require('../utils/helpers');
 const { getUserBot } = require('../bots/userBot');
@@ -41,6 +42,7 @@ function registerCallbackHandler() {
             'delete_banner_', 'confirm_delete_banner_',
             'confirm_delete_vip_',
             'confirm_order_', 'cancel_order_', 'deliver_order_',
+            'cattr_',
         ];
         if (superAdminOnlyPrefixes.some((p) => data.startsWith(p)) && !isSuperAdmin(chatId)) {
             bot.answerCallbackQuery(cq.id, { text: "⛔ Bu amal faqat super adminlar uchun." });
@@ -211,6 +213,41 @@ function registerCallbackHandler() {
         }
 
         if (data === 'back_to_prev') { await handleInlineBack(chatId, messageId); bot.answerCallbackQuery(cq.id); return; }
+
+        // ─── KATEGORIYA TARJIMALARI ────────────────────────────────────
+        if (data === 'close_cattr_list') {
+            try {
+                await bot.editMessageReplyMarkup({ inline_keyboard: [] }, { chat_id: chatId, message_id: messageId });
+            } catch (error) { /* xabar allaqachon o'zgargan bo'lishi mumkin */ }
+            bot.sendMessage(chatId, "🏠 Asosiy menyu", getMainKeyboard(chatId));
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+        if (data.startsWith('cattr_page_')) {
+            const page = parseInt(data.replace('cattr_page_', ''), 10) || 0;
+            userState[chatId] = { step: 'none', data: { cattrPage: page }, steps: [] };
+            await showCategoryTranslationList(chatId, messageId, page);
+            bot.answerCallbackQuery(cq.id); return;
+        }
+        if (data.startsWith('cattr_edit_')) {
+            const docId = data.replace('cattr_edit_', '');
+            const page = (userState[chatId] && userState[chatId].data && userState[chatId].data.cattrPage) || 0;
+            userState[chatId] = { step: 'none', data: { cattrPage: page, cattrDocId: docId }, steps: [] };
+            await showCategoryTranslationEdit(chatId, docId, messageId);
+            bot.answerCallbackQuery(cq.id); return;
+        }
+        if (data.startsWith('cattr_setru_') || data.startsWith('cattr_seten_')) {
+            const isRu = data.startsWith('cattr_setru_');
+            const docId = data.replace(isRu ? 'cattr_setru_' : 'cattr_seten_', '');
+            const prevData = (userState[chatId] && userState[chatId].data) || {};
+            userState[chatId] = {
+                step: isRu ? 'cattr_ru_input' : 'cattr_en_input',
+                data: { ...prevData, cattrDocId: docId, cattrMessageId: messageId },
+                steps: [],
+            };
+            bot.sendMessage(chatId, `${isRu ? '🇷🇺 RU' : '🇬🇧 EN'} nomni kiriting:`, backKeyboard);
+            bot.answerCallbackQuery(cq.id); return;
+        }
 
         if (data.startsWith('cat_select_')) {
             const id = parseInt(data.replace('cat_select_', ''));

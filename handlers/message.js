@@ -9,6 +9,7 @@ const { handleVipStep } = require('./vip');
 const { handleAdminAddStep } = require('./adminManagement');
 const { showProductView } = require('../views/product');
 const { showCategoryView } = require('../views/category');
+const { showCategoryTranslationEdit, findCategoryKeyItem } = require('../views/categoryTranslation');
 
 function registerMessageHandler() {
     bot.on('message', async (msg) => {
@@ -399,6 +400,33 @@ async function handleIncomingMessage(msg) {
             bot.sendMessage(chatId, `✅ ${fieldLabel} (${lang.toUpperCase()}) yangilandi`, backKeyboard);
         } catch (error) {
             console.error("Ko'p tilli maydonni yangilashda xato:", error);
+            bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
+            resetUserState(chatId);
+        }
+        return;
+    }
+
+    // ─── KATEGORIYA TARJIMALARI (topCategory/category — RU/EN) ────────
+    if (step === 'cattr_ru_input' || step === 'cattr_en_input') {
+        const stateData = state.data;
+        if (!text || text.trim().length < 1) { bot.sendMessage(chatId, "Bo'sh bo'lmasin!"); return; }
+        try {
+            const item = await findCategoryKeyItem(stateData.cattrDocId);
+            if (!item) {
+                bot.sendMessage(chatId, "Bu kategoriya endi mahsulotlarda topilmadi.", getMainKeyboard(chatId));
+                resetUserState(chatId);
+                return;
+            }
+            const field = step === 'cattr_ru_input' ? 'ru' : 'en';
+            await db.collection('categoryTranslations').doc(stateData.cattrDocId).set(
+                { key: item.key, type: item.type, [field]: text.trim(), updatedAt: admin.firestore.FieldValue.serverTimestamp() },
+                { merge: true }
+            );
+            state.step = 'none';
+            await showCategoryTranslationEdit(chatId, stateData.cattrDocId, stateData.cattrMessageId);
+            bot.sendMessage(chatId, `✅ ${field.toUpperCase()} nom saqlandi: ${text.trim()}`, backKeyboard);
+        } catch (error) {
+            console.error("Kategoriya tarjimasini saqlashda xato:", error);
             bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
             resetUserState(chatId);
         }

@@ -9,6 +9,7 @@ const mainKeyboard = {
             [{ text: "📊 Statistika" }, { text: "💱 USD kurs" }],
             [{ text: "📦 Buyurtmalar" }, { text: "📅 Oylik hisobot" }],
             [{ text: "🖼 Banner qo'shish" }, { text: "🗑 Bannerni o'chirish" }],
+            [{ text: "🌐 Kategoriya tarjimalari" }],
             [{ text: "➕ Admin qo'shish" }],
             [{ text: "⭐ VIP qo'shish" }, { text: "🗑 VIP o'chirish" }],
         ],
@@ -76,6 +77,7 @@ const commandButtons = [
     "📊 Statistika", "💱 USD kurs", "📅 Oylik hisobot",
     "📦 Buyurtmalar", "❌ Bekor qilish",
     "🖼 Banner qo'shish", "🗑 Bannerni o'chirish",
+    "🌐 Kategoriya tarjimalari",
     "⭐ VIP qo'shish", "🗑 VIP o'chirish",
     "➕ Admin qo'shish",
 ];
