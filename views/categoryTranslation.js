@@ -14,13 +14,32 @@ function keyToDocId(key) {
     return encodeURIComponent(key).replace(/%/g, '_');
 }
 
+// `category` (subkategoriya) eski mahsulotlarda ko'pincha allaqachon
+// { uz, ru, en } obyekti sifatida saqlangan (bir martalik import paytida
+// tarjima qilib qo'yilgan) — bunday holatda kalit sifatida uz qiymati
+// olinadi, mavjud ru/en esa "allaqachon tarjima qilingan" deb hisoblanadi.
+// Yangi qo'shiladigan mahsulotlarda (bot orqali) category oddiy matn
+// bo'ladi — ular uchun global categoryTranslations kolleksiyasi ishlaydi.
+function extractCategoryInfo(rawCategory) {
+    if (typeof rawCategory === 'string') {
+        const key = rawCategory.trim();
+        return key ? { key, inlineRu: undefined, inlineEn: undefined } : null;
+    }
+    if (rawCategory && typeof rawCategory === 'object') {
+        const key = (rawCategory.uz || rawCategory.ru || rawCategory.en || '').trim();
+        if (!key) return null;
+        return { key, inlineRu: rawCategory.ru || undefined, inlineEn: rawCategory.en || undefined };
+    }
+    return null;
+}
+
 // products kolleksiyasidan barcha noyob topCategory (🗂) va category (📁)
 // qiymatlarini yig'ib chiqadi — bular uchun markazlashtirilgan alohida
 // kolleksiya yo'q, shuning uchun har safar mahsulotlardan hisoblanadi
 // (oscar-ui'ning Categories.tsx/SubcategoryList.tsx qilgani kabi).
 async function collectCategoryKeys() {
     const snapshot = await db.collection('products').get();
-    const map = new Map(); // docId -> { key, type }
+    const map = new Map(); // docId -> { key, type, inlineRu?, inlineEn? }
     snapshot.forEach((doc) => {
         const d = doc.data();
         const top = typeof d.topCategory === 'string' ? d.topCategory.trim() : '';
@@ -28,10 +47,18 @@ async function collectCategoryKeys() {
             const id = keyToDocId(top);
             if (!map.has(id)) map.set(id, { key: top, type: 'top' });
         }
-        const cat = typeof d.category === 'string' ? d.category.trim() : '';
-        if (cat) {
-            const id = keyToDocId(cat);
-            if (!map.has(id)) map.set(id, { key: cat, type: 'sub' });
+        const catInfo = extractCategoryInfo(d.category);
+        if (catInfo) {
+            const id = keyToDocId(catInfo.key);
+            const existing = map.get(id);
+            // Bitta kalitga ega bir nechta mahsulot bo'lishi mumkin — birortasida
+            // inline ru/en bo'lsa, shuni saqlab qolamiz (topilgan birinchisi yetarli).
+            if (!existing) {
+                map.set(id, { key: catInfo.key, type: 'sub', inlineRu: catInfo.inlineRu, inlineEn: catInfo.inlineEn });
+            } else if (!existing.inlineRu && catInfo.inlineRu) {
+                existing.inlineRu = catInfo.inlineRu;
+                existing.inlineEn = existing.inlineEn || catInfo.inlineEn;
+            }
         }
     });
     return Array.from(map.entries()).map(([docId, v]) => ({ docId, ...v }));
@@ -43,12 +70,15 @@ async function showCategoryTranslationList(chatId, messageId = null, page = 0) {
             collectCategoryKeys(),
             db.collection('categoryTranslations').get(),
         ]);
-        const translated = new Set(trSnap.docs.filter((d) => d.data().ru).map((d) => d.id));
+        const translatedInFs = new Set(trSnap.docs.filter((d) => d.data().ru).map((d) => d.id));
+        // Global kolleksiyada ru bo'lsa YOKI mahsulotning o'zida allaqachon
+        // inline ru (eski import'dan) bo'lsa — "tarjima qilingan" hisoblanadi.
+        const isTranslated = (item) => translatedInFs.has(item.docId) || !!item.inlineRu;
 
         // Tarjimasi hali yo'qlar ro'yxat boshida — admin ishini tezlashtirish uchun.
         keys.sort((a, b) => {
-            const at = translated.has(a.docId) ? 1 : 0;
-            const bt = translated.has(b.docId) ? 1 : 0;
+            const at = isTranslated(a) ? 1 : 0;
+            const bt = isTranslated(b) ? 1 : 0;
             if (at !== bt) return at - bt;
             if (a.type !== b.type) return a.type === 'top' ? -1 : 1;
             return a.key.localeCompare(b.key);
@@ -60,7 +90,7 @@ async function showCategoryTranslationList(chatId, messageId = null, page = 0) {
 
         const kb = { inline_keyboard: [] };
         pageItems.forEach((item) => {
-            const status = translated.has(item.docId) ? '✅' : '❌';
+            const status = isTranslated(item) ? '✅' : '❌';
             const typeIcon = item.type === 'top' ? '🗂' : '📁';
             const label = `${status} ${typeIcon} ${item.key}`.slice(0, 60);
             kb.inline_keyboard.push([{ text: label, callback_data: `cattr_edit_${item.docId}` }]);
@@ -72,7 +102,7 @@ async function showCategoryTranslationList(chatId, messageId = null, page = 0) {
         if (navRow.length) kb.inline_keyboard.push(navRow);
         kb.inline_keyboard.push([{ text: '🏠 Bosh menyu', callback_data: 'close_cattr_list' }]);
 
-        const doneCount = keys.filter((k) => translated.has(k.docId)).length;
+        const doneCount = keys.filter(isTranslated).length;
         const text =
             `🌐 Kategoriya tarjimalari (${doneCount}/${keys.length} to'ldirilgan)\n` +
             `Sahifa ${safePage + 1}/${totalPages}\n\n` +
@@ -106,11 +136,14 @@ async function showCategoryTranslationEdit(chatId, docId, messageId) {
             return;
         }
         const trData = doc.exists ? doc.data() : {};
+        const ruValue = trData.ru || item.inlineRu;
+        const enValue = trData.en || item.inlineEn;
+        const inlineNote = !trData.ru && item.inlineRu ? ' (eski importdan, global ro\'yxatga hali ko\'chirilmagan)' : '';
         const typeLabel = item.type === 'top' ? 'Top-kategoriya' : 'Subkategoriya';
         const text =
             `✏️ ${typeLabel}: ${item.key}\n\n` +
-            `🇷🇺 RU: ${trData.ru || '— kiritilmagan'}\n` +
-            `🇬🇧 EN: ${trData.en || '— kiritilmagan'}\n\n` +
+            `🇷🇺 RU: ${ruValue || '— kiritilmagan'}${ruValue ? inlineNote : ''}\n` +
+            `🇬🇧 EN: ${enValue || '— kiritilmagan'}\n\n` +
             `Nimani tahrirlaysiz?`;
         const kb = {
             inline_keyboard: [
