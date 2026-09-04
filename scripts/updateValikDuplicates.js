@@ -19,6 +19,13 @@ const TARGETS = [
     { id: '249', expected: 'Валик 44', url: 'https://i.ibb.co/7xQGL5Yb/44.png' },
     { id: '244', expected: 'Валик 38', url: 'https://i.ibb.co/V02F7D6w/38.jpg' },
     { id: '250', expected: 'Валик 38', url: 'https://i.ibb.co/V02F7D6w/38.jpg' },
+    // "22 (набор х 3)" uchun alohida rasm topilmagani uchun, foydalanuvchi
+    // ko'rsatmasiga ko'ra "22 (набор х 5)" rasmi ishlatiladi (ikkalasi ham
+    // bir xil turdagi to'plam, faqat soni farq qiladi).
+    { id: '252', expected: 'Валик 22 (набор х 3)', url: 'https://i.ibb.co/CKf0dRFT/22x5.jpg' },
+    { id: '773', expected: 'Валик 22 (набор х 3)', url: 'https://i.ibb.co/CKf0dRFT/22x5.jpg' },
+    // "Валик фасадный" ikkinchi nusxasi (birinchisiga — 790 — avvalroq yozilgan edi).
+    { id: '269', expected: 'Валик фасадный (SPONGE сариқ)', url: 'https://i.ibb.co/jvK7pcDS/SPONGE.png' },
 ];
 
 async function run() {
