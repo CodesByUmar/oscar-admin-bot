@@ -10,11 +10,11 @@ const { db } = require('../config/firebase');
 const IMAGE_URL = 'https://i.ibb.co/S7v2D54q/169.jpg';
 
 const TARGETS = {
-    '394': '35 Аэрозоль gold DUAFIX',
-    '400': '21 Аэрозоль голубая средная DUAFIX', // Medium Blue
-    '405': '41 Аэрозоль желтая DUAFIX', // Yellow
-    '406': '43 Аэрозоль белая крем DUAFIX', // Cream White
-    '407': '672 Аэрозоль оранжевая DUAFIX', // Engineering Orange Red
+    '433': '35 Аэрозоль gold DUAFIX',
+    '439': '21 Аэрозоль голубая средная DUAFIX', // Medium Blue
+    '444': '41 Аэрозоль желтая DUAFIX', // Yellow
+    '445': '43 Аэрозоль белая крем DUAFIX', // Cream White
+    '446': '672 Аэрозоль оранжевая DUAFIX', // Engineering Orange Red
 };
 
 async function run() {
