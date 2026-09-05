@@ -406,6 +406,22 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
+    // ─── BANNER HAVOLASI (qo'lda kiritish) ─────────────────────────
+    if (step === 'banner_link_manual_input') {
+        const link = (text || '').trim();
+        if (!link) { bot.sendMessage(chatId, "Iltimos, havola matnini yuboring."); return; }
+        try {
+            await db.collection('banners').doc(data.bannerId).update({ link });
+            resetUserState(chatId);
+            bot.sendMessage(chatId, `✅ Havola saqlandi: ${link}`, getMainKeyboard(chatId));
+        } catch (error) {
+            console.error("Banner havolasini saqlashda xato:", error);
+            bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
+            resetUserState(chatId);
+        }
+        return;
+    }
+
     // ─── KATEGORIYA TARJIMALARI (topCategory/category — RU/EN) ────────
     if (step === 'cattr_ru_input' || step === 'cattr_en_input') {
         const stateData = state.data;

@@ -4,6 +4,7 @@ const { backKeyboard, getMainKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { uploadToImgBB } = require('../utils/imgbb');
 const { showProductView } = require('../views/product');
+const { showBannerLinkPicker } = require('../views/banner');
 
 // Bitta chat uchun rasmlarni KETMA-KET ishlash — aks holda admin bir nechta
 // rasmni tez-tez yuborsa, ularning bot.on('photo') ishlovchilari bir-biriga
@@ -33,7 +34,7 @@ async function processIncomingPhoto(chatId, fileId) {
             if (imageUrl) {
                 try {
                     const countSnap = await db.collection('banners').get();
-                    await db.collection('banners').add({
+                    const docRef = await db.collection('banners').add({
                         image: imageUrl,
                         link: null,
                         order: countSnap.size,
@@ -42,6 +43,7 @@ async function processIncomingPhoto(chatId, fileId) {
                     resetUserState(chatId);
                     bot.editMessageText("✅ Banner qo'shildi! Mini-appda darhol ko'rinadi.", { chat_id: chatId, message_id: waitMsg.message_id });
                     bot.sendMessage(chatId, "Davom eting.", getMainKeyboard(chatId));
+                    await showBannerLinkPicker(chatId, docRef.id);
                 } catch (error) {
                     bot.editMessageText("❌ Bannerni saqlashda xato!", { chat_id: chatId, message_id: waitMsg.message_id });
                 }

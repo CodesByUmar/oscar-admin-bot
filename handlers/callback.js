@@ -10,6 +10,7 @@ const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
 const { getStr, formatDateTime, resolveCustomerPhone, getAdminDisplayName } = require('../utils/helpers');
 const { getUserBot } = require('../bots/userBot');
 const { showBannerDeleteList } = require('./command');
+const { showBannerManageList, showBannerLinkPicker, getTopCategoryKeys } = require('../views/banner');
 
 async function notifyCustomer(telegramChatId, orderId, text) {
     if (!telegramChatId) return;
@@ -39,7 +40,7 @@ function registerCallbackHandler() {
         const superAdminOnlyPrefixes = [
             'delete_product_', 'confirm_delete_product_',
             'delete_category_', 'confirm_delete_category_',
-            'delete_banner_', 'confirm_delete_banner_',
+            'delete_banner_', 'confirm_delete_banner_', 'banner_link_',
             'confirm_delete_vip_',
             'confirm_order_', 'cancel_order_', 'deliver_order_',
             'cattr_',
@@ -474,6 +475,64 @@ function registerCallbackHandler() {
 
         if (data === 'cancel_delete_banner') {
             await showBannerDeleteList(chatId, messageId);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+
+        // ─── BANNER HAVOLASI ─────────────────────────────────────────
+        if (data.startsWith('banner_link_page_')) {
+            const rest = data.replace('banner_link_page_', '');
+            const sep = rest.lastIndexOf('_');
+            const bannerId = rest.slice(0, sep);
+            const page = parseInt(rest.slice(sep + 1), 10) || 0;
+            await showBannerLinkPicker(chatId, bannerId, messageId, page);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+
+        if (data.startsWith('banner_link_setcat_')) {
+            const rest = data.replace('banner_link_setcat_', '');
+            const sep = rest.lastIndexOf('_');
+            const bannerId = rest.slice(0, sep);
+            const idx = parseInt(rest.slice(sep + 1), 10);
+            try {
+                const keys = await getTopCategoryKeys();
+                const key = keys[idx];
+                if (key == null) { bot.answerCallbackQuery(cq.id, { text: 'Xato!' }); return; }
+                await db.collection('banners').doc(bannerId).update({ link: `/categories/${encodeURIComponent(key)}` });
+                bot.answerCallbackQuery(cq.id, { text: '✅ Saqlandi!' });
+                await showBannerLinkPicker(chatId, bannerId, messageId);
+            } catch (error) {
+                bot.answerCallbackQuery(cq.id, { text: 'Xato!' });
+            }
+            return;
+        }
+
+        if (data.startsWith('banner_link_clear_')) {
+            const bannerId = data.replace('banner_link_clear_', '');
+            try {
+                await db.collection('banners').doc(bannerId).update({ link: null });
+                bot.answerCallbackQuery(cq.id, { text: "✅ Havola o'chirildi" });
+                await showBannerLinkPicker(chatId, bannerId, messageId);
+            } catch (error) {
+                bot.answerCallbackQuery(cq.id, { text: 'Xato!' });
+            }
+            return;
+        }
+
+        if (data.startsWith('banner_link_manual_')) {
+            const bannerId = data.replace('banner_link_manual_', '');
+            userState[chatId] = { step: 'banner_link_manual_input', data: { bannerId }, steps: [] };
+            await bot.editMessageText(
+                "🔗 Havolani yuboring.\nMasalan: /categories/Valik yoki https://t.me/kanal",
+                { chat_id: chatId, message_id: messageId }
+            );
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+
+        if (data === 'banner_link_back') {
+            await showBannerManageList(chatId, messageId);
             bot.answerCallbackQuery(cq.id);
             return;
         }

@@ -6,6 +6,7 @@ const { getStr } = require('../utils/helpers');
 const { formatDateTime } = require('../utils/helpers');
 const { showCategoryUpdateSelect } = require('../views/category');
 const { showCategoryTranslationList } = require('../views/categoryTranslation');
+const { showBannerManageList } = require('../views/banner');
 const { showProductUpdateCategorySelect } = require('../views/product');
 const { handleVipStep } = require('./vip');
 const { generateMonthlyReportBuffer } = require('../utils/monthlyReport');
@@ -27,7 +28,7 @@ async function handleCommand(chatId, text) {
     if (!db) { bot.sendMessage(chatId, "❌ Database ulanmagan.", getMainKeyboard(chatId)); return; }
 
     // ─── FAQAT SUPER ADMIN UCHUN ────────────────────────────────────
-    const superAdminOnly = ["⭐ VIP qo'shish", "🗑 VIP o'chirish", "💱 USD kurs", "📊 Statistika", "🗑 Bannerni o'chirish", "📅 Oylik hisobot", "🌐 Kategoriya tarjimalari"];
+    const superAdminOnly = ["⭐ VIP qo'shish", "🗑 VIP o'chirish", "💱 USD kurs", "📊 Statistika", "🗑 Bannerni o'chirish", "🔗 Banner havolasi", "📅 Oylik hisobot", "🌐 Kategoriya tarjimalari"];
     if (superAdminOnly.includes(text) && !isSuperAdmin(chatId)) {
         bot.sendMessage(chatId, "⛔ Bu amal faqat super adminlar uchun.", getMainKeyboard(chatId));
         return;
@@ -207,6 +208,12 @@ async function handleCommand(chatId, text) {
     // ─── BANNERNI O'CHIRISH ──────────────────────────────────────
     if (text === "🗑 Bannerni o'chirish") {
         await showBannerDeleteList(chatId);
+        return;
+    }
+
+    // ─── BANNER HAVOLASI ─────────────────────────────────────────
+    if (text === "🔗 Banner havolasi") {
+        await showBannerManageList(chatId);
         return;
     }
 
