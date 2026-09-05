@@ -409,7 +409,14 @@ async function handleIncomingMessage(msg) {
     // ─── BANNER HAVOLASI (qo'lda kiritish) ─────────────────────────
     if (step === 'banner_link_manual_input') {
         const link = (text || '').trim();
-        if (!link) { bot.sendMessage(chatId, "Iltimos, havola matnini yuboring."); return; }
+        const isValid = link && (link.startsWith('/') || link.startsWith('http://') || link.startsWith('https://'));
+        if (!isValid) {
+            bot.sendMessage(
+                chatId,
+                "❌ Noto'g'ri havola. Havola \"/\" bilan (masalan: /categories/Valik) yoki \"http://\"/\"https://\" bilan boshlanishi kerak.\n\nQaytadan yuboring:"
+            );
+            return;
+        }
         try {
             await db.collection('banners').doc(data.bannerId).update({ link });
             resetUserState(chatId);
