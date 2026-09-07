@@ -51,6 +51,11 @@ function registerCallbackHandler() {
             return;
         }
 
+        if (data === 'noop') {
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+
         if (data.startsWith('order_detail_')) {
             const orderId = data.replace('order_detail_', '');
             try {
@@ -435,7 +440,8 @@ function registerCallbackHandler() {
                 const catDoc = await db.collection('categories').doc(String(catId)).get();
                 if (!catDoc.exists) { bot.answerCallbackQuery(cq.id, { text: "Kategoriya topilmadi!" }); return; }
                 const catNameObj = catDoc.data().name;
-                await db.collection('products').doc(String(productId)).update({ category: catNameObj });
+                const catTopCategory = catDoc.data().topCategory || null;
+                await db.collection('products').doc(String(productId)).update({ category: catNameObj, topCategory: catTopCategory });
                 const catName = getStr(catNameObj);
                 const state = userState[chatId] || { step: 'none', data: {}, steps: [] };
                 state.data.productId = productId; state.data.messageId = messageId;

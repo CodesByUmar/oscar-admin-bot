@@ -13,6 +13,7 @@ async function showProductView(chatId, productId, messageId) {
         }
         const p = doc.data();
         const category = getStr(p.category, 'Yo\'q');
+        const topCategory = p.topCategory || 'Yo\'q (mijoz ilovasida "Boshqa"ga tushadi)';
         // Ba'zi eski yozuvlarda name/description oddiy matn bo'lishi mumkin,
         // shuning uchun {uz,ru,en} obyekti kutilganda ehtiyot bo'lib olamiz.
         const nameML = (p.name && typeof p.name === 'object') ? p.name : { uz: getStr(p.name) };
@@ -41,6 +42,7 @@ async function showProductView(chatId, productId, messageId) {
             [{ text: `🇬🇧 Tavsif: ${shortVal(descML.en)}`, callback_data: `update_ml_description_en_${productId}` }],
             [{ text: `Rasm: ${p.image ? 'Bor' : 'Yo\'q'}`, callback_data: `update_field_image_${productId}` }],
             [{ text: `📂 Kategoriya: ${category}`, callback_data: `update_field_category_${productId}` }],
+            [{ text: `🗂 Top-kategoriya: ${topCategory}`, callback_data: `noop` }],
         ];
         // O'chirish tugmasi faqat super adminlarga ko'rinadi — haqiqiy
         // cheklov callback.js'da ham bor, bu shunchaki keraksiz tugmani
@@ -62,6 +64,7 @@ async function showProductView(chatId, productId, messageId) {
             `• Chegirma tugashi: ${endDateText}\n` +
             `• Stock: ${(p.stock || 0).toLocaleString()} dona\n` +
             `• Kategoriya: ${category}\n` +
+            `• Top-kategoriya: ${topCategory}\n` +
             `• Rasm: ${p.image ? 'URL mavjud' : 'Yo\'q'}\n` +
             `Qaysi maydonni yangilashni xohlaysiz?`;
         if (messageId) {

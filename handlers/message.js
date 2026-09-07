@@ -215,6 +215,7 @@ async function handleIncomingMessage(msg) {
                 const matched = data.categoryNames.find(c => c.label === text);
                 if (!matched) { bot.sendMessage(chatId, "Tugmalardan tanlang!"); return; }
                 data.category = matched.full;
+                data.topCategory = matched.topCategory || null;
                 state.steps.push(oldStep);
                 state.step = 'product_image';
                 bot.sendMessage(chatId, "5. Rasm yuboring (photo formatida):", mainBackKeyboard);
@@ -260,6 +261,7 @@ async function handleIncomingMessage(msg) {
                     itemsPerBox: data.itemsPerBox || 0,
                     discount: data.discount || 0,
                     category: data.category || '',
+                    topCategory: data.topCategory || null,
                     image: data.image || '',
                     description: { uz: data.desc_uz || '', ru: data.desc_ru || '', en: data.desc_en || '' },
                     stock: data.stock,
