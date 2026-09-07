@@ -1,7 +1,7 @@
 const { bot, admins } = require('../config/adminBot');
 const { db, admin } = require('../config/firebase');
 const { backKeyboard, isSuperAdmin, getMainKeyboard } = require('../keyboards');
-const { userState } = require('../state/userState');
+const { userState, resetUserState } = require('../state/userState');
 const { handleInlineBack } = require('./back');
 const { showCategoryView, showCategoryUpdateSelect } = require('../views/category');
 const { showProductView, showProductUpdateCategorySelect, showProductsInCategory, getProductsInCategory } = require('../views/product');
@@ -11,6 +11,7 @@ const { getStr, formatDateTime, resolveCustomerPhone, getAdminDisplayName } = re
 const { getUserBot } = require('../bots/userBot');
 const { showBannerDeleteList } = require('./command');
 const { showBannerManageList, showBannerLinkPicker, getTopCategoryKeys } = require('../views/banner');
+const { showBulkPriceCategorySelect, showBulkPriceFieldSelect } = require('../views/bulkPrice');
 
 async function notifyCustomer(telegramChatId, orderId, text) {
     if (!telegramChatId) return;
@@ -319,6 +320,71 @@ function registerCallbackHandler() {
             bot.answerCallbackQuery(cq.id);
             return;
         }
+        // ─── NARXNI OMMAVIY O'ZGARTIRISH ────────────────────────────
+        if (data.startsWith('bulkprice_cat_')) {
+            const id = parseInt(data.replace('bulkprice_cat_', ''));
+            try {
+                const doc = await db.collection('categories').doc(String(id)).get();
+                if (!doc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
+                const cat = doc.data();
+                const state = userState[chatId] || { step: 'none', data: {}, steps: [] };
+                state.steps.push(state.step); state.step = 'bulkprice_field_select';
+                state.data.bulkCategory = cat.name; state.data.messageId = messageId;
+                userState[chatId] = state;
+                await showBulkPriceFieldSelect(chatId, cat.name, messageId);
+                bot.answerCallbackQuery(cq.id);
+            } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
+        }
+
+        if (data.startsWith('bulkprice_field_')) {
+            const field = data.replace('bulkprice_field_', ''); // pricePiece | priceBox
+            const state = userState[chatId] || { step: 'none', data: {}, steps: [] };
+            state.steps.push(state.step); state.step = 'bulkprice_value_input';
+            state.data.bulkField = field; state.data.messageId = messageId;
+            userState[chatId] = state;
+            const fieldLabel = field === 'priceBox' ? 'karobka' : 'dona';
+            await bot.editMessageText(
+                `Yangi narxni kiriting (${fieldLabel}, USD, masalan: 6.5):`,
+                { chat_id: chatId, message_id: messageId }
+            );
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+
+        if (data === 'bulkprice_confirm') {
+            const state = userState[chatId];
+            const { bulkCategory, bulkField, bulkValue } = (state && state.data) || {};
+            if (!bulkCategory || !bulkField || bulkValue == null) {
+                bot.answerCallbackQuery(cq.id, { text: 'Ma\'lumot topilmadi, qaytadan urinib ko\'ring.' });
+                return;
+            }
+            try {
+                const snapshot = await db.collection('products').where('category', '==', bulkCategory).get();
+                const batch = db.batch();
+                snapshot.docs.forEach((d) => batch.update(d.ref, { [bulkField]: bulkValue }));
+                await batch.commit();
+                bot.answerCallbackQuery(cq.id, { text: '✅ Yangilandi!' });
+                await bot.editMessageText(
+                    `✅ ${snapshot.size} ta mahsulotning narxi $${bulkValue} ga o'zgartirildi.`,
+                    { chat_id: chatId, message_id: messageId }
+                );
+                bot.sendMessage(chatId, "Davom eting.", getMainKeyboard(chatId));
+                resetUserState(chatId);
+            } catch (error) {
+                console.error('Bulk narx yozishda xato:', error);
+                bot.answerCallbackQuery(cq.id, { text: 'Xato!' });
+            }
+            return;
+        }
+
+        if (data === 'bulkprice_cancel') {
+            await showBulkPriceCategorySelect(chatId, messageId);
+            resetUserState(chatId);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+
         if (data.startsWith('select_category_')) {
             const id = parseInt(data.replace('select_category_', ''));
             try {

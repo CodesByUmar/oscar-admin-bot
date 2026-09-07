@@ -406,6 +406,33 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
+    // ─── NARXNI OMMAVIY O'ZGARTIRISH ────────────────────────────────
+    if (step === 'bulkprice_value_input') {
+        const value = parseNumberInput(text);
+        if (value === null || value < 0) { bot.sendMessage(chatId, "0 yoki musbat son kiriting! (mas: 6.53)"); return; }
+        try {
+            const snapshot = await db.collection('products').where('category', '==', data.bulkCategory).get();
+            data.bulkValue = value;
+            const fieldLabel = data.bulkField === 'priceBox' ? 'karobka' : 'dona';
+            const kb = {
+                inline_keyboard: [
+                    [{ text: '✅ Tasdiqlash', callback_data: 'bulkprice_confirm' }],
+                    [{ text: '❌ Bekor qilish', callback_data: 'bulkprice_cancel' }],
+                ],
+            };
+            bot.sendMessage(
+                chatId,
+                `⚠️ "${getStr(data.bulkCategory)}" kategoriyasidagi ${snapshot.size} ta mahsulotning narxi (${fieldLabel}) $${value} ga o'zgartiriladi.\n\nTasdiqlaysizmi?`,
+                { reply_markup: kb }
+            );
+        } catch (error) {
+            console.error("Bulk narx tekshirishda xato:", error);
+            bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
+            resetUserState(chatId);
+        }
+        return;
+    }
+
     // ─── BANNER HAVOLASI (qo'lda kiritish) ─────────────────────────
     if (step === 'banner_link_manual_input') {
         const link = (text || '').trim();

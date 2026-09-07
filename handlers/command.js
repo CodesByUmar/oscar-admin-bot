@@ -7,6 +7,7 @@ const { formatDateTime } = require('../utils/helpers');
 const { showCategoryUpdateSelect } = require('../views/category');
 const { showCategoryTranslationList } = require('../views/categoryTranslation');
 const { showBannerManageList } = require('../views/banner');
+const { showBulkPriceCategorySelect } = require('../views/bulkPrice');
 const { showProductUpdateCategorySelect } = require('../views/product');
 const { handleVipStep } = require('./vip');
 const { generateMonthlyReportBuffer } = require('../utils/monthlyReport');
@@ -77,6 +78,11 @@ async function handleCommand(chatId, text) {
     if (text === "🔄 Mahsulotni yangilash") {
         userState[chatId] = { step: 'product_update_category_select', data: {}, steps: [] };
         await showProductUpdateCategorySelect(chatId);
+        return;
+    }
+    if (text === "💰 Narxni ommaviy o'zgartirish") {
+        userState[chatId] = { step: 'bulkprice_category_select', data: {}, steps: [] };
+        await showBulkPriceCategorySelect(chatId);
         return;
     }
     if (text === "🔍 Qidiruv") {

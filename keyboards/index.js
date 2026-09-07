@@ -5,6 +5,7 @@ const mainKeyboard = {
         keyboard: [
             [{ text: "🛍 Mahsulot qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
             [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
+            [{ text: "💰 Narxni ommaviy o'zgartirish" }],
             [{ text: "🔍 Qidiruv" }],
             [{ text: "📊 Statistika" }, { text: "💱 USD kurs" }],
             [{ text: "📦 Buyurtmalar" }, { text: "📅 Oylik hisobot" }],
@@ -27,6 +28,7 @@ const staffKeyboard = {
         keyboard: [
             [{ text: "🛍 Mahsulot qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
             [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
+            [{ text: "💰 Narxni ommaviy o'zgartirish" }],
             [{ text: "🔍 Qidiruv" }],
             [{ text: "📦 Buyurtmalar" }],
             [{ text: "🖼 Banner qo'shish" }],
@@ -74,7 +76,7 @@ function getMainBackKeyboard(chatId) {
 
 const commandButtons = [
     "🛍 Mahsulot qo'shish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
-    "🔄 Mahsulotni yangilash", "🔍 Qidiruv",
+    "🔄 Mahsulotni yangilash", "💰 Narxni ommaviy o'zgartirish", "🔍 Qidiruv",
     "📊 Statistika", "💱 USD kurs", "📅 Oylik hisobot",
     "📦 Buyurtmalar", "❌ Bekor qilish",
     "🖼 Banner qo'shish", "🗑 Bannerni o'chirish", "🔗 Banner havolasi",

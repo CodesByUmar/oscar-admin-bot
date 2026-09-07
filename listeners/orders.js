@@ -96,13 +96,16 @@ async function notifyAdminsNewOrder(orderId, orderData) {
 
     const customerBlock = await buildCustomerBlock(orderData);
 
+    const orderSourceBlock = orderData.orderSource ? `🏬 Qayerdan: ${orderData.orderSource}\n` : '';
+
     const message =
         `🛒 YANGI BUYURTMA!\n\n` +
         customerBlock +
         bonusBlock + deliveryBlock +
         `🛍 Mahsulotlar:\n${itemsText}\n\n` +
         `💰 Jami: ${(orderData.totalUZS || 0).toLocaleString("uz-UZ")} UZS\n` +
-        `💳 To'lov: ${paymentMethodText}`;
+        `💳 To'lov: ${paymentMethodText}\n` +
+        orderSourceBlock;
 
     const inlineKeyboard = {
         inline_keyboard: [[
