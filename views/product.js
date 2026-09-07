@@ -34,7 +34,6 @@ async function showProductView(chatId, productId, messageId) {
             [{ text: `Chegirma: ${p.discount || 0}%`, callback_data: `update_field_discount_${productId}` }],
             [{ text: `📅 Chegirma boshlanishi: ${startDateText}`, callback_data: `update_field_discountStart_${productId}` }],
             [{ text: `📅 Chegirma tugashi: ${endDateText}`, callback_data: `update_field_discountEnd_${productId}` }],
-            [{ text: `Stock: ${(p.stock || 0).toLocaleString()} dona`, callback_data: `update_field_stock_${productId}` }],
             [
                 { text: `🇺🇿 Tavsif: ${shortVal(descML.uz)}`, callback_data: `update_ml_description_uz_${productId}` },
                 { text: `🇷🇺 Tavsif: ${shortVal(descML.ru)}`, callback_data: `update_ml_description_ru_${productId}` },
@@ -62,7 +61,6 @@ async function showProductView(chatId, productId, messageId) {
             `• Chegirma: ${p.discount || 0}%\n` +
             `• Chegirma boshlanishi: ${startDateText}\n` +
             `• Chegirma tugashi: ${endDateText}\n` +
-            `• Stock: ${(p.stock || 0).toLocaleString()} dona\n` +
             `• Kategoriya: ${category}\n` +
             `• Top-kategoriya: ${topCategory}\n` +
             `• Rasm: ${p.image ? 'URL mavjud' : 'Yo\'q'}\n` +

@@ -504,7 +504,7 @@ function registerCallbackHandler() {
                 bot.sendMessage(chatId, 'Yangi rasm yuboring:', mainBackKeyboard);
             } else {
                 userState[chatId] = { step: 'update_value', data: { productId: id, field: fieldType, ...preserve }, steps: cur.steps || [] };
-                const labelMap = { pricePiece: "Narx (dona, USD, mas: 6.53)", priceBox: "Narx (karobka, USD, mas: 24.99)", discount: 'Chegirma (%)', stock: 'Stock' };
+                const labelMap = { pricePiece: "Narx (dona, USD, mas: 6.53)", priceBox: "Narx (karobka, USD, mas: 24.99)", discount: 'Chegirma (%)' };
                 bot.sendMessage(chatId, `${labelMap[fieldType] || fieldType} uchun yangi qiymatni yuboring:`, backKeyboard);
             }
             bot.answerCallbackQuery(cq.id); return;

@@ -241,18 +241,9 @@ async function handleIncomingMessage(msg) {
                 bot.sendMessage(chatId, "6c. Tavsifni EN tilida kiriting:", backKeyboard);
                 break;
 
-            // 6c. Tavsif EN → so'ng stock
-            case 'product_description_en':
+            // 6c. Tavsif EN → saqlash
+            case 'product_description_en': {
                 data.desc_en = text.trim();
-                state.steps.push(oldStep);
-                state.step = 'product_stock';
-                bot.sendMessage(chatId, "7. Ombordagi miqdor (mas: 50):", backKeyboard);
-                break;
-
-            // 7. Stock → saqlash
-            case 'product_stock': {
-                if (!/^\d+$/.test(text) || parseInt(text) < 0) { bot.sendMessage(chatId, "0 yoki musbat son!"); return; }
-                data.stock = parseInt(text);
                 const buildProduct = (id) => ({
                     id,
                     name: { uz: data.name_uz || '', ru: data.name_ru || '', en: data.name_en || '' },
@@ -264,7 +255,6 @@ async function handleIncomingMessage(msg) {
                     topCategory: data.topCategory || null,
                     image: data.image || '',
                     description: { uz: data.desc_uz || '', ru: data.desc_ru || '', en: data.desc_en || '' },
-                    stock: data.stock,
                 });
                 try {
                     const newProduct = await createWithNextId('products', buildProduct);
@@ -275,8 +265,7 @@ async function handleIncomingMessage(msg) {
                         `📦 EN: ${newProduct.name.en}\n` +
                         `💰 Dona: $${newProduct.pricePiece} | Karobka: $${newProduct.priceBox}\n` +
                         `🏷 Chegirma: ${newProduct.discount}%\n` +
-                        `📂 Kategoriya: ${getStr(newProduct.category)}\n` +
-                        `📊 Stock: ${newProduct.stock} ta`,
+                        `📂 Kategoriya: ${getStr(newProduct.category)}`,
                         getMainKeyboard(chatId)
                     );
                 } catch (error) {
@@ -364,7 +353,7 @@ async function handleIncomingMessage(msg) {
         } else if (fieldType === 'discount') {
             if (!/^\d+$/.test(text) || parseInt(text) < 0 || parseInt(text) > 100) { bot.sendMessage(chatId, "0-100 oralig'ida!"); return; }
             value = parseInt(text);
-        } else if (fieldType === 'stock' || fieldType === 'itemsPerBox') {
+        } else if (fieldType === 'itemsPerBox') {
             if (!/^\d+$/.test(text) || parseInt(text) < 0) { bot.sendMessage(chatId, "0 yoki musbat son!"); return; }
             value = parseInt(text);
         } else { bot.sendMessage(chatId, "Xato!"); resetUserState(chatId); return; }

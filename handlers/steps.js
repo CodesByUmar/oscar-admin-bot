@@ -53,9 +53,6 @@ async function handleProductStep(chatId, currentStep, isBack = false) {
         case 'product_description_en':
             bot.sendMessage(chatId, "6c. Tavsifni EN tilida kiriting:", backKeyboard);
             break;
-        case 'product_stock':
-            bot.sendMessage(chatId, "7. Ombordagi miqdor (mas: 50):", backKeyboard);
-            break;
     }
 }
 
