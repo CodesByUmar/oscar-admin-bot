@@ -16,7 +16,6 @@ async function showCategoryView(chatId, categoryId, messageId) {
         const icon = c.icon || c.icon_url || '';
         const inlineRows = [
             [{ text: `Nomi: ${name}`, callback_data: `cat_update_name_${categoryId}` }],
-            [{ text: `Ikonka: ${icon || 'Yo\'q'}`, callback_data: `cat_update_icon_${categoryId}` }],
         ];
         // O'chirish tugmasi faqat super adminlarga ko'rinadi — haqiqiy
         // cheklov callback.js'da ham bor, bu shunchaki keraksiz tugmani

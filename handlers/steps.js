@@ -64,8 +64,7 @@ async function handleCategoryStep(chatId, currentStep, isBack = false) {
     const oldStep = state.step;
     if (!isBack) state.steps.push(oldStep);
     state.step = currentStep;
-    if (currentStep === 'category_name') bot.sendMessage(chatId, "1/2. Kategoriya nomini kiriting:", backKeyboard);
-    else if (currentStep === 'category_icon') bot.sendMessage(chatId, "2/2. Ikonka (emoji, mas: 🔧):", backKeyboard);
+    if (currentStep === 'category_name') bot.sendMessage(chatId, "Kategoriya nomini kiriting:", backKeyboard);
 }
 
 module.exports = { handleProductStep, handleCategoryStep };

@@ -291,17 +291,11 @@ async function handleIncomingMessage(msg) {
 
     // ─── KATEGORIYA QO'SHISH ─────────────────────────────────────────
     if (step.startsWith('category_')) {
-        const oldStep = step;
         if (step === 'category_name') {
             data.name = text;
-            state.steps.push(oldStep);
-            state.step = 'category_icon';
-            bot.sendMessage(chatId, "2/2. Ikonka (emoji, mas: 🔧):", backKeyboard);
-        } else if (step === 'category_icon') {
-            data.icon = text;
             try {
-                await createWithNextId('categories', (id) => ({ id, name: data.name, icon: data.icon }));
-                bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${data.icon} ${data.name}`, getMainKeyboard(chatId));
+                await createWithNextId('categories', (id) => ({ id, name: data.name }));
+                bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${data.name}`, getMainKeyboard(chatId));
             } catch (error) {
                 bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
             }
@@ -328,15 +322,6 @@ async function handleIncomingMessage(msg) {
             state.step = 'category_update_view';
             await showCategoryView(chatId, state.data.categoryId, state.data.messageId);
             bot.sendMessage(chatId, `✅ Nom yangilandi: ${text}`, backKeyboard);
-        } catch (error) { bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId)); resetUserState(chatId); }
-        return;
-    }
-    if (state.step === 'update_category_icon') {
-        try {
-            await db.collection('categories').doc(String(state.data.categoryId)).update({ icon: text });
-            state.step = 'category_update_view';
-            await showCategoryView(chatId, state.data.categoryId, state.data.messageId);
-            bot.sendMessage(chatId, `✅ Ikonka yangilandi: ${text}`, backKeyboard);
         } catch (error) { bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId)); resetUserState(chatId); }
         return;
     }

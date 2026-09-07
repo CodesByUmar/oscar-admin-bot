@@ -267,13 +267,6 @@ function registerCallbackHandler() {
             bot.sendMessage(chatId, 'Yangi nomni kiriting:', backKeyboard);
             bot.answerCallbackQuery(cq.id); return;
         }
-        if (data.startsWith('cat_update_icon_')) {
-            const id = parseInt(data.replace('cat_update_icon_', ''));
-            const state = userState[chatId] || { step: 'none', data: {}, steps: [] };
-            userState[chatId] = { step: 'update_category_icon', data: { categoryId: id, messageId }, steps: state.steps || [] };
-            bot.sendMessage(chatId, 'Yangi ikonkani kiriting:', backKeyboard);
-            bot.answerCallbackQuery(cq.id); return;
-        }
         if (data.startsWith('delete_category_')) {
             const id = parseInt(data.replace('delete_category_', ''));
             try {
