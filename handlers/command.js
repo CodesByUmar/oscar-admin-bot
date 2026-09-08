@@ -29,7 +29,7 @@ async function handleCommand(chatId, text) {
     if (!db) { bot.sendMessage(chatId, "❌ Database ulanmagan.", getMainKeyboard(chatId)); return; }
 
     // ─── FAQAT SUPER ADMIN UCHUN ────────────────────────────────────
-    const superAdminOnly = ["⭐ VIP qo'shish", "🗑 VIP o'chirish", "💱 USD kurs", "📊 Statistika", "🗑 Bannerni o'chirish", "🔗 Banner havolasi", "📅 Oylik hisobot", "🌐 Kategoriya tarjimalari"];
+    const superAdminOnly = ["⭐ VIP qo'shish", "🗑 VIP o'chirish", "💱 USD kurs", "🗑 Bannerni o'chirish", "🔗 Banner havolasi", "📅 Oylik hisobot", "🌐 Kategoriya tarjimalari"];
     if (superAdminOnly.includes(text) && !isSuperAdmin(chatId)) {
         bot.sendMessage(chatId, "⛔ Bu amal faqat super adminlar uchun.", getMainKeyboard(chatId));
         return;
@@ -142,11 +142,11 @@ async function handleCommand(chatId, text) {
                 `🔹 Mijozlar: ${uniqueCustomers.size}\n` +
                 `🔹 VIP: ${vipCount.data().count}\n` +
                 `💱 USD kurs: 1 USD = ${typeof rate === 'number' ? rate.toLocaleString('uz-UZ') : rate} so'm`,
-                mainKeyboard
+                getMainKeyboard(chatId)
             );
         } catch (error) {
             console.error("Statistika xato:", error);
-            bot.sendMessage(chatId, "❌ Xato!", mainKeyboard);
+            bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
         }
         return;
     }

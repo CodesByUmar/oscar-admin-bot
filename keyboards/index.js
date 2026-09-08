@@ -19,17 +19,17 @@ const mainKeyboard = {
     },
 };
 
-// Xodim (super admin bo'lmagan) uchun — o'chirish, VIP, USD kurs,
-// statistika tugmalari yo'q. Bu faqat ko'rinish qulayligi uchun; haqiqiy
-// cheklov har bir handlerning o'zida (superAdmins.includes(chatId))
-// tekshiriladi.
+// Xodim (super admin bo'lmagan) uchun — o'chirish, VIP, USD kurs
+// tugmalari yo'q (Statistika esa endi hammaga ochiq). Bu faqat ko'rinish
+// qulayligi uchun; haqiqiy cheklov har bir handlerning o'zida
+// (superAdmins.includes(chatId)) tekshiriladi.
 const staffKeyboard = {
     reply_markup: {
         keyboard: [
             [{ text: "🛍 Mahsulot qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
             [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
             [{ text: "💰 Narxni ommaviy o'zgartirish" }],
-            [{ text: "🔍 Qidiruv" }],
+            [{ text: "🔍 Qidiruv" }, { text: "📊 Statistika" }],
             [{ text: "📦 Buyurtmalar" }],
             [{ text: "🖼 Banner qo'shish" }],
             [{ text: "➕ Admin qo'shish" }],
