@@ -9,7 +9,16 @@ const { findTelegramUser, buildDisplayName } = require('./vip');
 
 async function handleAdminAddStep(chatId, text) {
     const state = userState[chatId];
-    if (!state || state.step !== 'admin_add_id') return false;
+    if (!state) return false;
+
+    // Tasdiqlash bosqichida oddiy matn kutilmaydi — faqat inline
+    // tugmalar (✅ Ha / ❌ Yo'q) orqali javob berilishi kerak.
+    if (state.step === 'admin_add_confirm') {
+        bot.sendMessage(chatId, "Iltimos, yuqoridagi tugmalardan birini bosing (✅ yoki ❌).");
+        return true;
+    }
+
+    if (state.step !== 'admin_add_id') return false;
 
     const input = text.trim();
 
@@ -25,7 +34,23 @@ async function handleAdminAddStep(chatId, text) {
         return true;
     }
     const userData = await findTelegramUser({ telegramId: String(telegramId) });
-    await finishAddAdmin(chatId, telegramId, userData);
+    const displayName = buildDisplayName(userData, `ID:${telegramId}`);
+
+    state.step = 'admin_add_confirm';
+    state.data = { telegramId, userData };
+
+    bot.sendMessage(
+        chatId,
+        `➕ Yangi admin qo'shilsinmi?\n\n👤 ${displayName}\n🆔 Telegram ID: ${telegramId}`,
+        {
+            reply_markup: {
+                inline_keyboard: [[
+                    { text: '✅ Ha', callback_data: 'adminadd_yes' },
+                    { text: "❌ Yo'q", callback_data: 'adminadd_no' },
+                ]],
+            },
+        }
+    );
     return true;
 }
 
@@ -55,4 +80,4 @@ async function finishAddAdmin(chatId, telegramId, userData) {
     }
 }
 
-module.exports = { handleAdminAddStep };
+module.exports = { handleAdminAddStep, finishAddAdmin };

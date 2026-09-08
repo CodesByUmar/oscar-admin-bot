@@ -18,6 +18,7 @@ const {
 const { showBulkPriceCategorySelect, showBulkPriceFieldSelect } = require('../views/bulkPrice');
 const { showOrdersPage } = require('../views/orders');
 const { bot: orderBot, getGroupForOrder } = require('../config/orderBot');
+const { finishAddAdmin } = require('./adminManagement');
 
 async function notifyCustomer(telegramChatId, orderId, text) {
     if (!telegramChatId) return;
@@ -422,6 +423,27 @@ function registerCallbackHandler() {
             } catch (error) {
                 console.error('Narx sinxronizatsiyasida xato:', error);
                 bot.answerCallbackQuery(cq.id, { text: 'Xato!' });
+            }
+            return;
+        }
+
+        // ─── ADMIN QO'SHISHNI TASDIQLASH ──────────────────────────────
+        if (data === 'adminadd_yes' || data === 'adminadd_no') {
+            const state = userState[chatId];
+            const stateData = (state && state.data) || {};
+            const { telegramId, userData } = stateData;
+            if (!telegramId) {
+                bot.answerCallbackQuery(cq.id, { text: "Ma'lumot topilmadi, qaytadan urinib ko'ring." });
+                return;
+            }
+            await bot.editMessageReplyMarkup({ inline_keyboard: [] }, { chat_id: chatId, message_id: messageId }).catch(() => {});
+            if (data === 'adminadd_yes') {
+                bot.answerCallbackQuery(cq.id, { text: "Qo'shilmoqda..." });
+                await finishAddAdmin(chatId, telegramId, userData);
+            } else {
+                resetUserState(chatId);
+                bot.editMessageText('Bekor qilindi.', { chat_id: chatId, message_id: messageId }).catch(() => {});
+                bot.answerCallbackQuery(cq.id, { text: 'Bekor qilindi' });
             }
             return;
         }

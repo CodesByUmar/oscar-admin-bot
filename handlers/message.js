@@ -534,7 +534,7 @@ async function handleIncomingMessage(msg) {
     }
 
     // ─── ADMIN QO'SHISH ──────────────────────────────────────────────
-    if (step === 'admin_add_id') {
+    if (step === 'admin_add_id' || step === 'admin_add_confirm') {
         await handleAdminAddStep(chatId, text);
         return;
     }
