@@ -28,9 +28,11 @@ const T = {
         topcats: 'Top categories', customers: 'Customers', vip: 'VIP', orders: 'Orders',
         rate: 'USD rate', detail: 'Select to view details:', back: '⬅️ Back to statistics',
         prev: '⬅️ Prev', next: 'Next ➡️', page: 'page', ta: '', unknown: 'Unknown',
-        ordersCount: (n) => `${n} order(s)`, notEntered: 'Not set',
+        ordersCount: (n) => `${n} order(s)`, notEntered: 'Not set', accounts: 'accounts',
     },
 };
+T.uz.accounts = 'akkaunt';
+T.ru.accounts = 'аккаунт';
 
 const langCache = new Map();
 
@@ -81,6 +83,46 @@ async function loadTranslations() {
     return map;
 }
 
+// Turli formatda kiritilgan telefon raqamlarni (+998 90 011 50 52,
+// 998900115052, 900115052...) bir xil mijoz sifatida guruhlash uchun
+// oxirgi 9 raqamiga (mamlakat kodisiz) qisqartiradi.
+function normalizePhone(phone) {
+    if (!phone) return '';
+    const digits = String(phone).replace(/\D/g, '');
+    return digits.slice(-9);
+}
+
+// Bitta mijoz bir nechta Telegram akkauntdan (turli telegramChatId) buyurtma
+// bergan bo'lishi mumkin — shu sabab avval telefon raqami bo'yicha
+// guruhlanadi (telegramChatId bo'yicha emas), aks holda bitta odam
+// ro'yxatda bir necha marta chiqib qoladi.
+function computeCustomerGroups(ordersSnap) {
+    const byCustomer = new Map();
+    ordersSnap.docs.forEach((d) => {
+        const od = d.data();
+        const normPhone = normalizePhone(od.customerPhone);
+        const key = normPhone || (od.telegramChatId ? `tg_${od.telegramChatId}` : null);
+        if (!key) return;
+        const existing = byCustomer.get(key);
+        if (existing) {
+            existing.count += 1;
+            if (!existing.name && (od.customerName || od.username)) existing.name = od.customerName || od.username;
+            if (!existing.phone && od.customerPhone) existing.phone = od.customerPhone;
+            if (od.telegramChatId) existing.tgIds.add(String(od.telegramChatId));
+            if (od.username) existing.tgUsernames.add(od.username);
+        } else {
+            byCustomer.set(key, {
+                name: od.customerName || od.username || '',
+                phone: od.customerPhone || '',
+                count: 1,
+                tgIds: new Set(od.telegramChatId ? [String(od.telegramChatId)] : []),
+                tgUsernames: new Set(od.username ? [od.username] : []),
+            });
+        }
+    });
+    return byCustomer;
+}
+
 function paginate(items, page) {
     const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
     const safePage = Math.min(Math.max(page, 0), totalPages - 1);
@@ -119,12 +161,7 @@ async function showStatisticsMenu(chatId, messageId = null) {
         ]);
         const rate = rateDoc.exists ? (rateDoc.data().rate || t.notEntered) : t.notEntered;
 
-        const uniqueCustomers = new Set();
-        o.docs.forEach((doc) => {
-            const od = doc.data();
-            const key = od.telegramChatId || od.customerPhone;
-            if (key) uniqueCustomers.add(String(key));
-        });
+        const uniqueCustomers = computeCustomerGroups(o);
 
         const text =
             `${t.title}\n` +
@@ -258,33 +295,23 @@ async function showStatCustomers(chatId, messageId, page = 0) {
         const lang = await getAdminLang(chatId);
         const t = T[lang];
         const ordersSnap = await db.collection('orders').get();
-        const byCustomer = new Map();
-        ordersSnap.docs.forEach((d) => {
-            const od = d.data();
-            const key = od.telegramChatId || od.customerPhone;
-            if (!key) return;
-            const k = String(key);
-            const existing = byCustomer.get(k);
-            const name = od.customerName || od.username || t.unknown;
-            if (existing) {
-                existing.count += 1;
-                if (!existing.name || existing.name === t.unknown) existing.name = name;
-            } else {
-                byCustomer.set(k, { name, phone: od.customerPhone || '', count: 1 });
-            }
-        });
+        const byCustomer = computeCustomerGroups(ordersSnap);
         const items = Array.from(byCustomer.values()).sort((a, b) => b.count - a.count);
         const { pageItems, safePage, totalPages } = paginate(items, page);
-        const kb = { inline_keyboard: [] };
-        pageItems.forEach((c) => {
-            const label = `${c.name}${c.phone ? ' | ' + c.phone : ''} — ${t.ordersCount(c.count)}`;
-            kb.inline_keyboard.push([{ text: label.slice(0, 64), callback_data: 'noop' }]);
+        const lines = pageItems.map((c, i) => {
+            const accounts = c.tgUsernames.size
+                ? Array.from(c.tgUsernames).map((u) => `@${u}`).join(', ')
+                : (c.tgIds.size ? `ID: ${Array.from(c.tgIds).join(', ')}` : '');
+            const multiTag = c.tgIds.size > 1 ? ` [${c.tgIds.size} ${t.accounts}]` : '';
+            const num = safePage * PAGE_SIZE + i + 1;
+            return `${num}. ${c.name || t.unknown}${c.phone ? ' | 📞 ' + c.phone : ''}${accounts ? ' | ' + accounts : ''}${multiTag}\n    ${t.ordersCount(c.count)}`;
         });
+        const kb = { inline_keyboard: [] };
         const nav = navRow('stat_customers', safePage, totalPages, t);
         if (nav.length) kb.inline_keyboard.push(nav);
         kb.inline_keyboard.push([{ text: t.back, callback_data: 'stat_back' }]);
         await bot.editMessageText(
-            `👥 ${t.customers} (${items.length}${t.ta}) — ${t.page} ${safePage + 1}/${totalPages}`,
+            `👥 ${t.customers} (${items.length}${t.ta}) — ${t.page} ${safePage + 1}/${totalPages}\n\n${lines.join('\n')}`,
             { chat_id: chatId, message_id: messageId, reply_markup: kb }
         );
     } catch (error) {
