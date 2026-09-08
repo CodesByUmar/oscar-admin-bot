@@ -16,6 +16,7 @@ const {
     showStatTopCategories, showStatCustomers, showStatVip, setAdminLang,
 } = require('../views/statistics');
 const { showBulkPriceCategorySelect, showBulkPriceFieldSelect } = require('../views/bulkPrice');
+const { showOrdersPage } = require('../views/orders');
 
 async function notifyCustomer(telegramChatId, orderId, text) {
     if (!telegramChatId) return;
@@ -109,26 +110,19 @@ function registerCallbackHandler() {
         }
 
         if (data === 'back_to_orders') {
-            try {
-                const snapshot = await db.collection('orders').orderBy('createdAt', 'desc').limit(10).get();
-                if (snapshot.empty) { bot.editMessageText("Buyurtmalar yo'q.", { chat_id: chatId, message_id: messageId }); bot.answerCallbackQuery(cq.id); return; }
-                const kb = { inline_keyboard: [] };
-                snapshot.docs.forEach(d => {
-                    const o = d.data();
-                    const emoji = o.status === 'confirmed' ? "✅" : o.status === 'cancelled' ? "❌" : o.status === 'delivered' ? "🏁" : "🆕";
-                    let addressShort = '';
-                    if (o.deliveryMethod === 'pickup') {
-                        addressShort = `🏪 O'zim olib ketaman`;
-                    } else {
-                        const addr = o.deliveryAddress || o.address || '';
-                        addressShort = addr ? `📍 ${addr.length > 25 ? addr.substring(0, 25) + '…' : addr}` : `📍 Manzil yo'q`;
-                    }
-                    // YANGI:
-                    kb.inline_keyboard.push([{ text: `${emoji} ${o.customerName || o.username || 'Noma\'lum'} | ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm | 🕐 ${formatDateTime(o.createdAt)}`, callback_data: `order_detail_${d.id}` }]);
-                });
-                bot.editMessageText("So'nggi 10 ta buyurtma:", { chat_id: chatId, message_id: messageId, reply_markup: kb });
-                bot.answerCallbackQuery(cq.id);
-            } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            await showOrdersPage(chatId, messageId);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+
+        if (data.startsWith('orders_page_')) {
+            const rest = data.replace('orders_page_', '');
+            const parts = rest.split('_');
+            const direction = parts[0];
+            const cursorMillis = parseInt(parts[1], 10);
+            const depth = parseInt(parts[2], 10) || 0;
+            await showOrdersPage(chatId, messageId, direction, cursorMillis, depth);
+            bot.answerCallbackQuery(cq.id);
             return;
         }
 

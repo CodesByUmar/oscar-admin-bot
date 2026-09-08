@@ -3,11 +3,11 @@ const { db } = require('../config/firebase');
 const { mainKeyboard, backKeyboard, mainBackKeyboard, isSuperAdmin, getMainKeyboard, getMainBackKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { getStr } = require('../utils/helpers');
-const { formatDateTime } = require('../utils/helpers');
 const { showCategoryUpdateSelect } = require('../views/category');
 const { showCategoryTranslationList } = require('../views/categoryTranslation');
 const { showBannerManageList } = require('../views/banner');
 const { showStatisticsMenu } = require('../views/statistics');
+const { showOrdersPage } = require('../views/orders');
 const { showBulkPriceCategorySelect } = require('../views/bulkPrice');
 const { showProductUpdateCategorySelect } = require('../views/product');
 const { handleVipStep } = require('./vip');
@@ -135,29 +135,7 @@ async function handleCommand(chatId, text) {
 
     // ─── BUYURTMALAR RO'YXATI ───────────────────────────────────────
     if (text === "📦 Buyurtmalar") {
-        try {
-            const snapshot = await db.collection('orders').orderBy('createdAt', 'desc').limit(10).get();
-            if (snapshot.empty) { bot.sendMessage(chatId, "Buyurtmalar yo'q.", getMainKeyboard(chatId)); return; }
-            const kb = { inline_keyboard: [] };
-            snapshot.docs.forEach(doc => {
-                const o = doc.data();
-                let addressShort = '';
-                if (o.deliveryMethod === 'pickup') {
-                    addressShort = `🏪 O'zim olib ketaman`;
-                } else {
-                    const addr = o.deliveryAddress || o.address || '';
-                    addressShort = addr ? `📍 ${addr.length > 25 ? addr.substring(0, 25) + '…' : addr}` : `📍 Manzil yo'q`;
-                }
-                const emoji = o.status === 'confirmed' ? '✅' : o.status === 'cancelled' ? '❌' : o.status === 'delivered' ? '🏁' : '🆕';
-                const totalStr = (o.totalUZS || 0).toLocaleString('uz-UZ');
-                const btn = `${emoji} ${o.customerName || o.username || 'Noma\'lum'} | ${totalStr} so'm | 🕐 ${formatDateTime(o.createdAt)}`;
-                kb.inline_keyboard.push([{ text: btn, callback_data: `order_detail_${doc.id}` }]);
-            });
-            kb.inline_keyboard.push([{ text: "🔙 Bosh menyu", callback_data: "close_orders_list" }]);
-            bot.sendMessage(chatId, "📦 So'nggi 10 ta buyurtma:", { reply_markup: kb });
-        } catch (error) {
-            bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
-        }
+        await showOrdersPage(chatId);
         return;
     }
 
