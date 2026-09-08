@@ -8,10 +8,13 @@
 //   node scripts/seedStoreContacts.js
 const { db, admin } = require('../config/firebase');
 
+// lat/lng — Manzil sahifasida xarita va Yandex Navigator yo'nalishi uchun
+// (150-151 OSCAR va 10-36 X-TRA — O'rikzor bozori "Stroy gorod" qismida,
+// bitta nuqtada; SHOWROOM — Original Colormix LLC, alohida manzil).
 const STORES = [
-    { id: 'oscar_150', name: '150-151 OSCAR', phone: '+998900471150', order: 1 },
-    { id: 'xtra_1036', name: '10-36 X-TRA', phone: '+998774441036', order: 2 },
-    { id: 'showroom', name: 'SHOWROOM', phone: '+998981110809', order: 3 },
+    { id: 'oscar_150', name: '150-151 OSCAR', phone: '+998900471150', order: 1, lat: 41.2866446, lng: 69.1498683 },
+    { id: 'xtra_1036', name: '10-36 X-TRA', phone: '+998774441036', order: 2, lat: 41.2866446, lng: 69.1498683 },
+    { id: 'showroom', name: 'SHOWROOM', phone: '+998981110809', order: 3, lat: 41.3485214, lng: 69.1588695 },
 ];
 
 async function main() {

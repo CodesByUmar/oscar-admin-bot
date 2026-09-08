@@ -36,11 +36,15 @@ async function showStoreContactEdit(chatId, docId, messageId) {
     try {
         const doc = await db.collection('storeContacts').doc(docId).get();
         const data = doc.exists ? doc.data() : {};
+        const coordsLine = (typeof data.lat === 'number' && typeof data.lng === 'number')
+            ? `📍 Koordinata: ${data.lat}, ${data.lng}\n`
+            : '';
         const text =
             `🏪 ${data.name || docId}\n\n` +
             `📞 Telefon: ${data.phone || '— kiritilmagan'}\n` +
-            `✈️ Telegram: ${data.telegramUsername ? '@' + data.telegramUsername : '— kiritilmagan'}\n\n` +
-            `Nimani tahrirlaysiz?`;
+            `✈️ Telegram: ${data.telegramUsername ? '@' + data.telegramUsername : '— kiritilmagan'}\n` +
+            coordsLine +
+            `\nNimani tahrirlaysiz?`;
         const kb = {
             inline_keyboard: [
                 [{ text: '📞 Telefonni o\'zgartirish', callback_data: `storecontact_setphone_${docId}` }],
