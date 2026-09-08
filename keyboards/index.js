@@ -13,7 +13,7 @@ const mainKeyboard = {
             [{ text: "🖼 Banner qo'shish" }, { text: "🗑 Bannerni o'chirish" }],
             [{ text: "🔗 Banner havolasi" }],
             [{ text: "🌐 Kategoriya tarjimalari" }],
-            [{ text: "➕ Admin qo'shish" }],
+            [{ text: "➕ Admin qo'shish" }, { text: "🗑 Admin o'chirish" }],
             [{ text: "⭐ VIP qo'shish" }, { text: "🗑 VIP o'chirish" }],
         ],
         resize_keyboard: true,
@@ -33,7 +33,7 @@ const staffKeyboard = {
             [{ text: "🔍 Qidiruv" }, { text: "📊 Statistika" }],
             [{ text: "📦 Buyurtmalar" }, { text: "📥 Buyurtmalar (Excel)" }],
             [{ text: "🖼 Banner qo'shish" }],
-            [{ text: "➕ Admin qo'shish" }],
+            [{ text: "➕ Admin qo'shish" }, { text: "🗑 Admin o'chirish" }],
         ],
         resize_keyboard: true,
     },
@@ -83,7 +83,7 @@ const commandButtons = [
     "🖼 Banner qo'shish", "🗑 Bannerni o'chirish", "🔗 Banner havolasi",
     "🌐 Kategoriya tarjimalari",
     "⭐ VIP qo'shish", "🗑 VIP o'chirish",
-    "➕ Admin qo'shish",
+    "➕ Admin qo'shish", "🗑 Admin o'chirish",
 ];
 
 module.exports = {

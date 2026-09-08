@@ -13,6 +13,7 @@ const { showProductUpdateCategorySelect } = require('../views/product');
 const { handleVipStep } = require('./vip');
 const { generateMonthlyReportBuffer } = require('../utils/monthlyReport');
 const { generateAllOrdersReportBuffer } = require('../utils/ordersExport');
+const { showAdminRemoveList } = require('./adminManagement');
 
 
 
@@ -37,10 +38,14 @@ async function handleCommand(chatId, text) {
         return;
     }
 
-    // ─── ADMIN QO'SHISH (istalgan admin ishlata oladi, super admin shart emas) ──
+    // ─── ADMIN QO'SHISH/O'CHIRISH (istalgan admin ishlata oladi, super admin shart emas) ──
     if (text === "➕ Admin qo'shish") {
         userState[chatId] = { step: 'admin_add_id', data: {}, steps: [] };
         bot.sendMessage(chatId, "➕ Yangi admin qo'shish\n\nTelegram ID kiriting:", backKeyboard);
+        return;
+    }
+    if (text === "🗑 Admin o'chirish") {
+        await showAdminRemoveList(chatId);
         return;
     }
 

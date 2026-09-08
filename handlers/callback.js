@@ -18,7 +18,7 @@ const {
 const { showBulkPriceCategorySelect, showBulkPriceFieldSelect } = require('../views/bulkPrice');
 const { showOrdersPage } = require('../views/orders');
 const { bot: orderBot, getGroupForOrder } = require('../config/orderBot');
-const { finishAddAdmin } = require('./adminManagement');
+const { finishAddAdmin, handleAdminRemoveSelect, handleAdminRemoveConfirm } = require('./adminManagement');
 
 async function notifyCustomer(telegramChatId, orderId, text) {
     if (!telegramChatId) return;
@@ -445,6 +445,17 @@ function registerCallbackHandler() {
                 bot.editMessageText('Bekor qilindi.', { chat_id: chatId, message_id: messageId }).catch(() => {});
                 bot.answerCallbackQuery(cq.id, { text: 'Bekor qilindi' });
             }
+            return;
+        }
+
+        // ─── ADMIN O'CHIRISH ───────────────────────────────────────────
+        if (data.startsWith('adminremove_select_')) {
+            const telegramId = parseInt(data.replace('adminremove_select_', ''));
+            await handleAdminRemoveSelect(chatId, messageId, telegramId, (text) => bot.answerCallbackQuery(cq.id, text ? { text } : undefined));
+            return;
+        }
+        if (data === 'adminremove_yes' || data === 'adminremove_no') {
+            await handleAdminRemoveConfirm(chatId, messageId, data === 'adminremove_yes', (text) => bot.answerCallbackQuery(cq.id, text ? { text } : undefined));
             return;
         }
 

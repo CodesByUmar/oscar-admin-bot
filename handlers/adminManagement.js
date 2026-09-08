@@ -2,7 +2,8 @@
 // hozirgi admin bu buyruqni ishlata oladi — bu ataylab shunday: hozircha
 // murakkab "kim kimni qo'sha oladi" tizimi kerak emas, oddiy va tez
 // bo'lishi kerak edi.
-const { bot, admins, addDynamicAdmin } = require('../config/adminBot');
+const { bot, admins, addDynamicAdmin, removeDynamicAdmin } = require('../config/adminBot');
+const { db } = require('../config/firebase');
 const { userState, resetUserState } = require('../state/userState');
 const { getMainKeyboard } = require('../keyboards');
 const { findTelegramUser, buildDisplayName } = require('./vip');
@@ -80,4 +81,94 @@ async function finishAddAdmin(chatId, telegramId, userData) {
     }
 }
 
-module.exports = { handleAdminAddStep, finishAddAdmin };
+// ─── ADMIN O'CHIRISH ────────────────────────────────────────────────
+// Faqat botning o'zidan (bot_admins'da) qo'shilgan adminlar ro'yxatda
+// chiqadi va o'chirilishi mumkin — ADMIN_IDS orqali (Railway env)
+// qo'shilganlarni faqat Railway'dan o'chirish mumkin.
+async function showAdminRemoveList(chatId, messageId = null) {
+    if (!db) { bot.sendMessage(chatId, "❌ Database ulanmagan."); return; }
+    try {
+        const snap = await db.collection('bot_admins').get();
+        const kb = { inline_keyboard: [] };
+        for (const doc of snap.docs) {
+            const telegramId = parseInt(doc.id);
+            if (isNaN(telegramId) || !admins.includes(telegramId)) continue;
+            const userData = await findTelegramUser({ telegramId: String(telegramId) });
+            const displayName = buildDisplayName(userData, `ID:${telegramId}`);
+            kb.inline_keyboard.push([{ text: `${displayName} (${telegramId})`, callback_data: `adminremove_select_${telegramId}` }]);
+        }
+        if (kb.inline_keyboard.length === 0) {
+            const text = "Botning o'zidan qo'shilgan adminlar yo'q.\n\n(ADMIN_IDS orqali — Railway'dan qo'shilgan adminlarni faqat shu yerdan, Railway'dan o'chirish mumkin.)";
+            if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId }).catch(() => {});
+            else bot.sendMessage(chatId, text, getMainKeyboard(chatId));
+            return;
+        }
+        const text = "🗑 Qaysi adminni o'chirmoqchisiz?";
+        if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId, reply_markup: kb }).catch(() => {});
+        else bot.sendMessage(chatId, text, { reply_markup: kb });
+    } catch (error) {
+        console.error("Admin ro'yxatini olishda xato:", error);
+        bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
+    }
+}
+
+async function handleAdminRemoveSelect(chatId, messageId, telegramId, answerCallback) {
+    if (telegramId === chatId) {
+        answerCallback("O'zingizni o'chira olmaysiz — buni boshqa admin bajarishi kerak.");
+        return;
+    }
+    try {
+        const userData = await findTelegramUser({ telegramId: String(telegramId) });
+        const displayName = buildDisplayName(userData, `ID:${telegramId}`);
+        userState[chatId] = { step: 'admin_remove_confirm', data: { telegramId, displayName }, steps: [] };
+        await bot.editMessageText(
+            `🗑 ${displayName} (ID: ${telegramId}) adminlikdan o'chirilsinmi?`,
+            {
+                chat_id: chatId,
+                message_id: messageId,
+                reply_markup: {
+                    inline_keyboard: [[
+                        { text: '✅ Ha', callback_data: 'adminremove_yes' },
+                        { text: "❌ Yo'q", callback_data: 'adminremove_no' },
+                    ]],
+                },
+            }
+        );
+        answerCallback();
+    } catch (error) {
+        console.error("Admin o'chirish tanlovida xato:", error);
+        answerCallback('Xato!');
+    }
+}
+
+async function handleAdminRemoveConfirm(chatId, messageId, confirmed, answerCallback) {
+    const state = userState[chatId];
+    const stateData = (state && state.data) || {};
+    const { telegramId, displayName } = stateData;
+    if (!telegramId) {
+        answerCallback("Ma'lumot topilmadi, qaytadan urinib ko'ring.");
+        return;
+    }
+    resetUserState(chatId);
+    if (!confirmed) {
+        bot.editMessageText('Bekor qilindi.', { chat_id: chatId, message_id: messageId }).catch(() => {});
+        answerCallback('Bekor qilindi');
+        return;
+    }
+    try {
+        const removed = await removeDynamicAdmin(telegramId);
+        const text = removed
+            ? `✅ ${displayName} (ID: ${telegramId}) adminlikdan o'chirildi.`
+            : `❌ Bu admin ADMIN_IDS (Railway) orqali qo'shilgan — botdan o'chirib bo'lmaydi, Railway'dan o'chiring.`;
+        bot.editMessageText(text, { chat_id: chatId, message_id: messageId }).catch(() => {});
+        answerCallback();
+    } catch (error) {
+        console.error("Admin o'chirishda xato:", error);
+        answerCallback('Xato!');
+    }
+}
+
+module.exports = {
+    handleAdminAddStep, finishAddAdmin,
+    showAdminRemoveList, handleAdminRemoveSelect, handleAdminRemoveConfirm,
+};

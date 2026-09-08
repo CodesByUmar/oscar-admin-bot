@@ -56,4 +56,19 @@ async function addDynamicAdmin(telegramId, addedBy) {
     if (!admins.includes(telegramId)) admins.push(telegramId);
 }
 
-module.exports = { bot, admins, superAdmins, TOKEN, loadDynamicAdmins, addDynamicAdmin };
+// Faqat botning o'zidan (bot_admins'da) qo'shilgan adminlar o'chirilishi
+// mumkin — ADMIN_IDS orqali (Railway env) qo'shilganlar bu yerda yo'q,
+// shuning uchun ularni o'chirishga urinilsa `false` qaytadi (chaqiruvchi
+// tomon buni "Railway'dan o'chiring" degan xabar bilan ko'rsatadi).
+async function removeDynamicAdmin(telegramId) {
+    if (!db) throw new Error("DB ulanmagan");
+    const docRef = db.collection('bot_admins').doc(String(telegramId));
+    const doc = await docRef.get();
+    if (!doc.exists) return false;
+    await docRef.delete();
+    const idx = admins.indexOf(telegramId);
+    if (idx !== -1) admins.splice(idx, 1);
+    return true;
+}
+
+module.exports = { bot, admins, superAdmins, TOKEN, loadDynamicAdmins, addDynamicAdmin, removeDynamicAdmin };

@@ -538,6 +538,10 @@ async function handleIncomingMessage(msg) {
         await handleAdminAddStep(chatId, text);
         return;
     }
+    if (step === 'admin_remove_confirm') {
+        bot.sendMessage(chatId, "Iltimos, yuqoridagi tugmalardan birini bosing (✅ yoki ❌).");
+        return;
+    }
 
     bot.sendMessage(chatId, "Tushunmadim. Tugmalardan tanlang:", getMainKeyboard(chatId));
 }
