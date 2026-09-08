@@ -1,6 +1,12 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { hashPassword, verifyPassword, isHashed } = require('./password');
+
+// encryptPassword/decryptPassword VIP_ENC_KEY'ni talab qiladi — testlar
+// uchun sobit (o'zboshimcha) kalit o'rnatiladi, haqiqiy Railway kaliti bilan
+// bog'liq emas.
+process.env.VIP_ENC_KEY = '0'.repeat(64);
+
+const { hashPassword, verifyPassword, isHashed, encryptPassword, decryptPassword } = require('./password');
 
 test('hashPassword produces a value that isHashed recognizes', () => {
     const hashed = hashPassword('mySecret123');
@@ -40,4 +46,28 @@ test('isHashed returns false for a plain string', () => {
     assert.equal(isHashed('oldPlainPass'), false);
     assert.equal(isHashed(''), false);
     assert.equal(isHashed(undefined), false);
+});
+
+test('encryptPassword/decryptPassword round-trip returns the original plaintext', () => {
+    const encrypted = encryptPassword('mySecret123');
+    assert.equal(decryptPassword(encrypted), 'mySecret123');
+});
+
+test('encryptPassword never returns the original plaintext', () => {
+    const encrypted = encryptPassword('mySecret123');
+    assert.notEqual(encrypted, 'mySecret123');
+});
+
+test('encryptPassword uses a random IV (two encryptions of the same password differ)', () => {
+    const a = encryptPassword('mySecret123');
+    const b = encryptPassword('mySecret123');
+    assert.notEqual(a, b);
+    assert.equal(decryptPassword(a), decryptPassword(b));
+});
+
+test('decryptPassword throws on tampered ciphertext (auth tag mismatch)', () => {
+    const encrypted = encryptPassword('mySecret123');
+    const [iv, authTag, ciphertext] = encrypted.split(':');
+    const tampered = `${iv}:${authTag}:${ciphertext.slice(0, -2)}00`;
+    assert.throws(() => decryptPassword(tampered));
 });

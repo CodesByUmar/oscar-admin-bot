@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { db } = require('../config/firebase');
-const { verifyPassword, isHashed, hashPassword } = require('../utils/password');
+const { verifyPassword, isHashed, hashPassword, encryptPassword } = require('../utils/password');
 const { createSessionToken, verifySessionToken } = require('../utils/sessionToken');
 const { verifyTelegramInitData } = require('../utils/telegramAuth');
 
@@ -55,6 +55,18 @@ router.post('/vip-login', async (req, res) => {
             vipDoc.ref.update({ password: hashPassword(password) }).catch((err) => {
                 console.error("VIP parolini hash'lashda xato:", err.message);
             });
+        }
+
+        // passwordEnc hali yo'q bo'lsa (VIP_ENC_KEY funksiyasi qo'shilishidan
+        // oldin yaratilgan yozuv, yoki hash-only eski format) — muvaffaqiyatli
+        // kirish paytida qo'lda bor bo'lgan haqiqiy parolni shifrlab, admin
+        // botda ko'rsatish uchun orqaga qaytarib to'ldiramiz.
+        if (!data.passwordEnc) {
+            try {
+                vipDoc.ref.update({ passwordEnc: encryptPassword(password) }).catch((err) => {
+                    console.error("VIP parolini shifrlashda xato:", err.message);
+                });
+            } catch (e) { console.error("VIP parolini shifrlashda xato:", e.message); }
         }
 
         const token = createSessionToken(vipDoc.id);

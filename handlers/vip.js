@@ -4,7 +4,7 @@ const { db } = require('../config/firebase');
 const { userState, resetUserState } = require('../state/userState');
 const { mainKeyboard, backKeyboard, isSuperAdmin, getMainKeyboard } = require('../keyboards');
 const { getUserBot } = require('../bots/userBot');
-const { hashPassword } = require('../utils/password');
+const { hashPassword, encryptPassword } = require('../utils/password');
 
 function registerVipCommands() {
     // /addvip command
@@ -142,9 +142,17 @@ async function handleVipStep(chatId, text) {
             const login = data.login;
             const username = data.displayName || data.username || 'VIP foydalanuvchi';
 
+            // passwordEnc — admin bot orqali keyinchalik ko'rish uchun
+            // (qaytariladigan shifrlash). VIP_ENC_KEY hali sozlanmagan
+            // bo'lsa, VIP qo'shishning o'zi to'xtab qolmasin deb, faqat
+            // shu qismi o'tkazib yuboriladi.
+            let passwordEnc;
+            try { passwordEnc = encryptPassword(password); } catch (e) { console.error("Parolni shifrlashda xato:", e.message); }
+
             await db.collection('VIP_Clients').doc(telegramId).set({
                 login: login,
                 password: hashPassword(password),
+                ...(passwordEnc ? { passwordEnc } : {}),
                 username: username,
                 telegram_id: telegramId,
                 isVip: true,

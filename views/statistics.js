@@ -5,6 +5,7 @@ const { db } = require('../config/firebase');
 const { getMainKeyboard } = require('../keyboards');
 const { getStr } = require('../utils/helpers');
 const { keyToDocId } = require('./categoryTranslation');
+const { decryptPassword } = require('../utils/password');
 
 const PAGE_SIZE = 10;
 
@@ -319,24 +320,38 @@ async function showStatCustomers(chatId, messageId, page = 0) {
     }
 }
 
+// Parol "tiklash" o'rniga adminning o'zi ko'rishi mumkin bo'lishi kerak
+// (mahsulot talabi) — shu sabab ro'yxatda shifri ochilgan holda ko'rsatiladi.
+// Eski (bu funksiya qo'shilishidan oldingi) VIP yozuvlarida hali
+// passwordEnc bo'lmasligi mumkin — bunday holda VIP keyingi safar
+// muvaffaqiyatli kirganda avtomatik to'ldiriladi (routes/vipAuth.js).
 async function showStatVip(chatId, messageId, page = 0) {
     try {
         const lang = await getAdminLang(chatId);
         const t = T[lang];
         const snap = await db.collection('VIP_Clients').get();
         const items = snap.docs
-            .map((d) => ({ id: d.id, name: d.data().username || t.unknown, login: d.data().login || '' }))
+            .map((d) => {
+                const data = d.data();
+                let password = null;
+                if (data.passwordEnc) {
+                    try { password = decryptPassword(data.passwordEnc); } catch (e) { password = null; }
+                }
+                return { id: d.id, name: data.username || t.unknown, login: data.login || '', password };
+            })
             .sort((a, b) => a.name.localeCompare(b.name));
         const { pageItems, safePage, totalPages } = paginate(items, page);
-        const kb = { inline_keyboard: [] };
-        pageItems.forEach((v) => {
-            kb.inline_keyboard.push([{ text: `${v.name}${v.login ? ' (' + v.login + ')' : ''}`.slice(0, 64), callback_data: 'noop' }]);
+        const lines = pageItems.map((v, i) => {
+            const num = safePage * PAGE_SIZE + i + 1;
+            const passwordLabel = v.password ? v.password : "— (keyingi kirishda avtomatik to'ldiriladi)";
+            return `${num}. ${v.name}${v.login ? ' | login: ' + v.login : ''}\n    🔐 ${passwordLabel}`;
         });
+        const kb = { inline_keyboard: [] };
         const nav = navRow('stat_vip', safePage, totalPages, t);
         if (nav.length) kb.inline_keyboard.push(nav);
         kb.inline_keyboard.push([{ text: t.back, callback_data: 'stat_back' }]);
         await bot.editMessageText(
-            `⭐ ${t.vip} (${items.length}${t.ta}) — ${t.page} ${safePage + 1}/${totalPages}`,
+            `⭐ ${t.vip} (${items.length}${t.ta}) — ${t.page} ${safePage + 1}/${totalPages}\n\n${lines.join('\n')}`,
             { chat_id: chatId, message_id: messageId, reply_markup: kb }
         );
     } catch (error) {
