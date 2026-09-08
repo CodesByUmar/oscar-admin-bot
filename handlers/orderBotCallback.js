@@ -1,4 +1,4 @@
-const { bot, admins, GROUP_CHAT_ID } = require('../config/orderBot');
+const { bot, admins, getGroupForOrder, getAllGroupIds } = require('../config/orderBot');
 const { db, admin } = require('../config/firebase');
 const { getUserBot } = require('../bots/userBot');
 const { isSuperAdmin } = require('../keyboards');
@@ -14,7 +14,7 @@ function registerOrderBotCallbacks() {
         const data = cq.data;
         const fromId = cq.from.id; // Guruhda chatId hammaga bir xil — kim bosganini shu aniqlaydi.
 
-        const isAllowedChat = admins.includes(chatId) || (GROUP_CHAT_ID && chatId === GROUP_CHAT_ID);
+        const isAllowedChat = admins.includes(chatId) || getAllGroupIds().includes(chatId);
         if (!data || !isAllowedChat) {
             bot.answerCallbackQuery(cq.id, { text: "Ruxsat yo'q!" });
             return;
@@ -77,8 +77,9 @@ function registerOrderBotCallbacks() {
                 admins.forEach(aId => {
                     if (aId !== chatId) bot.sendMessage(aId, broadcastLine).catch(() => {});
                 });
-                if (GROUP_CHAT_ID && chatId !== GROUP_CHAT_ID) {
-                    bot.sendMessage(GROUP_CHAT_ID, broadcastLine).catch(() => {});
+                const orderGroupId = getGroupForOrder(orderData.orderSource);
+                if (orderGroupId && chatId !== orderGroupId) {
+                    bot.sendMessage(orderGroupId, broadcastLine).catch(() => {});
                 }
 
                 notifyCustomer(orderData.telegramChatId, orderId,
@@ -121,8 +122,9 @@ function registerOrderBotCallbacks() {
                 admins.forEach(aId => {
                     if (aId !== chatId) bot.sendMessage(aId, deliverLine).catch(() => {});
                 });
-                if (GROUP_CHAT_ID && chatId !== GROUP_CHAT_ID) {
-                    bot.sendMessage(GROUP_CHAT_ID, deliverLine).catch(() => {});
+                const deliverGroupId = getGroupForOrder(orderData.orderSource);
+                if (deliverGroupId && chatId !== deliverGroupId) {
+                    bot.sendMessage(deliverGroupId, deliverLine).catch(() => {});
                 }
 
                 notifyCustomer(orderData.telegramChatId, orderId,

@@ -1,4 +1,4 @@
-const { bot, admins, GROUP_CHAT_ID } = require('../config/orderBot');
+const { bot, admins, getGroupForOrder } = require('../config/orderBot');
 const { db, admin } = require('../config/firebase');
 const { getPaymentMethodText } = require('../paymentMethods');
 const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
@@ -120,9 +120,10 @@ async function notifyAdminsNewOrder(orderId, orderData) {
         });
     });
 
-    if (GROUP_CHAT_ID) {
-        bot.sendMessage(GROUP_CHAT_ID, message, { reply_markup: inlineKeyboard }).catch(err => {
-            console.error(`Guruhga (${GROUP_CHAT_ID}) xabar yuborishda xato:`, err.message);
+    const groupChatId = getGroupForOrder(orderData.orderSource);
+    if (groupChatId) {
+        bot.sendMessage(groupChatId, message, { reply_markup: inlineKeyboard }).catch(err => {
+            console.error(`Guruhga (${groupChatId}) xabar yuborishda xato:`, err.message);
         });
     }
 }
