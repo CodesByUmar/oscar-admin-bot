@@ -89,10 +89,23 @@ async function handleIncomingMessage(msg) {
             const matches = [];
             snapshot.docs.forEach((doc) => {
                 const p = doc.data();
-                const names = [p.name && p.name.uz, p.name && p.name.ru, p.name && p.name.en].filter(Boolean);
-                const nameMatch = names.some((n) => n.toLowerCase().includes(q));
-                const idMatch = isNumeric && String(p.id) === query;
-                if (nameMatch || idMatch) matches.push({ id: p.id, name: getStr(p.name, "Noma'lum") });
+                // Nomi, tavsifi, kategoriyasi va top-kategoriyasi (UZ/RU/EN
+                // barchasi) bo'yicha qidiradi — faqat nom emas.
+                const asStrings = (field) => {
+                    if (!field) return [];
+                    if (typeof field === 'string') return [field];
+                    if (typeof field === 'object') return [field.uz, field.ru, field.en].filter(Boolean);
+                    return [];
+                };
+                const searchable = [
+                    ...asStrings(p.name),
+                    ...asStrings(p.description),
+                    ...asStrings(p.category),
+                    ...asStrings(p.topCategory),
+                ];
+                const textMatch = searchable.some((s) => s.toLowerCase().includes(q));
+                const idMatch = isNumeric && String(p.id).includes(query);
+                if (textMatch || idMatch) matches.push({ id: p.id, name: getStr(p.name, "Noma'lum") });
             });
 
             resetUserState(chatId);
