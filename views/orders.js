@@ -19,6 +19,19 @@ function orderLine(doc) {
     return `${statusEmoji(o.status)} ${o.customerName || o.username || "Noma'lum"} | ${totalStr} so'm | 🕐 ${formatDateTime(o.createdAt)}`;
 }
 
+// `createdAt` har doim ham Firestore Timestamp bo'lmasligi mumkin
+// (ba'zi buyurtmalar mijoz ilovasi tomonidan boshqacha formatda
+// yozilgan bo'lishi ehtimoli bor) — shu sabab .toMillis() to'g'ridan-to'g'ri
+// chaqirilmaydi, formatDateTime kabi bir nechta formatni qo'llab-quvvatlaydi.
+function toMillisSafe(ts) {
+    if (!ts) return Date.now();
+    if (typeof ts.toMillis === 'function') return ts.toMillis();
+    if (typeof ts.toDate === 'function') return ts.toDate().getTime();
+    if (ts instanceof Date) return ts.getTime();
+    const parsed = new Date(ts).getTime();
+    return Number.isNaN(parsed) ? Date.now() : parsed;
+}
+
 // direction: null (birinchi sahifa), 'next' (eskiroq), 'prev' (yangiroq)
 async function showOrdersPage(chatId, messageId = null, direction = null, cursorMillis = null, depth = 0) {
     if (!db) { bot.sendMessage(chatId, "❌ Database ulanmagan."); return; }
@@ -55,8 +68,8 @@ async function showOrdersPage(chatId, messageId = null, direction = null, cursor
             kb.inline_keyboard.push([{ text: orderLine(doc).slice(0, 64), callback_data: `order_detail_${doc.id}` }]);
         });
 
-        const oldestMillis = docs[docs.length - 1].data().createdAt.toMillis();
-        const newestMillis = docs[0].data().createdAt.toMillis();
+        const oldestMillis = toMillisSafe(docs[docs.length - 1].data().createdAt);
+        const newestMillis = toMillisSafe(docs[0].data().createdAt);
 
         const nav = [];
         if (depth > 0) nav.push({ text: '⬅️ Yangiroq', callback_data: `orders_page_prev_${newestMillis}_${depth - 1}` });
