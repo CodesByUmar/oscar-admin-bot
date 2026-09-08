@@ -13,6 +13,7 @@ const mainKeyboard = {
             [{ text: "🖼 Banner qo'shish" }, { text: "🗑 Bannerni o'chirish" }],
             [{ text: "🔗 Banner havolasi" }],
             [{ text: "🌐 Kategoriya tarjimalari" }],
+            [{ text: "🏪 Do'kon kontaktlari" }],
             [{ text: "➕ Admin qo'shish" }, { text: "🗑 Admin o'chirish" }],
             [{ text: "⭐ VIP qo'shish" }, { text: "🗑 VIP o'chirish" }],
         ],
@@ -33,6 +34,7 @@ const staffKeyboard = {
             [{ text: "🔍 Qidiruv" }, { text: "📊 Statistika" }],
             [{ text: "📦 Buyurtmalar" }, { text: "📥 Buyurtmalar (Excel)" }],
             [{ text: "🖼 Banner qo'shish" }],
+            [{ text: "🏪 Do'kon kontaktlari" }],
             [{ text: "➕ Admin qo'shish" }, { text: "🗑 Admin o'chirish" }],
         ],
         resize_keyboard: true,
@@ -82,6 +84,7 @@ const commandButtons = [
     "📦 Buyurtmalar", "📥 Buyurtmalar (Excel)", "❌ Bekor qilish",
     "🖼 Banner qo'shish", "🗑 Bannerni o'chirish", "🔗 Banner havolasi",
     "🌐 Kategoriya tarjimalari",
+    "🏪 Do'kon kontaktlari",
     "⭐ VIP qo'shish", "🗑 VIP o'chirish",
     "➕ Admin qo'shish", "🗑 Admin o'chirish",
 ];

@@ -10,6 +10,7 @@ const { handleAdminAddStep } = require('./adminManagement');
 const { showProductView } = require('../views/product');
 const { showCategoryView } = require('../views/category');
 const { showCategoryTranslationEdit, findCategoryKeyItem } = require('../views/categoryTranslation');
+const { showStoreContactEdit } = require('../views/storeContacts');
 
 function registerMessageHandler() {
     bot.on('message', async (msg) => {
@@ -521,6 +522,34 @@ async function handleIncomingMessage(msg) {
             bot.sendMessage(chatId, `✅ ${field.toUpperCase()} nom saqlandi: ${text.trim()}`, backKeyboard);
         } catch (error) {
             console.error("Kategoriya tarjimasini saqlashda xato:", error);
+            bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
+            resetUserState(chatId);
+        }
+        return;
+    }
+
+    // ─── DO'KON KONTAKTLARI (telefon/Telegram) ─────────────────────────
+    if (step === 'storecontact_phone_input' || step === 'storecontact_tg_input') {
+        const stateData = state.data;
+        const value = (text || '').trim();
+        if (!value) { bot.sendMessage(chatId, "Bo'sh bo'lmasin!"); return; }
+        const isPhone = step === 'storecontact_phone_input';
+        if (isPhone && !/^\+?\d{9,15}$/.test(value)) {
+            bot.sendMessage(chatId, "❌ Noto'g'ri format! Telefon raqamni +998901234567 ko'rinishida kiriting.");
+            return;
+        }
+        try {
+            const field = isPhone ? 'phone' : 'telegramUsername';
+            const cleanValue = isPhone ? value : value.replace('@', '');
+            await db.collection('storeContacts').doc(stateData.storeDocId).set(
+                { [field]: cleanValue, updatedAt: admin.firestore.FieldValue.serverTimestamp() },
+                { merge: true }
+            );
+            state.step = 'none';
+            await showStoreContactEdit(chatId, stateData.storeDocId, stateData.storeMessageId);
+            bot.sendMessage(chatId, `✅ Saqlandi: ${isPhone ? cleanValue : '@' + cleanValue}`, backKeyboard);
+        } catch (error) {
+            console.error("Do'kon kontaktini saqlashda xato:", error);
             bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
             resetUserState(chatId);
         }

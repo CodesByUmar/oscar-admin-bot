@@ -14,6 +14,7 @@ const { handleVipStep } = require('./vip');
 const { generateMonthlyReportBuffer } = require('../utils/monthlyReport');
 const { generateAllOrdersReportBuffer } = require('../utils/ordersExport');
 const { showAdminRemoveList } = require('./adminManagement');
+const { showStoreContactsList } = require('../views/storeContacts');
 
 
 
@@ -46,6 +47,12 @@ async function handleCommand(chatId, text) {
     }
     if (text === "🗑 Admin o'chirish") {
         await showAdminRemoveList(chatId);
+        return;
+    }
+
+    // ─── DO'KON KONTAKTLARI (telefon/Telegram — Call Center'da ko'rinadi) ──
+    if (text === "🏪 Do'kon kontaktlari") {
+        await showStoreContactsList(chatId);
         return;
     }
 

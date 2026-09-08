@@ -19,6 +19,7 @@ const { showBulkPriceCategorySelect, showBulkPriceFieldSelect } = require('../vi
 const { showOrdersPage } = require('../views/orders');
 const { bot: orderBot, getGroupForOrder } = require('../config/orderBot');
 const { finishAddAdmin, handleAdminRemoveSelect, handleAdminRemoveConfirm } = require('./adminManagement');
+const { showStoreContactsList, showStoreContactEdit } = require('../views/storeContacts');
 
 async function notifyCustomer(telegramChatId, orderId, text) {
     if (!telegramChatId) return;
@@ -261,6 +262,32 @@ function registerCallbackHandler() {
                 steps: [],
             };
             bot.sendMessage(chatId, `${isRu ? '🇷🇺 RU' : '🇬🇧 EN'} nomni kiriting:`, backKeyboard);
+            bot.answerCallbackQuery(cq.id); return;
+        }
+
+        // ─── DO'KON KONTAKTLARI ─────────────────────────────────────────
+        if (data === 'storecontact_back') {
+            await showStoreContactsList(chatId, messageId);
+            bot.answerCallbackQuery(cq.id); return;
+        }
+        if (data.startsWith('storecontact_edit_')) {
+            const docId = data.replace('storecontact_edit_', '');
+            await showStoreContactEdit(chatId, docId, messageId);
+            bot.answerCallbackQuery(cq.id); return;
+        }
+        if (data.startsWith('storecontact_setphone_') || data.startsWith('storecontact_settg_')) {
+            const isPhone = data.startsWith('storecontact_setphone_');
+            const docId = data.replace(isPhone ? 'storecontact_setphone_' : 'storecontact_settg_', '');
+            userState[chatId] = {
+                step: isPhone ? 'storecontact_phone_input' : 'storecontact_tg_input',
+                data: { storeDocId: docId, storeMessageId: messageId },
+                steps: [],
+            };
+            bot.sendMessage(
+                chatId,
+                isPhone ? "📞 Yangi telefon raqamni kiriting (mas: +998901234567):" : "✈️ Yangi Telegram username'ni kiriting (@ belgisisiz, mas: asatilayev):",
+                backKeyboard
+            );
             bot.answerCallbackQuery(cq.id); return;
         }
 
