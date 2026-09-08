@@ -40,7 +40,7 @@ async function handleCommand(chatId, text) {
     // ─── ADMIN QO'SHISH (istalgan admin ishlata oladi, super admin shart emas) ──
     if (text === "➕ Admin qo'shish") {
         userState[chatId] = { step: 'admin_add_id', data: {}, steps: [] };
-        bot.sendMessage(chatId, "➕ Yangi admin qo'shish\n\nTelegram ID yoki @username kiriting:", backKeyboard);
+        bot.sendMessage(chatId, "➕ Yangi admin qo'shish\n\nTelegram ID kiriting:", backKeyboard);
         return;
     }
 

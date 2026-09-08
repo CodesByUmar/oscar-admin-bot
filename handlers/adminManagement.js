@@ -13,48 +13,19 @@ async function handleAdminAddStep(chatId, text) {
 
     const input = text.trim();
 
-    // 1-usul: to'g'ridan-to'g'ri Telegram ID (raqam)
-    if (/^\d+$/.test(input)) {
-        const telegramId = parseInt(input);
-        if (admins.includes(telegramId)) {
-            bot.sendMessage(chatId, `⚠️ Bu foydalanuvchi allaqachon admin.`, getMainKeyboard(chatId));
-            resetUserState(chatId);
-            return true;
-        }
-        const userData = await findTelegramUser({ telegramId: String(telegramId) });
-        await finishAddAdmin(chatId, telegramId, userData);
+    if (!/^\d+$/.test(input)) {
+        bot.sendMessage(chatId, "❌ Noto'g'ri format! Faqat Telegram ID (raqam) kiriting.");
         return true;
     }
 
-    // 2-usul: @username orqali qidirish
-    const username = input.replace('@', '').trim();
-    if (username) {
-        try {
-            const userData = await findTelegramUser({ username });
-            if (!userData) {
-                bot.sendMessage(chatId, `❌ @${username} topilmadi. Foydalanuvchi botimiz (Mini App) bilan hali suhbat boshlamagan bo'lishi mumkin — /start bossin, keyin qaytadan urinib ko'ring. Yoki to'g'ridan-to'g'ri Telegram ID kiriting.`);
-                return true;
-            }
-            const telegramId = parseInt(userData.chatId || userData.telegram_id);
-            if (!telegramId) {
-                bot.sendMessage(chatId, `❌ @${username} uchun Telegram ID topilmadi.`);
-                return true;
-            }
-            if (admins.includes(telegramId)) {
-                bot.sendMessage(chatId, `⚠️ @${username} allaqachon admin.`, getMainKeyboard(chatId));
-                resetUserState(chatId);
-                return true;
-            }
-            await finishAddAdmin(chatId, telegramId, userData);
-            return true;
-        } catch (error) {
-            console.error("Admin qo'shishda xato:", error);
-            bot.sendMessage(chatId, '❌ Xatolik yuz berdi.');
-            return true;
-        }
+    const telegramId = parseInt(input);
+    if (admins.includes(telegramId)) {
+        bot.sendMessage(chatId, `⚠️ Bu foydalanuvchi allaqachon admin.`, getMainKeyboard(chatId));
+        resetUserState(chatId);
+        return true;
     }
-
-    bot.sendMessage(chatId, "❌ Noto'g'ri format! Telegram ID (raqam) yoki @username kiriting.");
+    const userData = await findTelegramUser({ telegramId: String(telegramId) });
+    await finishAddAdmin(chatId, telegramId, userData);
     return true;
 }
 
