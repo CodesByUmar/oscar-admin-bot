@@ -12,6 +12,7 @@ const { showBulkPriceCategorySelect } = require('../views/bulkPrice');
 const { showProductUpdateCategorySelect } = require('../views/product');
 const { handleVipStep } = require('./vip');
 const { generateMonthlyReportBuffer } = require('../utils/monthlyReport');
+const { generateAllOrdersReportBuffer } = require('../utils/ordersExport');
 
 
 
@@ -136,6 +137,24 @@ async function handleCommand(chatId, text) {
     // ─── BUYURTMALAR RO'YXATI ───────────────────────────────────────
     if (text === "📦 Buyurtmalar") {
         await showOrdersPage(chatId);
+        return;
+    }
+
+    // ─── BARCHA BUYURTMALAR (Excel) ──────────────────────────────────
+    if (text === "📥 Buyurtmalar (Excel)") {
+        const waitMsg = await bot.sendMessage(chatId, "📊 Fayl tayyorlanmoqda...");
+        try {
+            const { buffer, filename, orderCount } = await generateAllOrdersReportBuffer();
+            if (orderCount === 0) {
+                bot.editMessageText("Hali buyurtma yo'q.", { chat_id: chatId, message_id: waitMsg.message_id });
+                return;
+            }
+            await bot.sendDocument(chatId, buffer, {}, { filename, contentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            bot.editMessageText(`✅ Tayyor (${orderCount} ta buyurtma).`, { chat_id: chatId, message_id: waitMsg.message_id });
+        } catch (error) {
+            console.error("Buyurtmalar Excel eksport xato:", error);
+            bot.editMessageText("❌ Fayl tayyorlashda xato!", { chat_id: chatId, message_id: waitMsg.message_id });
+        }
         return;
     }
 
