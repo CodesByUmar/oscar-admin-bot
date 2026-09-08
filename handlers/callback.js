@@ -17,6 +17,7 @@ const {
 } = require('../views/statistics');
 const { showBulkPriceCategorySelect, showBulkPriceFieldSelect } = require('../views/bulkPrice');
 const { showOrdersPage } = require('../views/orders');
+const { bot: orderBot, GROUP_CHAT_ID: ORDER_GROUP_CHAT_ID } = require('../config/orderBot');
 
 async function notifyCustomer(telegramChatId, orderId, text) {
     if (!telegramChatId) return;
@@ -161,6 +162,9 @@ function registerCallbackHandler() {
                 admins.forEach(aId => {
                     if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} ${isConfirm ? 'tasdiqlandi' : 'bekor'} → ${adminDisplayName}`);
                 });
+                if (ORDER_GROUP_CHAT_ID && orderBot) {
+                    orderBot.sendMessage(ORDER_GROUP_CHAT_ID, `Buyurtma ${orderId} ${isConfirm ? 'tasdiqlandi' : 'bekor'} → ${adminDisplayName}`).catch(() => {});
+                }
 
                 notifyCustomer(orderData.telegramChatId, orderId,
                     isConfirm
@@ -198,6 +202,9 @@ function registerCallbackHandler() {
                 admins.forEach(aId => {
                     if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} yetkazildi → ${deliveredByName}`);
                 });
+                if (ORDER_GROUP_CHAT_ID && orderBot) {
+                    orderBot.sendMessage(ORDER_GROUP_CHAT_ID, `Buyurtma ${orderId} yetkazildi → ${deliveredByName}`).catch(() => {});
+                }
                 notifyCustomer(orderData.telegramChatId, orderId,
                     `🚚 Buyurtmangiz yetkazib berildi!\n\n🆔 ${orderId}\n\nXaridingiz uchun rahmat!`
                 );

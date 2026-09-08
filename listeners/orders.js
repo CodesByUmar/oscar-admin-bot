@@ -1,4 +1,4 @@
-const { bot, admins } = require('../config/orderBot');
+const { bot, admins, GROUP_CHAT_ID } = require('../config/orderBot');
 const { db, admin } = require('../config/firebase');
 const { getPaymentMethodText } = require('../paymentMethods');
 const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
@@ -119,6 +119,12 @@ async function notifyAdminsNewOrder(orderId, orderData) {
             console.error(`Admin ${adminId} ga xabar yuborishda xato:`, err.message);
         });
     });
+
+    if (GROUP_CHAT_ID) {
+        bot.sendMessage(GROUP_CHAT_ID, message, { reply_markup: inlineKeyboard }).catch(err => {
+            console.error(`Guruhga (${GROUP_CHAT_ID}) xabar yuborishda xato:`, err.message);
+        });
+    }
 }
 
 module.exports = { registerOrderListener };

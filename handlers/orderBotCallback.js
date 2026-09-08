@@ -1,4 +1,4 @@
-const { bot, admins } = require('../config/orderBot');
+const { bot, admins, GROUP_CHAT_ID } = require('../config/orderBot');
 const { db, admin } = require('../config/firebase');
 const { getUserBot } = require('../bots/userBot');
 const { isSuperAdmin } = require('../keyboards');
@@ -12,14 +12,16 @@ function registerOrderBotCallbacks() {
         const chatId = cq.message.chat.id;
         const messageId = cq.message.message_id;
         const data = cq.data;
+        const fromId = cq.from.id; // Guruhda chatId hammaga bir xil — kim bosganini shu aniqlaydi.
 
-        if (!data || !admins.includes(chatId)) {
+        const isAllowedChat = admins.includes(chatId) || (GROUP_CHAT_ID && chatId === GROUP_CHAT_ID);
+        if (!data || !isAllowedChat) {
             bot.answerCallbackQuery(cq.id, { text: "Ruxsat yo'q!" });
             return;
         }
 
         // Buyurtmani tasdiqlash/bekor qilish/yetkazish — faqat super admin.
-        if ((data.startsWith('confirm_order_') || data.startsWith('cancel_order_') || data.startsWith('deliver_order_')) && !isSuperAdmin(chatId)) {
+        if ((data.startsWith('confirm_order_') || data.startsWith('cancel_order_') || data.startsWith('deliver_order_')) && !isSuperAdmin(fromId)) {
             bot.answerCallbackQuery(cq.id, { text: "⛔ Bu amal faqat super adminlar uchun." });
             return;
         }
@@ -71,9 +73,13 @@ function registerOrderBotCallbacks() {
                 });
                 bot.answerCallbackQuery(cq.id, { text: isConfirm ? "Qabul qilindi" : "Bekor qilindi" });
 
+                const broadcastLine = `Buyurtma ${orderId} ${isConfirm ? 'qabul qilindi' : 'bekor qilindi'} → ${adminDisplayName}`;
                 admins.forEach(aId => {
-                    if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} ${isConfirm ? 'qabul qilindi' : 'bekor qilindi'} → ${adminDisplayName}`);
+                    if (aId !== chatId) bot.sendMessage(aId, broadcastLine).catch(() => {});
                 });
+                if (GROUP_CHAT_ID && chatId !== GROUP_CHAT_ID) {
+                    bot.sendMessage(GROUP_CHAT_ID, broadcastLine).catch(() => {});
+                }
 
                 notifyCustomer(orderData.telegramChatId, orderId,
                     isConfirm
@@ -111,9 +117,13 @@ function registerOrderBotCallbacks() {
                 });
                 bot.answerCallbackQuery(cq.id, { text: "Yetkazildi deb belgilandi" });
 
+                const deliverLine = `Buyurtma ${orderId} yetkazildi → ${deliveredByName}`;
                 admins.forEach(aId => {
-                    if (aId !== chatId) bot.sendMessage(aId, `Buyurtma ${orderId} yetkazildi → ${deliveredByName}`);
+                    if (aId !== chatId) bot.sendMessage(aId, deliverLine).catch(() => {});
                 });
+                if (GROUP_CHAT_ID && chatId !== GROUP_CHAT_ID) {
+                    bot.sendMessage(GROUP_CHAT_ID, deliverLine).catch(() => {});
+                }
 
                 notifyCustomer(orderData.telegramChatId, orderId,
                     `🚚 Buyurtmangiz yetkazib berildi!\n\n🆔 ${orderId}\n\nXaridingiz uchun rahmat!`
