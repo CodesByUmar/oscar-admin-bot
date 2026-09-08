@@ -13,7 +13,7 @@ const { showBannerDeleteList } = require('./command');
 const { showBannerManageList, showBannerLinkPicker, getTopCategoryKeys } = require('../views/banner');
 const {
     showStatisticsMenu, showStatProducts, showStatCategories,
-    showStatTopCategories, showStatCustomers, showStatVip,
+    showStatTopCategories, showStatCustomers, showStatVip, setAdminLang,
 } = require('../views/statistics');
 const { showBulkPriceCategorySelect, showBulkPriceFieldSelect } = require('../views/bulkPrice');
 
@@ -586,6 +586,13 @@ function registerCallbackHandler() {
 
         // ─── STATISTIKA (drill-down) ────────────────────────────────
         if (data === 'stat_back') {
+            await showStatisticsMenu(chatId, messageId);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+        if (data.startsWith('stat_lang_')) {
+            const lang = data.replace('stat_lang_', '');
+            await setAdminLang(chatId, lang);
             await showStatisticsMenu(chatId, messageId);
             bot.answerCallbackQuery(cq.id);
             return;
