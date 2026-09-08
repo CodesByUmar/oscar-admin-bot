@@ -383,6 +383,42 @@ function registerCallbackHandler() {
             return;
         }
 
+        // ─── NARX SINXRONIZATSIYASI (bir xil kategoriyadagi rang-variantlar) ──
+        if (data === 'pricesync_yes' || data === 'pricesync_no') {
+            const state = userState[chatId];
+            const stateData = (state && state.data) || {};
+            const { productId, messageId: stateMessageId, pendingField, pendingValue, pendingCategory } = stateData;
+            if (!productId || !pendingField || pendingValue == null) {
+                bot.answerCallbackQuery(cq.id, { text: "Ma'lumot topilmadi, qaytadan urinib ko'ring." });
+                return;
+            }
+            try {
+                let count = 1;
+                if (data === 'pricesync_yes' && pendingCategory) {
+                    const snapshot = await db.collection('products').where('category', '==', pendingCategory).get();
+                    const batch = db.batch();
+                    snapshot.docs.forEach((d) => batch.update(d.ref, { [pendingField]: pendingValue }));
+                    await batch.commit();
+                    count = snapshot.size;
+                } else {
+                    await db.collection('products').doc(String(productId)).update({ [pendingField]: pendingValue });
+                }
+                bot.answerCallbackQuery(cq.id, { text: '✅ Yangilandi!' });
+                await bot.editMessageText(
+                    data === 'pricesync_yes'
+                        ? `✅ ${count} ta mahsulotning narxi $${pendingValue} ga o'zgartirildi.`
+                        : `✅ Yangilandi: $${pendingValue}`,
+                    { chat_id: chatId, message_id: messageId }
+                );
+                resetUserState(chatId);
+                await showProductView(chatId, productId, stateMessageId);
+            } catch (error) {
+                console.error('Narx sinxronizatsiyasida xato:', error);
+                bot.answerCallbackQuery(cq.id, { text: 'Xato!' });
+            }
+            return;
+        }
+
         if (data.startsWith('select_category_')) {
             const id = parseInt(data.replace('select_category_', ''));
             try {

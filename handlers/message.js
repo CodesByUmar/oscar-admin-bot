@@ -357,12 +357,63 @@ async function handleIncomingMessage(msg) {
             if (!/^\d+$/.test(text) || parseInt(text) < 0) { bot.sendMessage(chatId, "0 yoki musbat son!"); return; }
             value = parseInt(text);
         } else { bot.sendMessage(chatId, "Xato!"); resetUserState(chatId); return; }
+
+        // Narx maydoni (dona/karobka) bo'lsa — bir xil kategoriyadagi boshqa
+        // mahsulotlar bor-yo'qligini tekshiramiz (mas: 11 xil rangli bir xil
+        // mahsulot). Bo'lsa, ularning narxini ham birga o'zgartirishni so'raymiz —
+        // aks holda faqat shu bittasi yangilanadi (avvalgidek).
+        if (fieldType === 'pricePiece' || fieldType === 'priceBox') {
+            try {
+                const productDoc = await db.collection('products').doc(String(stateData.productId)).get();
+                const category = productDoc.exists ? productDoc.data().category : null;
+                if (category) {
+                    const siblingsSnap = await db.collection('products').where('category', '==', category).get();
+                    const siblings = siblingsSnap.docs.filter((d) => d.id !== String(stateData.productId));
+                    if (siblings.length > 0) {
+                        stateData.pendingField = fieldType;
+                        stateData.pendingValue = value;
+                        stateData.pendingCategory = category;
+                        state.step = 'price_sync_confirm';
+                        const names = siblings.slice(0, 15).map((d) => `• ${getStr(d.data().name, '?')}`).join('\n');
+                        const more = siblings.length > 15 ? `\n… va yana ${siblings.length - 15} ta` : '';
+                        const fieldLabel = fieldType === 'priceBox' ? 'karobka' : 'dona';
+                        bot.sendMessage(
+                            chatId,
+                            `⚠️ Bu mahsulot bilan bir xil kategoriyada yana ${siblings.length} ta mahsulot bor:\n\n${names}${more}\n\n` +
+                            `Ularning ${fieldLabel} narxini ham $${value} ga o'zgartiraymi?`,
+                            {
+                                reply_markup: {
+                                    inline_keyboard: [[
+                                        { text: `✅ Ha, hammasiga (${siblings.length + 1} ta)`, callback_data: 'pricesync_yes' },
+                                        { text: '❌ Yo\'q, faqat shu biriga', callback_data: 'pricesync_no' },
+                                    ]],
+                                },
+                            }
+                        );
+                        return;
+                    }
+                }
+            } catch (error) {
+                console.error("Narx sinxronizatsiyasini tekshirishda xato:", error);
+                // Tekshiruv muvaffaqiyatsiz bo'lsa ham, faqat shu bitta mahsulotni
+                // yangilashda davom etamiz — pastdagi umumiy yo'l ishlatiladi.
+            }
+        }
+
         try {
             await db.collection('products').doc(String(stateData.productId)).update({ [fieldType]: value });
             state.step = 'product_update_view';
             await showProductView(chatId, stateData.productId, stateData.messageId);
             bot.sendMessage(chatId, `✅ Yangilandi: ${value}`, backKeyboard);
         } catch (error) { bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId)); resetUserState(chatId); }
+        return;
+    }
+
+    // ─── NARX SINXRONIZATSIYASI (bir xil kategoriyadagi rang-variantlar) ──
+    if (state.step === 'price_sync_confirm') {
+        // Bu bosqichda oddiy matn kutilmaydi — admin faqat yuqoridagi
+        // inline tugmalardan birini bosishi kerak.
+        bot.sendMessage(chatId, "Iltimos, yuqoridagi tugmalardan birini bosing (✅ yoki ❌).");
         return;
     }
     if (state.step === 'update_ml_field') {
