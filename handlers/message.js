@@ -2,7 +2,7 @@ const { bot, admins } = require('../config/adminBot');
 const { db, admin } = require('../config/firebase');
 const { mainKeyboard, backKeyboard, mainBackKeyboard, commandButtons, getMainKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
-const { parseNumberInput, parseDateDDMMYYYY, createWithNextId, getStr } = require('../utils/helpers');
+const { parseNumberInput, parseDateDDMMYYYY, createWithNextId, getStr, transliterate } = require('../utils/helpers');
 const { handleBack } = require('./back');
 const { handleCommand } = require('./command');
 const { handleVipStep } = require('./vip');
@@ -85,6 +85,7 @@ async function handleIncomingMessage(msg) {
         try {
             const snapshot = await db.collection('products').get();
             const q = query.toLowerCase();
+            const qLatin = transliterate(query); // lotincha yozilgan so'z kirillcha nomlarda ham topilishi uchun
             const isNumeric = /^\d+$/.test(query);
             const matches = [];
             snapshot.docs.forEach((doc) => {
@@ -103,7 +104,10 @@ async function handleIncomingMessage(msg) {
                     ...asStrings(p.category),
                     ...asStrings(p.topCategory),
                 ];
-                const textMatch = searchable.some((s) => s.toLowerCase().includes(q));
+                const textMatch = searchable.some((s) => {
+                    const lower = s.toLowerCase();
+                    return lower.includes(q) || transliterate(lower).includes(qLatin);
+                });
                 const idMatch = isNumeric && String(p.id).includes(query);
                 if (textMatch || idMatch) matches.push({ id: p.id, name: getStr(p.name, "Noma'lum") });
             });
