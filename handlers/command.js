@@ -7,6 +7,7 @@ const { formatDateTime } = require('../utils/helpers');
 const { showCategoryUpdateSelect } = require('../views/category');
 const { showCategoryTranslationList } = require('../views/categoryTranslation');
 const { showBannerManageList } = require('../views/banner');
+const { showStatisticsMenu } = require('../views/statistics');
 const { showBulkPriceCategorySelect } = require('../views/bulkPrice');
 const { showProductUpdateCategorySelect } = require('../views/product');
 const { handleVipStep } = require('./vip');
@@ -110,44 +111,7 @@ async function handleCommand(chatId, text) {
 
     // ─── STATISTIKA ────────────────────────────────────────────────
     if (text === "📊 Statistika") {
-        try {
-            // Mahsulot/kategoriya/VIP soni uchun to'liq hujjatlarni emas,
-            // faqat sonini o'qiydigan count() so'rovi ishlatiladi — bular
-            // Firestore'dan bitta hujjat o'qish narxida keladi. "Mijozlar"
-            // (buyurtma qilgan noyob kishilar soni) esa har bir buyurtmadagi
-            // telegramChatId/customerPhone bo'yicha dublikatlarni yig'ish
-            // kerak bo'lgani uchun (Firestore'da COUNT DISTINCT yo'q) barcha
-            // buyurtmalarni o'qishga to'g'ri keladi.
-            const [pCount, cCount, o, vipCount, rateDoc] = await Promise.all([
-                db.collection('products').count().get(),
-                db.collection('categories').count().get(),
-                db.collection('orders').get(),
-                db.collection('VIP_Clients').count().get(),
-                db.collection('settings').doc('usd_rate').get(),
-            ]);
-            const rate = rateDoc.exists ? (rateDoc.data().rate || 'Kiritilmagan') : 'Kiritilmagan';
-
-            const uniqueCustomers = new Set();
-            o.docs.forEach(doc => {
-                const od = doc.data();
-                const key = od.telegramChatId || od.customerPhone;
-                if (key) uniqueCustomers.add(String(key));
-            });
-
-            bot.sendMessage(chatId,
-                `📊 Statistika:\n` +
-                `🔹 Mahsulotlar: ${pCount.data().count}\n` +
-                `🔹 Kategoriyalar: ${cCount.data().count}\n` +
-                `🔹 Buyurtmalar: ${o.size}\n` +
-                `🔹 Mijozlar: ${uniqueCustomers.size}\n` +
-                `🔹 VIP: ${vipCount.data().count}\n` +
-                `💱 USD kurs: 1 USD = ${typeof rate === 'number' ? rate.toLocaleString('uz-UZ') : rate} so'm`,
-                getMainKeyboard(chatId)
-            );
-        } catch (error) {
-            console.error("Statistika xato:", error);
-            bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
-        }
+        await showStatisticsMenu(chatId);
         return;
     }
 

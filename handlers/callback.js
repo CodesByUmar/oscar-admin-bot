@@ -11,6 +11,10 @@ const { getStr, formatDateTime, resolveCustomerPhone, getAdminDisplayName } = re
 const { getUserBot } = require('../bots/userBot');
 const { showBannerDeleteList } = require('./command');
 const { showBannerManageList, showBannerLinkPicker, getTopCategoryKeys } = require('../views/banner');
+const {
+    showStatisticsMenu, showStatProducts, showStatCategories,
+    showStatTopCategories, showStatCustomers, showStatVip,
+} = require('../views/statistics');
 const { showBulkPriceCategorySelect, showBulkPriceFieldSelect } = require('../views/bulkPrice');
 
 async function notifyCustomer(telegramChatId, orderId, text) {
@@ -576,6 +580,43 @@ function registerCallbackHandler() {
 
         if (data === 'cancel_delete_banner') {
             await showBannerDeleteList(chatId, messageId);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+
+        // ─── STATISTIKA (drill-down) ────────────────────────────────
+        if (data === 'stat_back') {
+            await showStatisticsMenu(chatId, messageId);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+        if (data.startsWith('stat_products_')) {
+            const page = parseInt(data.replace('stat_products_', ''), 10) || 0;
+            await showStatProducts(chatId, messageId, page);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+        if (data.startsWith('stat_categories_')) {
+            const page = parseInt(data.replace('stat_categories_', ''), 10) || 0;
+            await showStatCategories(chatId, messageId, page);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+        if (data.startsWith('stat_topcats_')) {
+            const page = parseInt(data.replace('stat_topcats_', ''), 10) || 0;
+            await showStatTopCategories(chatId, messageId, page);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+        if (data.startsWith('stat_customers_')) {
+            const page = parseInt(data.replace('stat_customers_', ''), 10) || 0;
+            await showStatCustomers(chatId, messageId, page);
+            bot.answerCallbackQuery(cq.id);
+            return;
+        }
+        if (data.startsWith('stat_vip_')) {
+            const page = parseInt(data.replace('stat_vip_', ''), 10) || 0;
+            await showStatVip(chatId, messageId, page);
             bot.answerCallbackQuery(cq.id);
             return;
         }
