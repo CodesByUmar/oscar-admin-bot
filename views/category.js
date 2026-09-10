@@ -13,7 +13,7 @@ async function showCategoryView(chatId, categoryId, messageId) {
         }
         const c = doc.data();
         const name = getStr(c.name, 'Noma\'lum');
-        const icon = c.icon || c.icon_url || '';
+        const icon = c.icon || c.icon_url || '📁';
         const inlineRows = [
             [{ text: `Nomi: ${name}`, callback_data: `cat_update_name_${categoryId}` }],
         ];
@@ -47,13 +47,15 @@ async function showCategoryUpdateSelect(chatId, messageId = null) {
         }
         const cats = snapshot.docs.map(d => {
             const x = d.data();
-            return { id: x.id, name: getStr(x.name) };
+            return { id: x.id, name: getStr(x.name), icon: x.icon || x.icon_url || '📁' };
         });
         const kb = { reply_markup: { inline_keyboard: [] } };
         for (let i = 0; i < cats.length; i += 2) {
-            const row = [{ text: cats[i].name || '?', callback_data: `cat_select_${cats[i].id}` }];
+            const label1 = `${cats[i].icon} ${cats[i].name}`.trim();
+            const row = [{ text: label1 || '?', callback_data: `cat_select_${cats[i].id}` }];
             if (i + 1 < cats.length) {
-                row.push({ text: cats[i + 1].name || '?', callback_data: `cat_select_${cats[i + 1].id}` });
+                const label2 = `${cats[i + 1].icon} ${cats[i + 1].name}`.trim();
+                row.push({ text: label2 || '?', callback_data: `cat_select_${cats[i + 1].id}` });
             }
             kb.reply_markup.inline_keyboard.push(row);
         }

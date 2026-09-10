@@ -23,11 +23,11 @@ const { showStoreContactsList } = require('../views/storeContacts');
 
 async function handleCommand(chatId, text) {
     const current = userState[chatId];
-    if (text !== "Bekor qilish" && current && current.step && current.step !== 'none') {
+    if (text !== "❌ Bekor qilish" && current && current.step && current.step !== 'none') {
         bot.sendMessage(
             chatId,
             "⚠️ Siz hozir boshqa jarayon o'rtasidasiz (masalan mahsulot yoki kategoriya qo'shish).\n\n" +
-            "Avval uni tugating yoki \"Bekor qilish\" tugmasini bosing — aks holda kiritgan ma'lumotlaringiz yo'qoladi.",
+            "Avval uni tugating yoki \"❌ Bekor qilish\" tugmasini bosing — aks holda kiritgan ma'lumotlaringiz yo'qoladi.",
             getMainBackKeyboard(chatId)
         );
         return;
@@ -36,52 +36,55 @@ async function handleCommand(chatId, text) {
     if (!db) { bot.sendMessage(chatId, "❌ Database ulanmagan.", getMainKeyboard(chatId)); return; }
 
     // ─── BO'LIM NAVIGATSIYASI ────────────────────────────────────────
-    if (text === GROUP_PRODUCTS) { bot.sendMessage(chatId, "Mahsulotlar bo'limi:", getGroupKeyboard(chatId, 'products')); return; }
-    if (text === GROUP_REPORTS) { bot.sendMessage(chatId, "Hisobot va statistika:", getGroupKeyboard(chatId, 'reports')); return; }
-    if (text === GROUP_BANNER) { bot.sendMessage(chatId, "Banner va tarjima:", getGroupKeyboard(chatId, 'banner')); return; }
-    if (text === GROUP_MANAGEMENT) { bot.sendMessage(chatId, "Boshqaruv:", getGroupKeyboard(chatId, 'management')); return; }
+    if (text === GROUP_PRODUCTS) { bot.sendMessage(chatId, "📦 Mahsulotlar bo'limi:", getGroupKeyboard(chatId, 'products')); return; }
+    if (text === GROUP_REPORTS) { bot.sendMessage(chatId, "📊 Hisobot va statistika:", getGroupKeyboard(chatId, 'reports')); return; }
+    if (text === GROUP_BANNER) { bot.sendMessage(chatId, "🖼 Banner va tarjima:", getGroupKeyboard(chatId, 'banner')); return; }
+    if (text === GROUP_MANAGEMENT) { bot.sendMessage(chatId, "👥 Boshqaruv:", getGroupKeyboard(chatId, 'management')); return; }
     if (text === BACK_TO_GROUPS) { bot.sendMessage(chatId, "Bosh menyu.", getMainKeyboard(chatId)); return; }
 
     // ─── FAQAT SUPER ADMIN UCHUN ────────────────────────────────────
-    const superAdminOnly = ["VIP qo'shish", "VIP o'chirish", "USD kurs", "Bannerni o'chirish", "Banner havolasi", "Oylik hisobot", "Kategoriya tarjimalari"];
+    const superAdminOnly = ["⭐ VIP qo'shish", "🗑 VIP o'chirish", "💱 USD kurs", "🗑 Bannerni o'chirish", "🔗 Banner havolasi", "📅 Oylik hisobot", "🌐 Kategoriya tarjimalari"];
     if (superAdminOnly.includes(text) && !isSuperAdmin(chatId)) {
         bot.sendMessage(chatId, "⛔ Bu amal faqat super adminlar uchun.", getMainKeyboard(chatId));
         return;
     }
 
     // ─── ADMIN QO'SHISH/O'CHIRISH (istalgan admin ishlata oladi, super admin shart emas) ──
-    if (text === "Admin qo'shish") {
+    if (text === "➕ Admin qo'shish") {
         userState[chatId] = { step: 'admin_add_id', data: {}, steps: [] };
-        bot.sendMessage(chatId, "Yangi admin qo'shish\n\nTelegram ID kiriting:", backKeyboard);
+        bot.sendMessage(chatId, "➕ Yangi admin qo'shish\n\nTelegram ID kiriting:", backKeyboard);
         return;
     }
-    if (text === "Admin o'chirish") {
+    if (text === "🗑 Admin o'chirish") {
         await showAdminRemoveList(chatId);
         return;
     }
 
     // ─── DO'KON KONTAKTLARI (telefon/Telegram — Call Center'da ko'rinadi) ──
-    if (text === "Do'kon kontaktlari") {
+    if (text === "🏪 Do'kon kontaktlari") {
         await showStoreContactsList(chatId);
         return;
     }
 
     // ─── VIP ──────────────────────────────────────────────────────────
-    if (text === "VIP qo'shish") {
+    if (text === "⭐ VIP qo'shish") {
         userState[chatId] = { step: 'vip_add_id', data: {}, steps: [] };
-        bot.sendMessage(chatId, "VIP qo'shish\n\nTelegram ID yoki @username kiriting:", backKeyboard);
+        bot.sendMessage(chatId, "👤 VIP qo'shish\n\nTelegram ID yoki @username kiriting:", backKeyboard);
         return;
     }
-    if (text === "VIP o'chirish") {
+    if (text === "🗑 VIP o'chirish") {
         userState[chatId] = { step: 'vip_remove_id', data: {}, steps: [] };
-        bot.sendMessage(chatId, "VIP o'chirish\n\nTelegram ID yoki @username kiriting:", backKeyboard);
+        bot.sendMessage(chatId, "🗑 VIP o'chirish\n\nTelegram ID yoki @username kiriting:", backKeyboard);
         return;
     }
 
     // ─── MAHSULOT QO'SHISH ─────────────────────────────────────────
-    if (text === "Mahsulot qo'shish") {
+    if (text === "🛍 Mahsulot qo'shish") {
         const snapshot = await db.collection('categories').get();
-        const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name, topCategory: d.data().topCategory || null }));
+        const categoryNames = snapshot.docs.map(d => {
+            const icon = d.data().icon || d.data().icon_url || '📁';
+            return { label: `${icon} ${getStr(d.data().name)}`.trim(), full: d.data().name, topCategory: d.data().topCategory || null };
+        });
         if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval kategoriya qo'shing.", getMainKeyboard(chatId)); return; }
         userState[chatId] = { step: 'product_name_uz', data: { categoryNames }, steps: [] };
         bot.sendMessage(chatId, "1a. Mahsulot nomini UZ tilida kiriting:", backKeyboard);
@@ -89,34 +92,34 @@ async function handleCommand(chatId, text) {
     }
 
     // ─── KATEGORIYA ────────────────────────────────────────────────
-    if (text === "Kategoriya qo'shish") {
+    if (text === "📂 Kategoriya qo'shish") {
         userState[chatId] = { step: 'category_name', data: {}, steps: [] };
         bot.sendMessage(chatId, "1/2. Kategoriya nomini kiriting:", backKeyboard);
         return;
     }
-    if (text === "Kategoriya yangilash") {
+    if (text === "📂 Kategoriya yangilash") {
         userState[chatId] = { step: 'category_update_select', data: {}, steps: [] };
         await showCategoryUpdateSelect(chatId);
         return;
     }
-    if (text === "Mahsulotni yangilash") {
+    if (text === "🔄 Mahsulotni yangilash") {
         userState[chatId] = { step: 'product_update_category_select', data: {}, steps: [] };
         await showProductUpdateCategorySelect(chatId);
         return;
     }
-    if (text === "Narxni ommaviy o'zgartirish") {
+    if (text === "💰 Narxni ommaviy o'zgartirish") {
         userState[chatId] = { step: 'bulkprice_category_select', data: {}, steps: [] };
         await showBulkPriceCategorySelect(chatId);
         return;
     }
-    if (text === "Qidiruv") {
+    if (text === "🔍 Qidiruv") {
         userState[chatId] = { step: 'search_query', data: {}, steps: [] };
-        bot.sendMessage(chatId, "Mahsulot nomini (istalgan tilda) yoki ID raqamini kiriting:", backKeyboard);
+        bot.sendMessage(chatId, "🔍 Mahsulot nomini (istalgan tilda) yoki ID raqamini kiriting:", backKeyboard);
         return;
     }
 
     // ─── USD KURS ──────────────────────────────────────────────────
-    if (text === "USD kurs") {
+    if (text === "💱 USD kurs") {
         try {
             const doc = await db.collection('settings').doc('usd_rate').get();
             const currentRate = doc.exists ? (doc.data().rate || 0) : 0;
@@ -133,13 +136,13 @@ async function handleCommand(chatId, text) {
     }
 
     // ─── STATISTIKA ────────────────────────────────────────────────
-    if (text === "Statistika") {
+    if (text === "📊 Statistika") {
         await showStatisticsMenu(chatId);
         return;
     }
 
     // ─── OYLIK HISOBOT (Excel) ───────────────────────────────────────
-    if (text === "Oylik hisobot") {
+    if (text === "📅 Oylik hisobot") {
         const waitMsg = await bot.sendMessage(chatId, "📊 Hisobot tayyorlanmoqda...");
         try {
             const { buffer, filename, orderCount } = await generateMonthlyReportBuffer();
@@ -157,13 +160,13 @@ async function handleCommand(chatId, text) {
     }
 
     // ─── BUYURTMALAR RO'YXATI ───────────────────────────────────────
-    if (text === "Buyurtmalar") {
+    if (text === "📦 Buyurtmalar") {
         await showOrdersPage(chatId);
         return;
     }
 
     // ─── BARCHA BUYURTMALAR (Excel) ──────────────────────────────────
-    if (text === "Buyurtmalar (Excel)") {
+    if (text === "📥 Buyurtmalar (Excel)") {
         const waitMsg = await bot.sendMessage(chatId, "📊 Fayl tayyorlanmoqda...");
         try {
             const { buffer, filename, orderCount } = await generateAllOrdersReportBuffer();
@@ -181,33 +184,33 @@ async function handleCommand(chatId, text) {
     }
 
     // ─── KATEGORIYA TARJIMALARI (topCategory/category — RU/EN) ────────
-    if (text === "Kategoriya tarjimalari") {
+    if (text === "🌐 Kategoriya tarjimalari") {
         userState[chatId] = { step: 'none', data: {}, steps: [] };
         await showCategoryTranslationList(chatId);
         return;
     }
 
     // ─── BANNER QO'SHISH ─────────────────────────────────────────
-    if (text === "Banner qo'shish") {
+    if (text === "🖼 Banner qo'shish") {
         userState[chatId] = { step: 'banner_image', data: {}, steps: [] };
-        bot.sendMessage(chatId, "Yangi banner rasmini yuboring (photo formatida):", backKeyboard);
+        bot.sendMessage(chatId, "🖼 Yangi banner rasmini yuboring (photo formatida):", backKeyboard);
         return;
     }
 
     // ─── BANNERNI O'CHIRISH ──────────────────────────────────────
-    if (text === "Bannerni o'chirish") {
+    if (text === "🗑 Bannerni o'chirish") {
         await showBannerDeleteList(chatId);
         return;
     }
 
     // ─── BANNER HAVOLASI ─────────────────────────────────────────
-    if (text === "Banner havolasi") {
+    if (text === "🔗 Banner havolasi") {
         await showBannerManageList(chatId);
         return;
     }
 
     // ─── BEKOR QILISH ──────────────────────────────────────────────
-    if (text === "Bekor qilish") {
+    if (text === "❌ Bekor qilish") {
         resetUserState(chatId);
         bot.sendMessage(chatId, "Bekor qilindi.", getMainKeyboard(chatId));
         return;
@@ -229,7 +232,7 @@ async function showBannerDeleteList(chatId, messageId = null) {
         }
         const kb = { inline_keyboard: [] };
         snapshot.docs.forEach((doc, i) => {
-            kb.inline_keyboard.push([{ text: `Banner ${i + 1}`, callback_data: `delete_banner_${doc.id}` }]);
+            kb.inline_keyboard.push([{ text: `🖼 Banner ${i + 1}`, callback_data: `delete_banner_${doc.id}` }]);
         });
         const text = "🗑 O'chirmoqchi bo'lgan bannerni tanlang:";
         if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId, reply_markup: kb });
