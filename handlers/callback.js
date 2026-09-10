@@ -521,7 +521,7 @@ function registerCallbackHandler() {
             try {
                 const catsSnap = await db.collection('categories').get();
                 if (catsSnap.empty) { bot.answerCallbackQuery(cq.id, { text: "Kategoriyalar yo'q!" }); return; }
-                const cats = catsSnap.docs.map(d => ({ id: d.data().id, icon: d.data().icon || d.data().icon_url || '', name: getStr(d.data().name) }));
+                const cats = catsSnap.docs.map(d => ({ id: d.data().id, icon: d.data().icon || d.data().icon_url || '📁', name: getStr(d.data().name) }));
                 const kb = { reply_markup: { inline_keyboard: [] } };
                 for (let i = 0; i < cats.length; i += 2) {
                     const row = [{ text: `${cats[i].icon} ${cats[i].name}`.trim(), callback_data: `set_product_cat_${id}_${cats[i].id}` }];

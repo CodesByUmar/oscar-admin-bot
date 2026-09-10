@@ -95,7 +95,7 @@ async function showAdminRemoveList(chatId, messageId = null) {
             if (isNaN(telegramId) || !admins.includes(telegramId)) continue;
             const userData = await findTelegramUser({ telegramId: String(telegramId) });
             const displayName = buildDisplayName(userData, `ID:${telegramId}`);
-            kb.inline_keyboard.push([{ text: `${displayName} (${telegramId})`, callback_data: `adminremove_select_${telegramId}` }]);
+            kb.inline_keyboard.push([{ text: `👤 ${displayName} (${telegramId})`, callback_data: `adminremove_select_${telegramId}` }]);
         }
         if (kb.inline_keyboard.length === 0) {
             const text = "Botning o'zidan qo'shilgan adminlar yo'q.\n\n(ADMIN_IDS orqali — Railway'dan qo'shilgan adminlarni faqat shu yerdan, Railway'dan o'chirish mumkin.)";

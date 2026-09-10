@@ -13,7 +13,7 @@ async function showCategoryView(chatId, categoryId, messageId) {
         }
         const c = doc.data();
         const name = getStr(c.name, 'Noma\'lum');
-        const icon = c.icon || c.icon_url || '';
+        const icon = c.icon || c.icon_url || '📁';
         const inlineRows = [
             [{ text: `Nomi: ${name}`, callback_data: `cat_update_name_${categoryId}` }],
         ];
@@ -47,7 +47,7 @@ async function showCategoryUpdateSelect(chatId, messageId = null) {
         }
         const cats = snapshot.docs.map(d => {
             const x = d.data();
-            return { id: x.id, name: getStr(x.name), icon: x.icon || x.icon_url || '' };
+            return { id: x.id, name: getStr(x.name), icon: x.icon || x.icon_url || '📁' };
         });
         const kb = { reply_markup: { inline_keyboard: [] } };
         for (let i = 0; i < cats.length; i += 2) {

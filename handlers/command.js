@@ -81,7 +81,10 @@ async function handleCommand(chatId, text) {
     // ─── MAHSULOT QO'SHISH ─────────────────────────────────────────
     if (text === "🛍 Mahsulot qo'shish") {
         const snapshot = await db.collection('categories').get();
-        const categoryNames = snapshot.docs.map(d => ({ label: getStr(d.data().name), full: d.data().name, topCategory: d.data().topCategory || null }));
+        const categoryNames = snapshot.docs.map(d => {
+            const icon = d.data().icon || d.data().icon_url || '📁';
+            return { label: `${icon} ${getStr(d.data().name)}`.trim(), full: d.data().name, topCategory: d.data().topCategory || null };
+        });
         if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval kategoriya qo'shing.", getMainKeyboard(chatId)); return; }
         userState[chatId] = { step: 'product_name_uz', data: { categoryNames }, steps: [] };
         bot.sendMessage(chatId, "1a. Mahsulot nomini UZ tilida kiriting:", backKeyboard);

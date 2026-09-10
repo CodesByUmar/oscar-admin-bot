@@ -19,7 +19,7 @@ async function showBulkPriceCategorySelect(chatId, messageId = null) {
         }
         const cats = snapshot.docs.map((d) => {
             const x = d.data();
-            return { id: x.id, name: getStr(x.name), icon: x.icon || x.icon_url || '' };
+            return { id: x.id, name: getStr(x.name), icon: x.icon || x.icon_url || '📁' };
         });
         const kb = { inline_keyboard: [] };
         for (let i = 0; i < cats.length; i += 2) {
