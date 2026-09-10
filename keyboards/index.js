@@ -3,11 +3,12 @@ const { superAdmins } = require('../config/adminBot');
 // ─── Bo'lim (guruh) darajasidagi tugmalar ──────────────────────────
 // Bosh menyu endi 13 ta tugmani birma-bir ko'rsatmaydi — 4 ta bo'limga
 // bo'lingan, har biri bosilganda ichidagi amallar chiqadi.
-const GROUP_PRODUCTS = "📦 Mahsulotlar";
-const GROUP_REPORTS = "📊 Hisobot va statistika";
-const GROUP_BANNER = "🖼 Banner va tarjima";
-const GROUP_MANAGEMENT = "👥 Boshqaruv";
-const BACK_TO_GROUPS = "⬅️ Bosh menyu";
+// Iconlar olib tashlandi — foydalanuvchi so'rovi bo'yicha.
+const GROUP_PRODUCTS = "Mahsulotlar";
+const GROUP_REPORTS = "Hisobot va statistika";
+const GROUP_BANNER = "Banner va tarjima";
+const GROUP_MANAGEMENT = "Boshqaruv";
+const BACK_TO_GROUPS = "Bosh menyu";
 
 const groupsKeyboard = {
     reply_markup: {
@@ -27,10 +28,10 @@ const staffKeyboard = groupsKeyboard;
 const productsGroupKeyboard = {
     reply_markup: {
         keyboard: [
-            [{ text: "🛍 Mahsulot qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
-            [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
-            [{ text: "💰 Narxni ommaviy o'zgartirish" }],
-            [{ text: "🔍 Qidiruv" }],
+            [{ text: "Mahsulot qo'shish" }, { text: "Kategoriya qo'shish" }],
+            [{ text: "Kategoriya yangilash" }, { text: "Mahsulotni yangilash" }],
+            [{ text: "Narxni ommaviy o'zgartirish" }],
+            [{ text: "Qidiruv" }],
             [{ text: BACK_TO_GROUPS }],
         ],
         resize_keyboard: true,
@@ -41,9 +42,9 @@ const productsGroupKeyboard = {
 const reportsGroupKeyboard = {
     reply_markup: {
         keyboard: [
-            [{ text: "📊 Statistika" }, { text: "💱 USD kurs" }],
-            [{ text: "📦 Buyurtmalar" }, { text: "📥 Buyurtmalar (Excel)" }],
-            [{ text: "📅 Oylik hisobot" }],
+            [{ text: "Statistika" }, { text: "USD kurs" }],
+            [{ text: "Buyurtmalar" }, { text: "Buyurtmalar (Excel)" }],
+            [{ text: "Oylik hisobot" }],
             [{ text: BACK_TO_GROUPS }],
         ],
         resize_keyboard: true,
@@ -52,8 +53,8 @@ const reportsGroupKeyboard = {
 const staffReportsGroupKeyboard = {
     reply_markup: {
         keyboard: [
-            [{ text: "📊 Statistika" }],
-            [{ text: "📦 Buyurtmalar" }, { text: "📥 Buyurtmalar (Excel)" }],
+            [{ text: "Statistika" }],
+            [{ text: "Buyurtmalar" }, { text: "Buyurtmalar (Excel)" }],
             [{ text: BACK_TO_GROUPS }],
         ],
         resize_keyboard: true,
@@ -64,9 +65,9 @@ const staffReportsGroupKeyboard = {
 const bannerGroupKeyboard = {
     reply_markup: {
         keyboard: [
-            [{ text: "🖼 Banner qo'shish" }, { text: "🗑 Bannerni o'chirish" }],
-            [{ text: "🔗 Banner havolasi" }],
-            [{ text: "🌐 Kategoriya tarjimalari" }],
+            [{ text: "Banner qo'shish" }, { text: "Bannerni o'chirish" }],
+            [{ text: "Banner havolasi" }],
+            [{ text: "Kategoriya tarjimalari" }],
             [{ text: BACK_TO_GROUPS }],
         ],
         resize_keyboard: true,
@@ -75,7 +76,7 @@ const bannerGroupKeyboard = {
 const staffBannerGroupKeyboard = {
     reply_markup: {
         keyboard: [
-            [{ text: "🖼 Banner qo'shish" }],
+            [{ text: "Banner qo'shish" }],
             [{ text: BACK_TO_GROUPS }],
         ],
         resize_keyboard: true,
@@ -86,9 +87,9 @@ const staffBannerGroupKeyboard = {
 const managementGroupKeyboard = {
     reply_markup: {
         keyboard: [
-            [{ text: "🏪 Do'kon kontaktlari" }],
-            [{ text: "➕ Admin qo'shish" }, { text: "🗑 Admin o'chirish" }],
-            [{ text: "⭐ VIP qo'shish" }, { text: "🗑 VIP o'chirish" }],
+            [{ text: "Do'kon kontaktlari" }],
+            [{ text: "Admin qo'shish" }, { text: "Admin o'chirish" }],
+            [{ text: "VIP qo'shish" }, { text: "VIP o'chirish" }],
             [{ text: BACK_TO_GROUPS }],
         ],
         resize_keyboard: true,
@@ -97,8 +98,8 @@ const managementGroupKeyboard = {
 const staffManagementGroupKeyboard = {
     reply_markup: {
         keyboard: [
-            [{ text: "🏪 Do'kon kontaktlari" }],
-            [{ text: "➕ Admin qo'shish" }, { text: "🗑 Admin o'chirish" }],
+            [{ text: "Do'kon kontaktlari" }],
+            [{ text: "Admin qo'shish" }, { text: "Admin o'chirish" }],
             [{ text: BACK_TO_GROUPS }],
         ],
         resize_keyboard: true,
@@ -106,16 +107,14 @@ const staffManagementGroupKeyboard = {
 };
 
 // ─── Jarayon ichidagi ("nom kiriting" kabi) qadamlar uchun ─────────
-// Har ikkalasi ham endi "Bekor qilish"ni ko'rsatadi — oldin faqat
-// "Orqaga" bor edi, bekor qilish uchun matnni qo'lda yozish kerak edi.
 const backKeyboard = {
-    reply_markup: { keyboard: [["❌ Bekor qilish", "Orqaga"]], resize_keyboard: true },
+    reply_markup: { keyboard: [["Bekor qilish", "Orqaga"]], resize_keyboard: true },
 };
 
 // Jarayon o'rtasida boshqa tugma bosilganda chiqadigan ogohlantirishda
 // ko'rsatiladi — faqat bekor qilish tugmasi kifoya.
 const mainBackKeyboard = {
-    reply_markup: { keyboard: [["❌ Bekor qilish"]], resize_keyboard: true },
+    reply_markup: { keyboard: [["Bekor qilish"]], resize_keyboard: true },
 };
 const staffBackKeyboard = mainBackKeyboard;
 
@@ -141,15 +140,15 @@ function getGroupKeyboard(chatId, groupKey) {
 }
 
 const commandButtons = [
-    "🛍 Mahsulot qo'shish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
-    "🔄 Mahsulotni yangilash", "💰 Narxni ommaviy o'zgartirish", "🔍 Qidiruv",
-    "📊 Statistika", "💱 USD kurs", "📅 Oylik hisobot",
-    "📦 Buyurtmalar", "📥 Buyurtmalar (Excel)", "❌ Bekor qilish",
-    "🖼 Banner qo'shish", "🗑 Bannerni o'chirish", "🔗 Banner havolasi",
-    "🌐 Kategoriya tarjimalari",
-    "🏪 Do'kon kontaktlari",
-    "⭐ VIP qo'shish", "🗑 VIP o'chirish",
-    "➕ Admin qo'shish", "🗑 Admin o'chirish",
+    "Mahsulot qo'shish", "Kategoriya qo'shish", "Kategoriya yangilash",
+    "Mahsulotni yangilash", "Narxni ommaviy o'zgartirish", "Qidiruv",
+    "Statistika", "USD kurs", "Oylik hisobot",
+    "Buyurtmalar", "Buyurtmalar (Excel)", "Bekor qilish",
+    "Banner qo'shish", "Bannerni o'chirish", "Banner havolasi",
+    "Kategoriya tarjimalari",
+    "Do'kon kontaktlari",
+    "VIP qo'shish", "VIP o'chirish",
+    "Admin qo'shish", "Admin o'chirish",
     // Bo'lim navigatsiyasi
     GROUP_PRODUCTS, GROUP_REPORTS, GROUP_BANNER, GROUP_MANAGEMENT, BACK_TO_GROUPS,
 ];
