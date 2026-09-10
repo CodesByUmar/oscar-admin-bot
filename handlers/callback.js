@@ -603,8 +603,7 @@ function registerCallbackHandler() {
             const preserve = { selectedCategory: cur.data.selectedCategory, messageId };
             if (fieldType === 'image') {
                 userState[chatId] = { step: 'update_product_image', data: { productId: id, ...preserve }, steps: cur.steps || [] };
-                const { mainBackKeyboard } = require('../keyboards');
-                bot.sendMessage(chatId, 'Yangi rasm yuboring:', mainBackKeyboard);
+                bot.sendMessage(chatId, 'Yangi rasm yuboring:', backKeyboard);
             } else {
                 userState[chatId] = { step: 'update_value', data: { productId: id, field: fieldType, ...preserve }, steps: cur.steps || [] };
                 const labelMap = { pricePiece: "Narx (dona, USD, mas: 6.53)", priceBox: "Narx (karobka, USD, mas: 24.99)", discount: 'Chegirma (%)' };

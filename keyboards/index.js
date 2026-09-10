@@ -1,80 +1,143 @@
 const { superAdmins } = require('../config/adminBot');
 
-const mainKeyboard = {
+// ─── Bo'lim (guruh) darajasidagi tugmalar ──────────────────────────
+// Bosh menyu endi 13 ta tugmani birma-bir ko'rsatmaydi — 4 ta bo'limga
+// bo'lingan, har biri bosilganda ichidagi amallar chiqadi.
+const GROUP_PRODUCTS = "📦 Mahsulotlar";
+const GROUP_REPORTS = "📊 Hisobot va statistika";
+const GROUP_BANNER = "🖼 Banner va tarjima";
+const GROUP_MANAGEMENT = "👥 Boshqaruv";
+const BACK_TO_GROUPS = "⬅️ Bosh menyu";
+
+const groupsKeyboard = {
+    reply_markup: {
+        keyboard: [
+            [{ text: GROUP_PRODUCTS }, { text: GROUP_REPORTS }],
+            [{ text: GROUP_BANNER }, { text: GROUP_MANAGEMENT }],
+        ],
+        resize_keyboard: true,
+    },
+};
+
+// Bir xil — bu bo'limlarning hech biri superAdminOnly emas
+const mainKeyboard = groupsKeyboard;
+const staffKeyboard = groupsKeyboard;
+
+// ─── "Mahsulotlar" bo'limi (super admin va xodim uchun bir xil) ────
+const productsGroupKeyboard = {
     reply_markup: {
         keyboard: [
             [{ text: "🛍 Mahsulot qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
             [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
             [{ text: "💰 Narxni ommaviy o'zgartirish" }],
             [{ text: "🔍 Qidiruv" }],
+            [{ text: BACK_TO_GROUPS }],
+        ],
+        resize_keyboard: true,
+    },
+};
+
+// ─── "Hisobot va statistika" bo'limi ────────────────────────────────
+const reportsGroupKeyboard = {
+    reply_markup: {
+        keyboard: [
             [{ text: "📊 Statistika" }, { text: "💱 USD kurs" }],
             [{ text: "📦 Buyurtmalar" }, { text: "📥 Buyurtmalar (Excel)" }],
             [{ text: "📅 Oylik hisobot" }],
+            [{ text: BACK_TO_GROUPS }],
+        ],
+        resize_keyboard: true,
+    },
+};
+const staffReportsGroupKeyboard = {
+    reply_markup: {
+        keyboard: [
+            [{ text: "📊 Statistika" }],
+            [{ text: "📦 Buyurtmalar" }, { text: "📥 Buyurtmalar (Excel)" }],
+            [{ text: BACK_TO_GROUPS }],
+        ],
+        resize_keyboard: true,
+    },
+};
+
+// ─── "Banner va tarjima" bo'limi ────────────────────────────────────
+const bannerGroupKeyboard = {
+    reply_markup: {
+        keyboard: [
             [{ text: "🖼 Banner qo'shish" }, { text: "🗑 Bannerni o'chirish" }],
             [{ text: "🔗 Banner havolasi" }],
             [{ text: "🌐 Kategoriya tarjimalari" }],
+            [{ text: BACK_TO_GROUPS }],
+        ],
+        resize_keyboard: true,
+    },
+};
+const staffBannerGroupKeyboard = {
+    reply_markup: {
+        keyboard: [
+            [{ text: "🖼 Banner qo'shish" }],
+            [{ text: BACK_TO_GROUPS }],
+        ],
+        resize_keyboard: true,
+    },
+};
+
+// ─── "Boshqaruv" bo'limi ─────────────────────────────────────────────
+const managementGroupKeyboard = {
+    reply_markup: {
+        keyboard: [
             [{ text: "🏪 Do'kon kontaktlari" }],
             [{ text: "➕ Admin qo'shish" }, { text: "🗑 Admin o'chirish" }],
             [{ text: "⭐ VIP qo'shish" }, { text: "🗑 VIP o'chirish" }],
+            [{ text: BACK_TO_GROUPS }],
         ],
         resize_keyboard: true,
     },
 };
-
-// Xodim (super admin bo'lmagan) uchun — o'chirish, VIP, USD kurs
-// tugmalari yo'q (Statistika esa endi hammaga ochiq). Bu faqat ko'rinish
-// qulayligi uchun; haqiqiy cheklov har bir handlerning o'zida
-// (superAdmins.includes(chatId)) tekshiriladi.
-const staffKeyboard = {
+const staffManagementGroupKeyboard = {
     reply_markup: {
         keyboard: [
-            [{ text: "🛍 Mahsulot qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
-            [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
-            [{ text: "💰 Narxni ommaviy o'zgartirish" }],
-            [{ text: "🔍 Qidiruv" }, { text: "📊 Statistika" }],
-            [{ text: "📦 Buyurtmalar" }, { text: "📥 Buyurtmalar (Excel)" }],
-            [{ text: "🖼 Banner qo'shish" }],
             [{ text: "🏪 Do'kon kontaktlari" }],
             [{ text: "➕ Admin qo'shish" }, { text: "🗑 Admin o'chirish" }],
+            [{ text: BACK_TO_GROUPS }],
         ],
         resize_keyboard: true,
     },
 };
 
+// ─── Jarayon ichidagi ("nom kiriting" kabi) qadamlar uchun ─────────
+// Har ikkalasi ham endi "Bekor qilish"ni ko'rsatadi — oldin faqat
+// "Orqaga" bor edi, bekor qilish uchun matnni qo'lda yozish kerak edi.
 const backKeyboard = {
-    reply_markup: { keyboard: [["Orqaga"]], resize_keyboard: true },
+    reply_markup: { keyboard: [["❌ Bekor qilish", "Orqaga"]], resize_keyboard: true },
 };
 
+// Jarayon o'rtasida boshqa tugma bosilganda chiqadigan ogohlantirishda
+// ko'rsatiladi — faqat bekor qilish tugmasi kifoya.
 const mainBackKeyboard = {
-    reply_markup: {
-        keyboard: [
-            ...mainKeyboard.reply_markup.keyboard.slice(0, -1),
-            [{ text: "❌ Bekor qilish" }, { text: "Orqaga" }],
-        ],
-        resize_keyboard: true,
-    },
+    reply_markup: { keyboard: [["❌ Bekor qilish"]], resize_keyboard: true },
 };
-
-const staffBackKeyboard = {
-    reply_markup: {
-        keyboard: [
-            ...staffKeyboard.reply_markup.keyboard,
-            [{ text: "❌ Bekor qilish" }, { text: "Orqaga" }],
-        ],
-        resize_keyboard: true,
-    },
-};
+const staffBackKeyboard = mainBackKeyboard;
 
 function isSuperAdmin(chatId) {
     return superAdmins.includes(chatId);
 }
 
 function getMainKeyboard(chatId) {
-    return isSuperAdmin(chatId) ? mainKeyboard : staffKeyboard;
+    return groupsKeyboard;
 }
 
 function getMainBackKeyboard(chatId) {
-    return isSuperAdmin(chatId) ? mainBackKeyboard : staffBackKeyboard;
+    return mainBackKeyboard;
+}
+
+function getGroupKeyboard(chatId, groupKey) {
+    const admin = isSuperAdmin(chatId);
+    if (groupKey === 'products') return productsGroupKeyboard;
+    if (groupKey === 'reports') return admin ? reportsGroupKeyboard : staffReportsGroupKeyboard;
+    if (groupKey === 'banner') return admin ? bannerGroupKeyboard : staffBannerGroupKeyboard;
+    if (groupKey === 'management') return admin ? managementGroupKeyboard : staffManagementGroupKeyboard;
+    return groupsKeyboard;
 }
 
 const commandButtons = [
@@ -87,9 +150,13 @@ const commandButtons = [
     "🏪 Do'kon kontaktlari",
     "⭐ VIP qo'shish", "🗑 VIP o'chirish",
     "➕ Admin qo'shish", "🗑 Admin o'chirish",
+    // Bo'lim navigatsiyasi
+    GROUP_PRODUCTS, GROUP_REPORTS, GROUP_BANNER, GROUP_MANAGEMENT, BACK_TO_GROUPS,
 ];
 
 module.exports = {
     mainKeyboard, staffKeyboard, backKeyboard, mainBackKeyboard, staffBackKeyboard,
-    commandButtons, isSuperAdmin, getMainKeyboard, getMainBackKeyboard,
+    groupsKeyboard,
+    commandButtons, isSuperAdmin, getMainKeyboard, getMainBackKeyboard, getGroupKeyboard,
+    GROUP_PRODUCTS, GROUP_REPORTS, GROUP_BANNER, GROUP_MANAGEMENT, BACK_TO_GROUPS,
 };

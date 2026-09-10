@@ -1,6 +1,9 @@
 const { bot } = require('../config/adminBot');
 const { db } = require('../config/firebase');
-const { mainKeyboard, backKeyboard, mainBackKeyboard, isSuperAdmin, getMainKeyboard, getMainBackKeyboard } = require('../keyboards');
+const {
+    mainKeyboard, backKeyboard, mainBackKeyboard, isSuperAdmin, getMainKeyboard, getMainBackKeyboard,
+    getGroupKeyboard, GROUP_PRODUCTS, GROUP_REPORTS, GROUP_BANNER, GROUP_MANAGEMENT, BACK_TO_GROUPS,
+} = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { getStr } = require('../utils/helpers');
 const { showCategoryUpdateSelect } = require('../views/category');
@@ -31,6 +34,13 @@ async function handleCommand(chatId, text) {
     }
     resetUserState(chatId);
     if (!db) { bot.sendMessage(chatId, "❌ Database ulanmagan.", getMainKeyboard(chatId)); return; }
+
+    // ─── BO'LIM NAVIGATSIYASI ────────────────────────────────────────
+    if (text === GROUP_PRODUCTS) { bot.sendMessage(chatId, "📦 Mahsulotlar bo'limi:", getGroupKeyboard(chatId, 'products')); return; }
+    if (text === GROUP_REPORTS) { bot.sendMessage(chatId, "📊 Hisobot va statistika:", getGroupKeyboard(chatId, 'reports')); return; }
+    if (text === GROUP_BANNER) { bot.sendMessage(chatId, "🖼 Banner va tarjima:", getGroupKeyboard(chatId, 'banner')); return; }
+    if (text === GROUP_MANAGEMENT) { bot.sendMessage(chatId, "👥 Boshqaruv:", getGroupKeyboard(chatId, 'management')); return; }
+    if (text === BACK_TO_GROUPS) { bot.sendMessage(chatId, "Bosh menyu.", getMainKeyboard(chatId)); return; }
 
     // ─── FAQAT SUPER ADMIN UCHUN ────────────────────────────────────
     const superAdminOnly = ["⭐ VIP qo'shish", "🗑 VIP o'chirish", "💱 USD kurs", "🗑 Bannerni o'chirish", "🔗 Banner havolasi", "📅 Oylik hisobot", "🌐 Kategoriya tarjimalari"];

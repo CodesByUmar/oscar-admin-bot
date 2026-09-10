@@ -1,5 +1,5 @@
 const { bot } = require('../config/adminBot');
-const { backKeyboard, mainBackKeyboard } = require('../keyboards');
+const { backKeyboard } = require('../keyboards');
 const { userState } = require('../state/userState');
 
 async function handleProductStep(chatId, currentStep, isBack = false) {
@@ -42,7 +42,7 @@ async function handleProductStep(chatId, currentStep, isBack = false) {
             break;
         }
         case 'product_image':
-            bot.sendMessage(chatId, "5. Rasm yuboring (photo formatida):", mainBackKeyboard);
+            bot.sendMessage(chatId, "5. Rasm yuboring (photo formatida):", backKeyboard);
             break;
         case 'product_description_uz':
             bot.sendMessage(chatId, "6a. Tavsifni UZ tilida kiriting:", backKeyboard);
