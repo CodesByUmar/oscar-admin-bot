@@ -313,9 +313,46 @@ async function handleIncomingMessage(msg) {
                 return;
             }
             data.name = trimmed;
+            // Mavjud top-kategoriyalar ro'yxatini yig'amiz — mijoz ilovasida
+            // kategoriya to'g'ri guruhga (top-kategoriyaga) tushishi uchun.
+            // Tanlanmasa ham bo'ladi ("Yo'q" desa) — mijoz ilovasida "Boshqa"ga tushadi.
+            const topCounts = new Map();
+            existingSnap.docs.forEach((d) => {
+                const top = getStr(d.data().topCategory, '').trim();
+                if (top) topCounts.set(top, (topCounts.get(top) || 0) + 1);
+            });
+            data.topCategoryOptions = [...topCounts.keys()].sort();
+            state.steps.push(step);
+            state.step = 'category_topcategory';
+            const topKb = {
+                reply_markup: {
+                    keyboard: [
+                        ["Yo'q (tegishli emas)"],
+                        ...data.topCategoryOptions.map((o) => [{ text: o }]),
+                        ["Orqaga"],
+                    ],
+                    resize_keyboard: true,
+                },
+            };
+            bot.sendMessage(chatId, "2/2. Top-kategoriyani tanlang (mijoz ilovasida shu guruhga tushadi):", topKb);
+        } else if (step === 'category_topcategory') {
+            const trimmed = text.trim();
+            const options = data.topCategoryOptions || [];
+            let topCategory = null;
+            if (trimmed !== "Yo'q (tegishli emas)") {
+                const matched = options.find((o) => o === trimmed);
+                if (!matched) {
+                    bot.sendMessage(chatId, "Iltimos, ro'yxatdan tanlang yoki \"Yo'q (tegishli emas)\" ni bosing:");
+                    return;
+                }
+                topCategory = matched;
+            }
             try {
-                await createWithNextId('categories', (id) => ({ id, name: data.name }));
-                bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${data.name}`, getMainKeyboard(chatId));
+                const newDoc = { name: data.name };
+                if (topCategory) newDoc.topCategory = topCategory;
+                await createWithNextId('categories', (id) => ({ id, ...newDoc }));
+                const topText = topCategory ? `\nTop-kategoriya: ${topCategory}` : '';
+                bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${data.name}${topText}`, getMainKeyboard(chatId));
             } catch (error) {
                 bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
             }
