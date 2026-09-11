@@ -2,7 +2,7 @@ const { bot, admins } = require('../config/adminBot');
 const { db, admin } = require('../config/firebase');
 const { backKeyboard, getMainKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
-const { uploadToImgBB } = require('../utils/imgbb');
+const { uploadImage } = require('../utils/imageUpload');
 const { showProductView } = require('../views/product');
 const { showBannerLinkPicker } = require('../views/banner');
 
@@ -30,7 +30,7 @@ async function processIncomingPhoto(chatId, fileId) {
         const state = userState[chatId];
         if (state && state.step === 'banner_image') {
             const waitMsg = await bot.sendMessage(chatId, "Banner yuklanmoqda... ⏳");
-            const imageUrl = await uploadToImgBB(fileId);
+            const imageUrl = await uploadImage(fileId);
             if (imageUrl) {
                 try {
                     const countSnap = await db.collection('banners').get();
@@ -52,7 +52,7 @@ async function processIncomingPhoto(chatId, fileId) {
             }
         } else if (state && (state.step === 'product_image' || state.step === 'update_product_image')) {
             const waitMsg = await bot.sendMessage(chatId, "Rasm yuklanmoqda... ⏳");
-            const imageUrl = await uploadToImgBB(fileId);
+            const imageUrl = await uploadImage(fileId);
             if (imageUrl) {
                 state.data.image = imageUrl;
                 if (state.step === 'product_image') {
