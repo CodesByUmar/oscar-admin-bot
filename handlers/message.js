@@ -25,7 +25,17 @@ function registerMessageHandler() {
     });
 }
 
+// Bot qayta ishga tushganda (deploy) Telegram o'sha payt "osilib qolgan"
+// (offline vaqtida kelgan) eski xabarlarni ham darhol yuboradi. Ular
+// qayta ishlansa, eski qadam holati (userState) tasodifan o'rnatilib,
+// keyingi (yangi) tugma bosilganda soxta "boshqa jarayon o'rtasidasiz"
+// ogohlantirishiga sabab bo'ladi. Shuning uchun 15 soniyadan eski
+// xabarlarni butunlay e'tiborsiz qoldiramiz.
+const STALE_MESSAGE_THRESHOLD_SEC = 15;
+
 async function handleIncomingMessage(msg) {
+    if (msg.date && (Date.now() / 1000 - msg.date) > STALE_MESSAGE_THRESHOLD_SEC) return;
+
     const chatId = msg.chat.id;
     const text = msg.text;
     const photo = msg.photo;

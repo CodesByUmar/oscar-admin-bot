@@ -80,8 +80,13 @@ async function processIncomingPhoto(chatId, fileId) {
         }
 }
 
+// message.js'dagi bilan bir xil himoya — deploy paytida "osilib qolgan"
+// eski rasm xabarlarini e'tiborsiz qoldiramiz.
+const STALE_MESSAGE_THRESHOLD_SEC = 15;
+
 function registerPhotoHandler() {
     bot.on('photo', async (msg) => {
+        if (msg.date && (Date.now() / 1000 - msg.date) > STALE_MESSAGE_THRESHOLD_SEC) return;
         const fileId = msg.photo[msg.photo.length - 1].file_id;
         enqueuePhotoProcessing(msg.chat.id, fileId);
     });
