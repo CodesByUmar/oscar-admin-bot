@@ -16,9 +16,16 @@ async function uploadToImgBB(fileId) {
             timeout: 30000,
         });
         if (uploadResponse.data.success) return uploadResponse.data.data.url;
+        console.error('ImgBB xato: success=false', JSON.stringify(uploadResponse.data));
         return null;
     } catch (error) {
-        console.error('ImgBB xato:', error.message);
+        // error.message o'zi hech narsa aytmaydi ("Request failed with status
+        // code 400") — asosiy sabab ImgBB/Telegram javobining o'zida bo'ladi.
+        if (error.response) {
+            console.error(`ImgBB xato: HTTP ${error.response.status}`, JSON.stringify(error.response.data)?.slice(0, 500));
+        } else {
+            console.error('ImgBB xato:', error.message);
+        }
         return null;
     }
 }
