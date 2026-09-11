@@ -324,25 +324,32 @@ async function handleIncomingMessage(msg) {
             data.topCategoryOptions = [...topCounts.keys()].sort();
             state.steps.push(step);
             state.step = 'category_topcategory';
+            const SKIP_LABEL = "Bilmayman, o'tkazib yubor";
+            const rows = [];
+            for (let i = 0; i < data.topCategoryOptions.length; i += 2) {
+                const row = [{ text: data.topCategoryOptions[i] }];
+                if (i + 1 < data.topCategoryOptions.length) row.push({ text: data.topCategoryOptions[i + 1] });
+                rows.push(row);
+            }
             const topKb = {
                 reply_markup: {
-                    keyboard: [
-                        ["Yo'q (tegishli emas)"],
-                        ...data.topCategoryOptions.map((o) => [{ text: o }]),
-                        ["Orqaga"],
-                    ],
+                    keyboard: [[SKIP_LABEL], ...rows, ["Orqaga"]],
                     resize_keyboard: true,
                 },
             };
-            bot.sendMessage(chatId, "2/2. Top-kategoriyani tanlang (mijoz ilovasida shu guruhga tushadi):", topKb);
+            bot.sendMessage(
+                chatId,
+                "2/2. Bu qaysi katta bo'limga tegishli? (masalan \"Bo'yoqlar\", \"Asboblar\")\nRo'yxatdan tanlang. Bilmasangiz ham bo'ladi — pastdagi tugmani bosing.",
+                topKb
+            );
         } else if (step === 'category_topcategory') {
             const trimmed = text.trim();
             const options = data.topCategoryOptions || [];
             let topCategory = null;
-            if (trimmed !== "Yo'q (tegishli emas)") {
+            if (trimmed !== "Bilmayman, o'tkazib yubor") {
                 const matched = options.find((o) => o === trimmed);
                 if (!matched) {
-                    bot.sendMessage(chatId, "Iltimos, ro'yxatdan tanlang yoki \"Yo'q (tegishli emas)\" ni bosing:");
+                    bot.sendMessage(chatId, "Iltimos, ro'yxatdagi tugmalardan birini bosing:");
                     return;
                 }
                 topCategory = matched;
@@ -351,7 +358,7 @@ async function handleIncomingMessage(msg) {
                 const newDoc = { name: data.name };
                 if (topCategory) newDoc.topCategory = topCategory;
                 await createWithNextId('categories', (id) => ({ id, ...newDoc }));
-                const topText = topCategory ? `\nTop-kategoriya: ${topCategory}` : '';
+                const topText = topCategory ? `\nBo'lim: ${topCategory}` : '';
                 bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${data.name}${topText}`, getMainKeyboard(chatId));
             } catch (error) {
                 bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
