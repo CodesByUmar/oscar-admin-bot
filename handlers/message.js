@@ -301,7 +301,18 @@ async function handleIncomingMessage(msg) {
     // ─── KATEGORIYA QO'SHISH ─────────────────────────────────────────
     if (step.startsWith('category_')) {
         if (step === 'category_name') {
-            data.name = text;
+            const trimmed = text.trim();
+            // Bir xil nomli (katta-kichik harf farqisiz) kategoriya bo'lsa
+            // qo'shmaymiz — Telegram tugmasi faqat matnni yuboradi, shuning
+            // uchun 2 ta bir xil nomli kategoriya bo'lsa, bot mahsulot
+            // qo'shishda qaysi birini bosganingizni ajrata olmay qoladi.
+            const existingSnap = await db.collection('categories').get();
+            const dup = existingSnap.docs.find((d) => getStr(d.data().name).toLowerCase().trim() === trimmed.toLowerCase());
+            if (dup) {
+                bot.sendMessage(chatId, `⚠️ "${getStr(dup.data().name)}" nomli kategoriya allaqachon bor. Boshqa nom kiriting:`, backKeyboard);
+                return;
+            }
+            data.name = trimmed;
             try {
                 await createWithNextId('categories', (id) => ({ id, name: data.name }));
                 bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${data.name}`, getMainKeyboard(chatId));
@@ -317,20 +328,27 @@ async function handleIncomingMessage(msg) {
     // ─── KATEGORIYA YANGILASH ────────────────────────────────────────
     if (state.step === 'update_category_name') {
         try {
+            const trimmed = text.trim();
+            const existingSnap = await db.collection('categories').get();
+            const dup = existingSnap.docs.find((d) => d.id !== String(state.data.categoryId) && getStr(d.data().name).toLowerCase().trim() === trimmed.toLowerCase());
+            if (dup) {
+                bot.sendMessage(chatId, `⚠️ "${getStr(dup.data().name)}" nomli kategoriya allaqachon bor. Boshqa nom kiriting:`, backKeyboard);
+                return;
+            }
             const catDoc = await db.collection('categories').doc(String(state.data.categoryId)).get();
             const oldName = catDoc.exists ? catDoc.data().name : null;
-            await db.collection('categories').doc(String(state.data.categoryId)).update({ name: text });
-            if (oldName && oldName !== text) {
+            await db.collection('categories').doc(String(state.data.categoryId)).update({ name: trimmed });
+            if (oldName && oldName !== trimmed) {
                 const productsSnap = await db.collection('products').where('category', '==', oldName).get();
                 if (!productsSnap.empty) {
                     const batch = db.batch();
-                    productsSnap.docs.forEach(doc => batch.update(doc.ref, { category: text }));
+                    productsSnap.docs.forEach(doc => batch.update(doc.ref, { category: trimmed }));
                     await batch.commit();
                 }
             }
             state.step = 'category_update_view';
             await showCategoryView(chatId, state.data.categoryId, state.data.messageId);
-            bot.sendMessage(chatId, `✅ Nom yangilandi: ${text}`, backKeyboard);
+            bot.sendMessage(chatId, `✅ Nom yangilandi: ${trimmed}`, backKeyboard);
         } catch (error) { bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId)); resetUserState(chatId); }
         return;
     }
