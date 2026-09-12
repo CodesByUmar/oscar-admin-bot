@@ -7,7 +7,7 @@ async function showCategoryView(chatId, categoryId, messageId) {
     try {
         const doc = await db.collection('categories').doc(String(categoryId)).get();
         if (!doc.exists) {
-            if (messageId) bot.editMessageText("Kategoriya topilmadi!", { chat_id: chatId, message_id: messageId });
+            if (messageId) bot.editMessageText("Subkategoriya topilmadi!", { chat_id: chatId, message_id: messageId });
             bot.sendMessage(chatId, "Bosh menyu.", getMainKeyboard(chatId));
             return;
         }
@@ -21,11 +21,11 @@ async function showCategoryView(chatId, categoryId, messageId) {
         // cheklov callback.js'da ham bor, bu shunchaki keraksiz tugmani
         // yashiradi.
         if (isSuperAdmin(chatId)) {
-            inlineRows.push([{ text: "🗑 Kategoriyani o'chirish", callback_data: `delete_category_${categoryId}` }]);
+            inlineRows.push([{ text: "🗑 Subkategoriyani o'chirish", callback_data: `delete_category_${categoryId}` }]);
         }
         inlineRows.push([{ text: "⬅️ Orqaga", callback_data: 'back_to_prev' }]);
         const updateKeyboard = { reply_markup: { inline_keyboard: inlineRows } };
-        const message = `📝 Kategoriya: ${icon} ${name} (ID: ${categoryId})\nQaysi maydonni yangilashni xohlaysiz?`;
+        const message = `📝 Subkategoriya: ${icon} ${name} (ID: ${categoryId})\nQaysi maydonni yangilashni xohlaysiz?`;
         if (messageId) {
             bot.editMessageText(message, { chat_id: chatId, message_id: messageId, reply_markup: updateKeyboard.reply_markup });
         } else {
@@ -40,7 +40,7 @@ async function showCategoryUpdateSelect(chatId, messageId = null) {
     try {
         const snapshot = await db.collection('categories').get();
         if (snapshot.empty) {
-            const text = "Hech qanday kategoriya topilmadi.";
+            const text = "Hech qanday subkategoriya topilmadi.";
             if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
             bot.sendMessage(chatId, "Bosh menyu.", getMainKeyboard(chatId));
             return;
@@ -59,7 +59,7 @@ async function showCategoryUpdateSelect(chatId, messageId = null) {
             }
             kb.reply_markup.inline_keyboard.push(row);
         }
-        const text = "Qaysi kategoriyani yangilashni xohlaysiz?";
+        const text = "Qaysi subkategoriyani yangilashni xohlaysiz?";
         if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId, reply_markup: kb.reply_markup });
         else bot.sendMessage(chatId, text, kb);
     } catch (error) {

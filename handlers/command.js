@@ -7,6 +7,7 @@ const {
 const { userState, resetUserState } = require('../state/userState');
 const { getStr } = require('../utils/helpers');
 const { showCategoryUpdateSelect } = require('../views/category');
+const { showTopCategoryUpdateSelect } = require('../views/topCategory');
 const { showCategoryTranslationList } = require('../views/categoryTranslation');
 const { showBannerManageList } = require('../views/banner');
 const { showStatisticsMenu } = require('../views/statistics');
@@ -85,26 +86,31 @@ async function handleCommand(chatId, text) {
             const icon = d.data().icon || d.data().icon_url || '📁';
             return { label: `${icon} ${getStr(d.data().name)}`.trim(), full: d.data().name, topCategory: d.data().topCategory || null };
         });
-        if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval kategoriya qo'shing.", getMainKeyboard(chatId)); return; }
+        if (categoryNames.length === 0) { bot.sendMessage(chatId, "Avval subkategoriya qo'shing.", getMainKeyboard(chatId)); return; }
         userState[chatId] = { step: 'product_name_uz', data: { categoryNames }, steps: [] };
         bot.sendMessage(chatId, "1a. Mahsulot nomini UZ tilida kiriting:", backKeyboard);
         return;
     }
 
-    // ─── TOP-KATEGORIYA (mijoz ilovasidagi asosiy bo'lim) ───────────
-    if (text === "🗂 Top-kategoriya qo'shish") {
+    // ─── KATEGORIYA (mijoz ilovasidagi asosiy bo'lim, mas: "Bo'yoqlar") ──
+    if (text === "🗂 Kategoriya qo'shish") {
         userState[chatId] = { step: 'topcategory_name', data: {}, steps: [] };
-        bot.sendMessage(chatId, "Yangi katta bo'lim nomini kiriting (mas: \"Bo'yoqlar\"):", backKeyboard);
+        bot.sendMessage(chatId, "Yangi kategoriya nomini kiriting (mas: \"Bo'yoqlar\"):", backKeyboard);
+        return;
+    }
+    if (text === "✏️ Kategoriya yangilash") {
+        userState[chatId] = { step: 'topcategory_update_select', data: {}, steps: [] };
+        await showTopCategoryUpdateSelect(chatId);
         return;
     }
 
-    // ─── KATEGORIYA (mijoz ilovasidagi subkategoriya) ────────────────
-    if (text === "📂 Kategoriya qo'shish") {
+    // ─── SUBKATEGORIYA (mijoz ilovasida kategoriya ichidagi bo'lim) ──
+    if (text === "📁 Subkategoriya qo'shish") {
         userState[chatId] = { step: 'category_name', data: {}, steps: [] };
-        bot.sendMessage(chatId, "1/2. Kategoriya nomini kiriting:", backKeyboard);
+        bot.sendMessage(chatId, "1/2. Subkategoriya nomini kiriting:", backKeyboard);
         return;
     }
-    if (text === "📂 Kategoriya yangilash") {
+    if (text === "✏️ Subkategoriya yangilash") {
         userState[chatId] = { step: 'category_update_select', data: {}, steps: [] };
         await showCategoryUpdateSelect(chatId);
         return;

@@ -4,6 +4,7 @@ const { backKeyboard, isSuperAdmin, getMainKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { handleInlineBack } = require('./back');
 const { showCategoryView, showCategoryUpdateSelect } = require('../views/category');
+const { showTopCategoryView } = require('../views/topCategory');
 const { showProductView, showProductUpdateCategorySelect, showProductsInCategory, getProductsInCategory } = require('../views/product');
 const { showCategoryTranslationList, showCategoryTranslationEdit } = require('../views/categoryTranslation');
 const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
@@ -291,6 +292,23 @@ function registerCallbackHandler() {
             bot.answerCallbackQuery(cq.id); return;
         }
 
+        if (data.startsWith('topcat_select_')) {
+            const id = parseInt(data.replace('topcat_select_', ''));
+            const state = userState[chatId] || { step: 'none', data: {}, steps: [] };
+            state.steps.push(state.step); state.step = 'topcategory_update_view';
+            state.data.topCategoryId = id; state.data.messageId = messageId;
+            userState[chatId] = state;
+            await showTopCategoryView(chatId, id, messageId);
+            bot.answerCallbackQuery(cq.id); return;
+        }
+        if (data.startsWith('topcat_update_name_')) {
+            const id = parseInt(data.replace('topcat_update_name_', ''));
+            const state = userState[chatId] || { step: 'none', data: {}, steps: [] };
+            userState[chatId] = { step: 'update_topcategory_name', data: { topCategoryId: id, messageId }, steps: state.steps || [] };
+            bot.sendMessage(chatId, 'Yangi nomni kiriting:', backKeyboard);
+            bot.answerCallbackQuery(cq.id); return;
+        }
+
         if (data.startsWith('cat_select_')) {
             const id = parseInt(data.replace('cat_select_', ''));
             const state = userState[chatId] || { step: 'none', data: {}, steps: [] };
@@ -520,7 +538,7 @@ function registerCallbackHandler() {
             const id = parseInt(data.replace('update_field_category_', ''));
             try {
                 const catsSnap = await db.collection('categories').get();
-                if (catsSnap.empty) { bot.answerCallbackQuery(cq.id, { text: "Kategoriyalar yo'q!" }); return; }
+                if (catsSnap.empty) { bot.answerCallbackQuery(cq.id, { text: "Subkategoriyalar yo'q!" }); return; }
                 const cats = catsSnap.docs.map(d => ({ id: d.data().id, icon: d.data().icon || d.data().icon_url || '📁', name: getStr(d.data().name) }));
                 const kb = { reply_markup: { inline_keyboard: [] } };
                 for (let i = 0; i < cats.length; i += 2) {
@@ -529,7 +547,7 @@ function registerCallbackHandler() {
                     kb.reply_markup.inline_keyboard.push(row);
                 }
                 kb.reply_markup.inline_keyboard.push([{ text: "⬅️ Orqaga", callback_data: 'back_to_prev' }]);
-                bot.editMessageText("Yangi kategoriyani tanlang:", { chat_id: chatId, message_id: messageId, reply_markup: kb.reply_markup });
+                bot.editMessageText("Yangi subkategoriyani tanlang:", { chat_id: chatId, message_id: messageId, reply_markup: kb.reply_markup });
                 bot.answerCallbackQuery(cq.id);
             } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
             return;

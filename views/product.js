@@ -40,8 +40,8 @@ async function showProductView(chatId, productId, messageId) {
             ],
             [{ text: `🇬🇧 Tavsif: ${shortVal(descML.en)}`, callback_data: `update_ml_description_en_${productId}` }],
             [{ text: `Rasm: ${p.image ? 'Bor' : 'Yo\'q'}`, callback_data: `update_field_image_${productId}` }],
-            [{ text: `📂 Kategoriya: ${category}`, callback_data: `update_field_category_${productId}` }],
-            [{ text: `🗂 Top-kategoriya: ${topCategory}`, callback_data: `noop` }],
+            [{ text: `📁 Subkategoriya: ${category}`, callback_data: `update_field_category_${productId}` }],
+            [{ text: `🗂 Kategoriya: ${topCategory}`, callback_data: `noop` }],
         ];
         // O'chirish tugmasi faqat super adminlarga ko'rinadi — haqiqiy
         // cheklov callback.js'da ham bor, bu shunchaki keraksiz tugmani
@@ -61,8 +61,8 @@ async function showProductView(chatId, productId, messageId) {
             `• Chegirma: ${p.discount || 0}%\n` +
             `• Chegirma boshlanishi: ${startDateText}\n` +
             `• Chegirma tugashi: ${endDateText}\n` +
-            `• Kategoriya: ${category}\n` +
-            `• Top-kategoriya: ${topCategory}\n` +
+            `• Subkategoriya: ${category}\n` +
+            `• Kategoriya: ${topCategory}\n` +
             `• Rasm: ${p.image ? 'URL mavjud' : 'Yo\'q'}\n` +
             `Qaysi maydonni yangilashni xohlaysiz?`;
         if (messageId) {
@@ -79,7 +79,7 @@ async function showProductUpdateCategorySelect(chatId, messageId = null) {
     try {
         const snapshot = await db.collection('categories').get();
         if (snapshot.empty) {
-            const text = "Hech qanday kategoriya topilmadi.";
+            const text = "Hech qanday subkategoriya topilmadi.";
             if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
             bot.sendMessage(chatId, "Bosh menyu.", getMainKeyboard(chatId));
             return;
@@ -98,7 +98,7 @@ async function showProductUpdateCategorySelect(chatId, messageId = null) {
             }
             kb.reply_markup.inline_keyboard.push(row);
         }
-        const text = "Qaysi kategoriyadagi mahsulotni yangilashni xohlaysiz?";
+        const text = "Qaysi subkategoriyadagi mahsulotni yangilashni xohlaysiz?";
         if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId, reply_markup: kb.reply_markup });
         else bot.sendMessage(chatId, text, kb);
     } catch (error) {
@@ -111,7 +111,7 @@ async function showProductsInCategory(chatId, categoryName, messageId = null) {
         const snapshot = await db.collection('products').where('category', '==', categoryName).get();
         const categoryNameStr = getStr(categoryName, '?');
         if (snapshot.empty) {
-            const text = `"${categoryNameStr}" kategoriyasida mahsulot yo'q.`;
+            const text = `"${categoryNameStr}" subkategoriyasida mahsulot yo'q.`;
             if (messageId) {
                 bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
             } else {
@@ -131,7 +131,7 @@ async function showProductsInCategory(chatId, categoryName, messageId = null) {
             kb.reply_markup.inline_keyboard.push(row);
         }
         kb.reply_markup.inline_keyboard.push([{ text: "⬅️ Orqaga", callback_data: 'back_to_prev' }]);
-        const text = `"${categoryNameStr}" kategoriyasidagi mahsulotlar:`;
+        const text = `"${categoryNameStr}" subkategoriyasidagi mahsulotlar:`;
         if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId, reply_markup: kb.reply_markup });
         else bot.sendMessage(chatId, text, kb);
         const state = userState[chatId];

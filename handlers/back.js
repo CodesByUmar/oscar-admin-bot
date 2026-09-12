@@ -3,6 +3,7 @@ const { backKeyboard, getMainKeyboard } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { showProductView, showProductsInCategory, showProductUpdateCategorySelect } = require('../views/product');
 const { showCategoryView, showCategoryUpdateSelect } = require('../views/category');
+const { showTopCategoryView, showTopCategoryUpdateSelect } = require('../views/topCategory');
 const { handleProductStep, handleCategoryStep } = require('./steps');
 
 async function handleBack(chatId) {
@@ -26,6 +27,10 @@ async function handleBack(chatId) {
         await showCategoryView(chatId, state.data.categoryId, state.data.messageId);
     } else if (['update_category_name', 'update_category_icon'].includes(prevStep)) {
         await showCategoryView(chatId, state.data.categoryId, state.data.messageId);
+    } else if (prevStep === 'topcategory_update_view') {
+        await showTopCategoryView(chatId, state.data.topCategoryId, state.data.messageId);
+    } else if (prevStep === 'update_topcategory_name') {
+        await showTopCategoryView(chatId, state.data.topCategoryId, state.data.messageId);
     } else if (prevStep.startsWith('product_')) {
         await handleProductStep(chatId, prevStep, true);
     } else if (prevStep.startsWith('category_')) {
@@ -47,11 +52,13 @@ async function handleInlineBack(chatId, messageId) {
     const prevStep = state.steps.pop();
     state.step = prevStep;
     if (prevStep === 'category_update_select') await showCategoryUpdateSelect(chatId, messageId);
+    else if (prevStep === 'topcategory_update_select') await showTopCategoryUpdateSelect(chatId, messageId);
     else if (prevStep === 'product_update_category_select') await showProductUpdateCategorySelect(chatId, messageId);
     else if (prevStep === 'product_update_product_select') {
         if (state.data.selectedCategory) await showProductsInCategory(chatId, state.data.selectedCategory, messageId);
         else await showProductUpdateCategorySelect(chatId, messageId);
     } else if (prevStep === 'category_update_view') await showCategoryView(chatId, state.data.categoryId, messageId);
+    else if (prevStep === 'topcategory_update_view') await showTopCategoryView(chatId, state.data.topCategoryId, messageId);
     else if (prevStep === 'product_update_view') await showProductView(chatId, state.data.productId, messageId);
     else {
         resetUserState(chatId);

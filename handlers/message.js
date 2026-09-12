@@ -9,6 +9,7 @@ const { handleVipStep } = require('./vip');
 const { handleAdminAddStep } = require('./adminManagement');
 const { showProductView } = require('../views/product');
 const { showCategoryView } = require('../views/category');
+const { showTopCategoryView, cascadeTopCategoryRename } = require('../views/topCategory');
 const { showCategoryTranslationEdit, findCategoryKeyItem } = require('../views/categoryTranslation');
 const { showStoreContactEdit } = require('../views/storeContacts');
 
@@ -234,7 +235,7 @@ async function handleIncomingMessage(msg) {
                         one_time_keyboard: true,
                     },
                 };
-                bot.sendMessage(chatId, "4. Kategoriyani tanlang:", ckb);
+                bot.sendMessage(chatId, "4. Subkategoriyani tanlang:", ckb);
                 break;
             }
 
@@ -308,18 +309,18 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
-    // ─── TOP-KATEGORIYA QO'SHISH ──────────────────────────────────────
+    // ─── KATEGORIYA QO'SHISH (mijoz ilovasidagi asosiy bo'lim) ────────
     if (step === 'topcategory_name') {
         const trimmed = text.trim();
         const existingTopSnap = await db.collection('topCategories').get();
         const dup = existingTopSnap.docs.find((d) => getStr(d.data().name).toLowerCase().trim() === trimmed.toLowerCase());
         if (dup) {
-            bot.sendMessage(chatId, `⚠️ "${getStr(dup.data().name)}" nomli katta bo'lim allaqachon bor. Boshqa nom kiriting:`, backKeyboard);
+            bot.sendMessage(chatId, `⚠️ "${getStr(dup.data().name)}" nomli kategoriya allaqachon bor. Boshqa nom kiriting:`, backKeyboard);
             return;
         }
         try {
             await createWithNextId('topCategories', (id) => ({ id, name: trimmed }));
-            bot.sendMessage(chatId, `✅ Katta bo'lim qo'shildi!\n${trimmed}`, getMainKeyboard(chatId));
+            bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${trimmed}`, getMainKeyboard(chatId));
         } catch (error) {
             bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
         }
@@ -327,25 +328,25 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
-    // ─── KATEGORIYA QO'SHISH ─────────────────────────────────────────
+    // ─── SUBKATEGORIYA QO'SHISH ────────────────────────────────────────
     if (step.startsWith('category_')) {
         if (step === 'category_name') {
             const trimmed = text.trim();
-            // Bir xil nomli (katta-kichik harf farqisiz) kategoriya bo'lsa
+            // Bir xil nomli (katta-kichik harf farqisiz) subkategoriya bo'lsa
             // qo'shmaymiz — Telegram tugmasi faqat matnni yuboradi, shuning
-            // uchun 2 ta bir xil nomli kategoriya bo'lsa, bot mahsulot
+            // uchun 2 ta bir xil nomli subkategoriya bo'lsa, bot mahsulot
             // qo'shishda qaysi birini bosganingizni ajrata olmay qoladi.
             const existingSnap = await db.collection('categories').get();
             const dup = existingSnap.docs.find((d) => getStr(d.data().name).toLowerCase().trim() === trimmed.toLowerCase());
             if (dup) {
-                bot.sendMessage(chatId, `⚠️ "${getStr(dup.data().name)}" nomli kategoriya allaqachon bor. Boshqa nom kiriting:`, backKeyboard);
+                bot.sendMessage(chatId, `⚠️ "${getStr(dup.data().name)}" nomli subkategoriya allaqachon bor. Boshqa nom kiriting:`, backKeyboard);
                 return;
             }
             data.name = trimmed;
-            // Top-kategoriyalar ro'yxatini "topCategories" kolleksiyasidan
-            // olamiz (mavjud kategoriyalardan qidirish o'rniga) — shunda
-            // hali birorta subkategoriyasi bo'lmagan yangi top-kategoriya
-            // ham ro'yxatda ko'rinadi.
+            // Kategoriyalar ro'yxatini "topCategories" kolleksiyasidan
+            // olamiz (mavjud subkategoriyalardan qidirish o'rniga) — shunda
+            // hali birorta subkategoriyasi bo'lmagan yangi kategoriya ham
+            // ro'yxatda ko'rinadi.
             const topCatsSnap = await db.collection('topCategories').get();
             data.topCategoryOptions = topCatsSnap.docs.map((d) => getStr(d.data().name)).filter(Boolean).sort();
             state.steps.push(step);
@@ -365,7 +366,7 @@ async function handleIncomingMessage(msg) {
             };
             bot.sendMessage(
                 chatId,
-                "2/2. Bu qaysi katta bo'limga tegishli? (masalan \"Bo'yoqlar\", \"Asboblar\")\nRo'yxatdan tanlang. Bilmasangiz ham bo'ladi — pastdagi tugmani bosing.",
+                "2/2. Bu qaysi kategoriyaga tegishli? (masalan \"Bo'yoqlar\", \"Asboblar\")\nRo'yxatdan tanlang. Bilmasangiz ham bo'ladi — pastdagi tugmani bosing.",
                 topKb
             );
         } else if (step === 'category_topcategory') {
@@ -384,8 +385,8 @@ async function handleIncomingMessage(msg) {
                 const newDoc = { name: data.name };
                 if (topCategory) newDoc.topCategory = topCategory;
                 await createWithNextId('categories', (id) => ({ id, ...newDoc }));
-                const topText = topCategory ? `\nBo'lim: ${topCategory}` : '';
-                bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${data.name}${topText}`, getMainKeyboard(chatId));
+                const topText = topCategory ? `\nKategoriya: ${topCategory}` : '';
+                bot.sendMessage(chatId, `✅ Subkategoriya qo'shildi!\n${data.name}${topText}`, getMainKeyboard(chatId));
             } catch (error) {
                 bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
             }
@@ -395,14 +396,14 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
-    // ─── KATEGORIYA YANGILASH ────────────────────────────────────────
+    // ─── SUBKATEGORIYA YANGILASH ─────────────────────────────────────
     if (state.step === 'update_category_name') {
         try {
             const trimmed = text.trim();
             const existingSnap = await db.collection('categories').get();
             const dup = existingSnap.docs.find((d) => d.id !== String(state.data.categoryId) && getStr(d.data().name).toLowerCase().trim() === trimmed.toLowerCase());
             if (dup) {
-                bot.sendMessage(chatId, `⚠️ "${getStr(dup.data().name)}" nomli kategoriya allaqachon bor. Boshqa nom kiriting:`, backKeyboard);
+                bot.sendMessage(chatId, `⚠️ "${getStr(dup.data().name)}" nomli subkategoriya allaqachon bor. Boshqa nom kiriting:`, backKeyboard);
                 return;
             }
             const catDoc = await db.collection('categories').doc(String(state.data.categoryId)).get();
@@ -418,6 +419,27 @@ async function handleIncomingMessage(msg) {
             }
             state.step = 'category_update_view';
             await showCategoryView(chatId, state.data.categoryId, state.data.messageId);
+            bot.sendMessage(chatId, `✅ Nom yangilandi: ${trimmed}`, backKeyboard);
+        } catch (error) { bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId)); resetUserState(chatId); }
+        return;
+    }
+
+    // ─── TOP-KATEGORIYA (mijoz ilovasidagi asosiy bo'lim) NOMINI YANGILASH ──
+    if (state.step === 'update_topcategory_name') {
+        try {
+            const trimmed = text.trim();
+            const existingTopSnap = await db.collection('topCategories').get();
+            const dup = existingTopSnap.docs.find((d) => d.id !== String(state.data.topCategoryId) && getStr(d.data().name).toLowerCase().trim() === trimmed.toLowerCase());
+            if (dup) {
+                bot.sendMessage(chatId, `⚠️ "${getStr(dup.data().name)}" nomli kategoriya allaqachon bor. Boshqa nom kiriting:`, backKeyboard);
+                return;
+            }
+            const topDoc = await db.collection('topCategories').doc(String(state.data.topCategoryId)).get();
+            const oldName = topDoc.exists ? getStr(topDoc.data().name) : null;
+            await db.collection('topCategories').doc(String(state.data.topCategoryId)).update({ name: trimmed });
+            if (oldName && oldName !== trimmed) await cascadeTopCategoryRename(oldName, trimmed);
+            state.step = 'topcategory_update_view';
+            await showTopCategoryView(chatId, state.data.topCategoryId, state.data.messageId);
             bot.sendMessage(chatId, `✅ Nom yangilandi: ${trimmed}`, backKeyboard);
         } catch (error) { bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId)); resetUserState(chatId); }
         return;

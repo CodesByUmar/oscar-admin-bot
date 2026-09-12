@@ -12,7 +12,7 @@ async function showBulkPriceCategorySelect(chatId, messageId = null) {
     try {
         const snapshot = await db.collection('categories').get();
         if (snapshot.empty) {
-            const text = "Hech qanday kategoriya topilmadi.";
+            const text = "Hech qanday subkategoriya topilmadi.";
             if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
             else bot.sendMessage(chatId, text, getMainKeyboard(chatId));
             return;
@@ -31,7 +31,7 @@ async function showBulkPriceCategorySelect(chatId, messageId = null) {
             }
             kb.inline_keyboard.push(row);
         }
-        const text = "💰 Narxni ommaviy o'zgartirish\n\nQaysi kategoriyadagi BARCHA mahsulotlarga bitta narx qo'ymoqchisiz?";
+        const text = "💰 Narxni ommaviy o'zgartirish\n\nQaysi subkategoriyadagi BARCHA mahsulotlarga bitta narx qo'ymoqchisiz?";
         if (messageId) await bot.editMessageText(text, { chat_id: chatId, message_id: messageId, reply_markup: kb });
         else await bot.sendMessage(chatId, text, { reply_markup: kb });
     } catch (error) {
@@ -47,7 +47,7 @@ async function showBulkPriceFieldSelect(chatId, categoryName, messageId = null) 
         const snapshot = await db.collection('products').where('category', '==', categoryName).get();
         const categoryNameStr = getStr(categoryName, '?');
         if (snapshot.empty) {
-            const text = `"${categoryNameStr}" kategoriyasida mahsulot yo'q.`;
+            const text = `"${categoryNameStr}" subkategoriyasida mahsulot yo'q.`;
             if (messageId) await bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
             else await bot.sendMessage(chatId, text, getMainKeyboard(chatId));
             return;
@@ -57,7 +57,7 @@ async function showBulkPriceFieldSelect(chatId, categoryName, messageId = null) 
         const priceRange = prices.length ? `$${Math.min(...prices)}–$${Math.max(...prices)}` : 'belgilanmagan';
         const boxRange = boxPrices.length ? `$${Math.min(...boxPrices)}–$${Math.max(...boxPrices)}` : 'belgilanmagan';
         const text =
-            `"${categoryNameStr}" kategoriyasida ${snapshot.size} ta mahsulot bor.\n` +
+            `"${categoryNameStr}" subkategoriyasida ${snapshot.size} ta mahsulot bor.\n` +
             `Hozirgi narx (dona): ${priceRange}\n` +
             `Hozirgi narx (karobka): ${boxRange}\n\n` +
             `Qaysi narx turini hammasiga birdaniga o'rnatasiz?`;

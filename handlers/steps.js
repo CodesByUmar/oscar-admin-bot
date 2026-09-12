@@ -38,7 +38,7 @@ async function handleProductStep(chatId, currentStep, isBack = false) {
                     one_time_keyboard: true,
                 },
             };
-            bot.sendMessage(chatId, "4. Kategoriyani tanlang:", kb);
+            bot.sendMessage(chatId, "4. Subkategoriyani tanlang:", kb);
             break;
         }
         case 'product_image':
@@ -61,7 +61,7 @@ async function handleCategoryStep(chatId, currentStep, isBack = false) {
     const oldStep = state.step;
     if (!isBack) state.steps.push(oldStep);
     state.step = currentStep;
-    if (currentStep === 'category_name') bot.sendMessage(chatId, "Kategoriya nomini kiriting:", backKeyboard);
+    if (currentStep === 'category_name') bot.sendMessage(chatId, "Subkategoriya nomini kiriting:", backKeyboard);
 }
 
 module.exports = { handleProductStep, handleCategoryStep };
