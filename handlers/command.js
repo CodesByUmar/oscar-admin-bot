@@ -91,7 +91,14 @@ async function handleCommand(chatId, text) {
         return;
     }
 
-    // ─── KATEGORIYA ────────────────────────────────────────────────
+    // ─── TOP-KATEGORIYA (mijoz ilovasidagi asosiy bo'lim) ───────────
+    if (text === "🗂 Top-kategoriya qo'shish") {
+        userState[chatId] = { step: 'topcategory_name', data: {}, steps: [] };
+        bot.sendMessage(chatId, "Yangi katta bo'lim nomini kiriting (mas: \"Bo'yoqlar\"):", backKeyboard);
+        return;
+    }
+
+    // ─── KATEGORIYA (mijoz ilovasidagi subkategoriya) ────────────────
     if (text === "📂 Kategoriya qo'shish") {
         userState[chatId] = { step: 'category_name', data: {}, steps: [] };
         bot.sendMessage(chatId, "1/2. Kategoriya nomini kiriting:", backKeyboard);

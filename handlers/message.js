@@ -308,6 +308,25 @@ async function handleIncomingMessage(msg) {
         return;
     }
 
+    // ─── TOP-KATEGORIYA QO'SHISH ──────────────────────────────────────
+    if (step === 'topcategory_name') {
+        const trimmed = text.trim();
+        const existingTopSnap = await db.collection('topCategories').get();
+        const dup = existingTopSnap.docs.find((d) => getStr(d.data().name).toLowerCase().trim() === trimmed.toLowerCase());
+        if (dup) {
+            bot.sendMessage(chatId, `⚠️ "${getStr(dup.data().name)}" nomli katta bo'lim allaqachon bor. Boshqa nom kiriting:`, backKeyboard);
+            return;
+        }
+        try {
+            await createWithNextId('topCategories', (id) => ({ id, name: trimmed }));
+            bot.sendMessage(chatId, `✅ Katta bo'lim qo'shildi!\n${trimmed}`, getMainKeyboard(chatId));
+        } catch (error) {
+            bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
+        }
+        resetUserState(chatId);
+        return;
+    }
+
     // ─── KATEGORIYA QO'SHISH ─────────────────────────────────────────
     if (step.startsWith('category_')) {
         if (step === 'category_name') {
@@ -323,15 +342,12 @@ async function handleIncomingMessage(msg) {
                 return;
             }
             data.name = trimmed;
-            // Mavjud top-kategoriyalar ro'yxatini yig'amiz — mijoz ilovasida
-            // kategoriya to'g'ri guruhga (top-kategoriyaga) tushishi uchun.
-            // Tanlanmasa ham bo'ladi ("Yo'q" desa) — mijoz ilovasida "Boshqa"ga tushadi.
-            const topCounts = new Map();
-            existingSnap.docs.forEach((d) => {
-                const top = getStr(d.data().topCategory, '').trim();
-                if (top) topCounts.set(top, (topCounts.get(top) || 0) + 1);
-            });
-            data.topCategoryOptions = [...topCounts.keys()].sort();
+            // Top-kategoriyalar ro'yxatini "topCategories" kolleksiyasidan
+            // olamiz (mavjud kategoriyalardan qidirish o'rniga) — shunda
+            // hali birorta subkategoriyasi bo'lmagan yangi top-kategoriya
+            // ham ro'yxatda ko'rinadi.
+            const topCatsSnap = await db.collection('topCategories').get();
+            data.topCategoryOptions = topCatsSnap.docs.map((d) => getStr(d.data().name)).filter(Boolean).sort();
             state.steps.push(step);
             state.step = 'category_topcategory';
             const SKIP_LABEL = "Bilmayman, o'tkazib yubor";

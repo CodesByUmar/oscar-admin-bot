@@ -27,7 +27,8 @@ const staffKeyboard = groupsKeyboard;
 const productsGroupKeyboard = {
     reply_markup: {
         keyboard: [
-            [{ text: "🛍 Mahsulot qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
+            [{ text: "🛍 Mahsulot qo'shish" }],
+            [{ text: "🗂 Top-kategoriya qo'shish" }, { text: "📂 Kategoriya qo'shish" }],
             [{ text: "📂 Kategoriya yangilash" }, { text: "🔄 Mahsulotni yangilash" }],
             [{ text: "💰 Narxni ommaviy o'zgartirish" }],
             [{ text: "🔍 Qidiruv" }],
@@ -141,7 +142,7 @@ function getGroupKeyboard(chatId, groupKey) {
 }
 
 const commandButtons = [
-    "🛍 Mahsulot qo'shish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
+    "🛍 Mahsulot qo'shish", "🗂 Top-kategoriya qo'shish", "📂 Kategoriya qo'shish", "📂 Kategoriya yangilash",
     "🔄 Mahsulotni yangilash", "💰 Narxni ommaviy o'zgartirish", "🔍 Qidiruv",
     "📊 Statistika", "💱 USD kurs", "📅 Oylik hisobot",
     "📦 Buyurtmalar", "📥 Buyurtmalar (Excel)", "❌ Bekor qilish",
