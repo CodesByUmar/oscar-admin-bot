@@ -22,6 +22,13 @@ bot.on('polling_error', (error) => {
 
 silenceUnhandledRejections(bot, 'adminBot');
 
+// Telegram'da "/" yozilganda buyruqlar ro'yxati (avtomatik taklif)
+// chiqishi uchun — aks holda admin qo'lda "/start" deb to'liq yozishi
+// kerak bo'lardi.
+bot.setMyCommands([
+    { command: 'start', description: 'Botni ishga tushirish / bosh menyu' },
+]).catch((error) => console.error("Buyruqlar ro'yxatini o'rnatishda xato:", error.message));
+
 // Railway'ga kirmasdan, botning o'zidan admin qo'shish uchun: qo'shimcha
 // adminlar ADMIN_IDS'dan tashqari Firestore'ning bot_admins collection'ida
 // saqlanadi. Ishga tushishda shu yerdan yuklanadi, qo'shilganda esa
