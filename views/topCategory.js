@@ -1,6 +1,6 @@
 const { bot } = require('../config/adminBot');
 const { db } = require('../config/firebase');
-const { getMainKeyboard } = require('../keyboards');
+const { getMainKeyboard, isSuperAdmin } = require('../keyboards');
 const { getStr } = require('../utils/helpers');
 
 async function showTopCategoryView(chatId, topCategoryId, messageId) {
@@ -12,11 +12,32 @@ async function showTopCategoryView(chatId, topCategoryId, messageId) {
             return;
         }
         const name = getStr(doc.data().name, 'Noma\'lum');
-        const inlineRows = [
-            [{ text: `Nomi: ${name}`, callback_data: `topcat_update_name_${topCategoryId}` }],
-            [{ text: "⬅️ Orqaga", callback_data: 'back_to_prev' }],
-        ];
-        const message = `📝 Kategoriya: 🗂 ${name} (ID: ${topCategoryId})\nQaysi maydonni yangilashni xohlaysiz?`;
+
+        // Shu kategoriyaga tegishli subkategoriyalar — papka ichidagi
+        // papkalar kabi, to'g'ridan-to'g'ri shu yerdan ko'rinadi va
+        // bosilsa ichiga kiriladi (views/category.js: showCategoryView).
+        const subsSnap = await db.collection('categories').where('topCategory', '==', name).get();
+        const subs = subsSnap.docs
+            .map((d) => ({ id: d.id, name: getStr(d.data().name) }))
+            .sort((a, b) => a.name.localeCompare(b.name));
+
+        const inlineRows = [];
+        for (let i = 0; i < subs.length; i += 2) {
+            const row = [{ text: `📁 ${subs[i].name}` || '?', callback_data: `cat_select_${subs[i].id}` }];
+            if (i + 1 < subs.length) row.push({ text: `📁 ${subs[i + 1].name}`, callback_data: `cat_select_${subs[i + 1].id}` });
+            inlineRows.push(row);
+        }
+        inlineRows.push([{ text: "➕ Yangi subkategoriya", callback_data: `browse_new_sub_${topCategoryId}` }]);
+        inlineRows.push([{ text: `✏️ Nomini o'zgartirish (${name})`, callback_data: `topcat_update_name_${topCategoryId}` }]);
+        if (subs.length === 0 && isSuperAdmin(chatId)) {
+            inlineRows.push([{ text: "🗑 Kategoriyani o'chirish", callback_data: `browse_delete_top_${topCategoryId}` }]);
+        }
+        inlineRows.push([{ text: "⬅️ Orqaga", callback_data: 'back_to_prev' }]);
+
+        const subsText = subs.length
+            ? `Ichida ${subs.length} ta subkategoriya bor:`
+            : "Ichida hali subkategoriya yo'q.";
+        const message = `📂 Kategoriya: ${name}\n${subsText}`;
         if (messageId) {
             bot.editMessageText(message, { chat_id: chatId, message_id: messageId, reply_markup: { inline_keyboard: inlineRows } });
         } else {

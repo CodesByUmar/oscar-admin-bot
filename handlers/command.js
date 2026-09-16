@@ -6,8 +6,7 @@ const {
 } = require('../keyboards');
 const { userState, resetUserState } = require('../state/userState');
 const { getStr } = require('../utils/helpers');
-const { showCategoryUpdateSelect } = require('../views/category');
-const { showTopCategoryUpdateSelect } = require('../views/topCategory');
+const { showCategoriesRoot } = require('../views/categoryBrowser');
 const { showCategoryTranslationList } = require('../views/categoryTranslation');
 const { showBannerManageList } = require('../views/banner');
 const { showStatisticsMenu } = require('../views/statistics');
@@ -92,27 +91,10 @@ async function handleCommand(chatId, text) {
         return;
     }
 
-    // ─── KATEGORIYA (mijoz ilovasidagi asosiy bo'lim, mas: "Bo'yoqlar") ──
-    if (text === "🗂 Kategoriya qo'shish") {
-        userState[chatId] = { step: 'topcategory_name', data: {}, steps: [] };
-        bot.sendMessage(chatId, "Yangi kategoriya nomini kiriting (mas: \"Bo'yoqlar\"):", backKeyboard);
-        return;
-    }
-    if (text === "✏️ Kategoriya yangilash") {
-        userState[chatId] = { step: 'topcategory_update_select', data: {}, steps: [] };
-        await showTopCategoryUpdateSelect(chatId);
-        return;
-    }
-
-    // ─── SUBKATEGORIYA (mijoz ilovasida kategoriya ichidagi bo'lim) ──
-    if (text === "📁 Subkategoriya qo'shish") {
-        userState[chatId] = { step: 'category_name', data: {}, steps: [] };
-        bot.sendMessage(chatId, "1/2. Subkategoriya nomini kiriting:", backKeyboard);
-        return;
-    }
-    if (text === "✏️ Subkategoriya yangilash") {
-        userState[chatId] = { step: 'category_update_select', data: {}, steps: [] };
-        await showCategoryUpdateSelect(chatId);
+    // ─── KATEGORIYALAR (papka-kabi: Kategoriya → Subkategoriya → Mahsulot) ──
+    if (text === "📂 Kategoriyalar") {
+        userState[chatId] = { step: 'browse_root', data: {}, steps: [] };
+        await showCategoriesRoot(chatId);
         return;
     }
     if (text === "🔄 Mahsulotni yangilash") {

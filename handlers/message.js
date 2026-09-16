@@ -10,6 +10,7 @@ const { handleAdminAddStep } = require('./adminManagement');
 const { showProductView } = require('../views/product');
 const { showCategoryView } = require('../views/category');
 const { showTopCategoryView, cascadeTopCategoryRename } = require('../views/topCategory');
+const { showCategoriesRoot } = require('../views/categoryBrowser');
 const { showCategoryTranslationEdit, findCategoryKeyItem } = require('../views/categoryTranslation');
 const { showStoreContactEdit } = require('../views/storeContacts');
 
@@ -287,16 +288,21 @@ async function handleIncomingMessage(msg) {
                 });
                 try {
                     const newProduct = await createWithNextId('products', buildProduct);
-                    bot.sendMessage(chatId,
+                    const returnTo = data.returnTo;
+                    const successText =
                         `✅ Mahsulot qo'shildi!\n\n` +
                         `📦 UZ: ${newProduct.name.uz}\n` +
                         `📦 RU: ${newProduct.name.ru}\n` +
                         `📦 EN: ${newProduct.name.en}\n` +
                         `💰 Dona: $${newProduct.pricePiece} | Karobka: $${newProduct.priceBox}\n` +
                         `🏷 Chegirma: ${newProduct.discount}%\n` +
-                        `📂 Kategoriya: ${getStr(newProduct.category)}`,
-                        getMainKeyboard(chatId)
-                    );
+                        `📁 Subkategoriya: ${getStr(newProduct.category)}`;
+                    if (returnTo && returnTo.type === 'sub') {
+                        bot.sendMessage(chatId, successText);
+                        await showCategoryView(chatId, returnTo.id);
+                    } else {
+                        bot.sendMessage(chatId, successText, getMainKeyboard(chatId));
+                    }
                 } catch (error) {
                     console.error("Mahsulot saqlashda xato:", error);
                     bot.sendMessage(chatId, `❌ Mahsulot qo'shilmadi!\nSabab: ${error.message || 'noma\'lum xato'}`, getMainKeyboard(chatId));
@@ -320,11 +326,18 @@ async function handleIncomingMessage(msg) {
         }
         try {
             await createWithNextId('topCategories', (id) => ({ id, name: trimmed }));
-            bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${trimmed}`, getMainKeyboard(chatId));
+            const returnTo = data.returnTo;
+            resetUserState(chatId);
+            if (returnTo && returnTo.type === 'root') {
+                bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${trimmed}`);
+                await showCategoriesRoot(chatId);
+            } else {
+                bot.sendMessage(chatId, `✅ Kategoriya qo'shildi!\n${trimmed}`, getMainKeyboard(chatId));
+            }
         } catch (error) {
             bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
+            resetUserState(chatId);
         }
-        resetUserState(chatId);
         return;
     }
 
@@ -343,6 +356,25 @@ async function handleIncomingMessage(msg) {
                 return;
             }
             data.name = trimmed;
+
+            // Kategoriyalar bo'limi ichidan "➕ Yangi subkategoriya" bosilgan
+            // bo'lsa, qaysi kategoriyaga tegishli ekani allaqachon ma'lum —
+            // qayta so'ramaymiz, to'g'ridan-to'g'ri saqlaymiz.
+            if (data.presetTopCategoryName) {
+                try {
+                    await createWithNextId('categories', (id) => ({ id, name: data.name, topCategory: data.presetTopCategoryName }));
+                    const returnTo = data.returnTo;
+                    resetUserState(chatId);
+                    bot.sendMessage(chatId, `✅ Subkategoriya qo'shildi!\n${data.name}\nKategoriya: ${data.presetTopCategoryName}`);
+                    if (returnTo && returnTo.type === 'top') await showTopCategoryView(chatId, returnTo.id);
+                    else await showCategoriesRoot(chatId);
+                } catch (error) {
+                    bot.sendMessage(chatId, "❌ Xato!", getMainKeyboard(chatId));
+                    resetUserState(chatId);
+                }
+                return;
+            }
+
             // Kategoriyalar ro'yxatini "topCategories" kolleksiyasidan
             // olamiz (mavjud subkategoriyalardan qidirish o'rniga) — shunda
             // hali birorta subkategoriyasi bo'lmagan yangi kategoriya ham

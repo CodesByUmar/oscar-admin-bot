@@ -5,6 +5,7 @@ const { userState, resetUserState } = require('../state/userState');
 const { handleInlineBack } = require('./back');
 const { showCategoryView, showCategoryUpdateSelect } = require('../views/category');
 const { showTopCategoryView } = require('../views/topCategory');
+const { showCategoriesRoot } = require('../views/categoryBrowser');
 const { showProductView, showProductUpdateCategorySelect, showProductsInCategory, getProductsInCategory } = require('../views/product');
 const { showCategoryTranslationList, showCategoryTranslationEdit } = require('../views/categoryTranslation');
 const { BONUS_DISCOUNT_PERCENT } = require('../config/constants');
@@ -50,6 +51,7 @@ function registerCallbackHandler() {
         const superAdminOnlyPrefixes = [
             'delete_product_', 'confirm_delete_product_',
             'delete_category_', 'confirm_delete_category_',
+            'browse_delete_top_', 'confirm_delete_top_',
             'delete_banner_', 'confirm_delete_banner_', 'banner_link_',
             'confirm_delete_vip_',
             'confirm_order_', 'cancel_order_', 'deliver_order_',
@@ -307,6 +309,83 @@ function registerCallbackHandler() {
             userState[chatId] = { step: 'update_topcategory_name', data: { topCategoryId: id, messageId }, steps: state.steps || [] };
             bot.sendMessage(chatId, 'Yangi nomni kiriting:', backKeyboard);
             bot.answerCallbackQuery(cq.id); return;
+        }
+
+        // ─── PAPKA-KABI NAVIGATSIYA: yangi qo'shish/o'chirish tugmalari ──
+        if (data === 'browse_new_top') {
+            userState[chatId] = { step: 'topcategory_name', data: { returnTo: { type: 'root' } }, steps: [] };
+            bot.sendMessage(chatId, "Yangi kategoriya nomini kiriting (mas: \"Bo'yoqlar\"):", backKeyboard);
+            bot.answerCallbackQuery(cq.id); return;
+        }
+        if (data.startsWith('browse_new_sub_')) {
+            const topId = parseInt(data.replace('browse_new_sub_', ''));
+            try {
+                const topDoc = await db.collection('topCategories').doc(String(topId)).get();
+                if (!topDoc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
+                const topName = getStr(topDoc.data().name);
+                userState[chatId] = {
+                    step: 'category_name',
+                    data: { presetTopCategoryId: topId, presetTopCategoryName: topName, returnTo: { type: 'top', id: topId } },
+                    steps: [],
+                };
+                bot.sendMessage(chatId, `1/2. "${topName}" ichiga yangi subkategoriya nomini kiriting:`, backKeyboard);
+                bot.answerCallbackQuery(cq.id);
+            } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
+        }
+        if (data.startsWith('browse_new_product_')) {
+            const catId = parseInt(data.replace('browse_new_product_', ''));
+            try {
+                const catDoc = await db.collection('categories').doc(String(catId)).get();
+                if (!catDoc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
+                const catData = catDoc.data();
+                const icon = catData.icon || catData.icon_url || '📁';
+                const categoryNames = [{ label: `${icon} ${getStr(catData.name)}`.trim(), full: catData.name, topCategory: catData.topCategory || null }];
+                userState[chatId] = {
+                    step: 'product_name_uz',
+                    data: { categoryNames, returnTo: { type: 'sub', id: catId } },
+                    steps: [],
+                };
+                bot.sendMessage(chatId, `1a. "${getStr(catData.name)}" ichiga yangi mahsulot — nomini UZ tilida kiriting:`, backKeyboard);
+                bot.answerCallbackQuery(cq.id);
+            } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
+        }
+        if (data.startsWith('browse_delete_top_')) {
+            const id = parseInt(data.replace('browse_delete_top_', ''));
+            try {
+                const doc = await db.collection('topCategories').doc(String(id)).get();
+                if (!doc.exists) { bot.answerCallbackQuery(cq.id, { text: "Topilmadi!" }); return; }
+                const subsSnap = await db.collection('categories').where('topCategory', '==', getStr(doc.data().name)).limit(1).get();
+                if (!subsSnap.empty) {
+                    bot.answerCallbackQuery(cq.id, { text: "Ichida subkategoriya bor, avval ularni o'chiring!" });
+                    return;
+                }
+                bot.editMessageText(
+                    `⚠️ "${getStr(doc.data().name)}" kategoriyasini o'chirishni tasdiqlaysizmi?`,
+                    {
+                        chat_id: chatId, message_id: messageId,
+                        reply_markup: {
+                            inline_keyboard: [[
+                                { text: "✅ Ha, o'chirish", callback_data: `confirm_delete_top_${id}` },
+                                { text: "❌ Yo'q", callback_data: `topcat_select_${id}` },
+                            ]],
+                        },
+                    }
+                );
+                bot.answerCallbackQuery(cq.id);
+            } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
+        }
+        if (data.startsWith('confirm_delete_top_')) {
+            const id = parseInt(data.replace('confirm_delete_top_', ''));
+            try {
+                await db.collection('topCategories').doc(String(id)).delete();
+                resetUserState(chatId);
+                await showCategoriesRoot(chatId, messageId);
+                bot.answerCallbackQuery(cq.id, { text: "O'chirildi" });
+            } catch (error) { bot.answerCallbackQuery(cq.id, { text: "Xato!" }); }
+            return;
         }
 
         if (data.startsWith('cat_select_')) {

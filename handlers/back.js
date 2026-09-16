@@ -4,6 +4,7 @@ const { userState, resetUserState } = require('../state/userState');
 const { showProductView, showProductsInCategory, showProductUpdateCategorySelect } = require('../views/product');
 const { showCategoryView, showCategoryUpdateSelect } = require('../views/category');
 const { showTopCategoryView, showTopCategoryUpdateSelect } = require('../views/topCategory');
+const { showCategoriesRoot } = require('../views/categoryBrowser');
 const { handleProductStep, handleCategoryStep } = require('./steps');
 
 async function handleBack(chatId) {
@@ -51,7 +52,8 @@ async function handleInlineBack(chatId, messageId) {
     }
     const prevStep = state.steps.pop();
     state.step = prevStep;
-    if (prevStep === 'category_update_select') await showCategoryUpdateSelect(chatId, messageId);
+    if (prevStep === 'browse_root') await showCategoriesRoot(chatId, messageId);
+    else if (prevStep === 'category_update_select') await showCategoryUpdateSelect(chatId, messageId);
     else if (prevStep === 'topcategory_update_select') await showTopCategoryUpdateSelect(chatId, messageId);
     else if (prevStep === 'product_update_category_select') await showProductUpdateCategorySelect(chatId, messageId);
     else if (prevStep === 'product_update_product_select') {
