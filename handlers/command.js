@@ -12,7 +12,6 @@ const { showBannerManageList } = require('../views/banner');
 const { showStatisticsMenu } = require('../views/statistics');
 const { showOrdersPage } = require('../views/orders');
 const { showBulkPriceCategorySelect } = require('../views/bulkPrice');
-const { showProductUpdateCategorySelect } = require('../views/product');
 const { handleVipStep } = require('./vip');
 const { generateMonthlyReportBuffer } = require('../utils/monthlyReport');
 const { generateAllOrdersReportBuffer } = require('../utils/ordersExport');
@@ -98,8 +97,12 @@ async function handleCommand(chatId, text) {
         return;
     }
     if (text === "🔄 Mahsulotni yangilash") {
-        userState[chatId] = { step: 'product_update_category_select', data: {}, steps: [] };
-        await showProductUpdateCategorySelect(chatId);
+        // Xuddi "📂 Kategoriyalar" bilan bir xil papka-kabi navigatsiya —
+        // Kategoriya -> Subkategoriya ichidagi mahsulotlar ro'yxatidan
+        // birini bosib, to'g'ridan-to'g'ri tahrirlash mumkin. Avval 88 ta
+        // subkategoriyani bitta tekis ro'yxatda ko'rsatardi.
+        userState[chatId] = { step: 'browse_root', data: {}, steps: [] };
+        await showCategoriesRoot(chatId);
         return;
     }
     if (text === "💰 Narxni ommaviy o'zgartirish") {
