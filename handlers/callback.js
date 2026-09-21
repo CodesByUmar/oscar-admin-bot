@@ -686,22 +686,21 @@ function registerCallbackHandler() {
         }
 
         if (data.startsWith('update_field_')) {
-            if (data.startsWith('update_field_discountStart_') || data.startsWith('update_field_discountEnd_')) {
-                const isStart = data.startsWith('update_field_discountStart_');
-                const id = parseInt(isStart ? data.replace('update_field_discountStart_', '') : data.replace('update_field_discountEnd_', ''));
-                const fieldName = isStart ? 'discountStartDate' : 'discountEndDate';
-                const fieldLabel = isStart ? 'Chegirma boshlanish sanasi' : 'Chegirma tugash sanasi';
-                const cur = userState[chatId] || { step: 'none', data: {}, steps: [] };
-                userState[chatId] = { step: 'update_discount_date', data: { productId: id, dateField: fieldName, dateLabel: fieldLabel, selectedCategory: cur.data.selectedCategory, messageId }, steps: cur.steps || [] };
-                bot.sendMessage(chatId, `${fieldLabel}ni kiriting:\nFormat: DD.MM.YYYY (mas: 13.05.2026)\nO'chirish uchun: 0`, backKeyboard);
-                bot.answerCallbackQuery(cq.id); return;
-            }
+            // Bitta joyda parslab, aniq (===) taqqoslash bilan yo'naltiramiz —
+            // avval discountStart/discountEnd uchun alohida startsWith() ishlatilardi,
+            // bu boshqa fieldType'lar bilan ehtimoliy chalkashlikka mo'rt edi.
             const parts = data.split('_');
             const fieldType = parts[2];
             const id = parseInt(parts[3]);
             const cur = userState[chatId] || { step: 'none', data: {}, steps: [] };
             const preserve = { selectedCategory: cur.data.selectedCategory, messageId };
-            if (fieldType === 'image') {
+            if (fieldType === 'discountStart' || fieldType === 'discountEnd') {
+                const isStart = fieldType === 'discountStart';
+                const fieldName = isStart ? 'discountStartDate' : 'discountEndDate';
+                const fieldLabel = isStart ? 'Chegirma boshlanish sanasi' : 'Chegirma tugash sanasi';
+                userState[chatId] = { step: 'update_discount_date', data: { productId: id, dateField: fieldName, dateLabel: fieldLabel, ...preserve }, steps: cur.steps || [] };
+                bot.sendMessage(chatId, `${fieldLabel}ni kiriting:\nFormat: DD.MM.YYYY (mas: 13.05.2026)\nO'chirish uchun: 0`, backKeyboard);
+            } else if (fieldType === 'image') {
                 userState[chatId] = { step: 'update_product_image', data: { productId: id, ...preserve }, steps: cur.steps || [] };
                 bot.sendMessage(chatId, 'Yangi rasm yuboring:', backKeyboard);
             } else {
