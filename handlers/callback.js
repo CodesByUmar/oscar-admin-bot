@@ -52,7 +52,7 @@ function registerCallbackHandler() {
             'delete_product_', 'confirm_delete_product_',
             'delete_category_', 'confirm_delete_category_',
             'browse_delete_top_', 'confirm_delete_top_',
-            'delete_banner_', 'confirm_delete_banner_', 'banner_link_',
+            'delete_banner_', 'confirm_delete_banner_',
             'confirm_delete_vip_',
             'confirm_order_', 'cancel_order_', 'deliver_order_',
             'cattr_',
