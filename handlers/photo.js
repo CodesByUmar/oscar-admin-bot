@@ -48,7 +48,7 @@ async function processIncomingPhoto(chatId, fileId) {
                     bot.editMessageText("❌ Bannerni saqlashda xato!", { chat_id: chatId, message_id: waitMsg.message_id });
                 }
             } else {
-                bot.editMessageText("❌ Rasm yuklashda xato!", { chat_id: chatId, message_id: waitMsg.message_id });
+                bot.editMessageText("❌ Rasm yuklab bo'lmadi — rasm serveri vaqtincha band. Iltimos, rasmni qaytadan yuboring.", { chat_id: chatId, message_id: waitMsg.message_id });
             }
         } else if (state && (state.step === 'product_image' || state.step === 'update_product_image')) {
             const waitMsg = await bot.sendMessage(chatId, "Rasm yuklanmoqda... ⏳");
@@ -72,7 +72,7 @@ async function processIncomingPhoto(chatId, fileId) {
                     }
                 }
             } else {
-                bot.editMessageText("❌ Rasm yuklashda xato!", { chat_id: chatId, message_id: waitMsg.message_id });
+                bot.editMessageText("❌ Rasm yuklab bo'lmadi — rasm serveri vaqtincha band. Iltimos, rasmni qaytadan yuboring.", { chat_id: chatId, message_id: waitMsg.message_id });
             }
         } else {
             const { getMainKeyboard } = require('../keyboards');

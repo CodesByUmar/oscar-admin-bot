@@ -7,9 +7,10 @@ const { bot, TOKEN } = require('../config/adminBot');
 // rasmning o'zida muammo yo'q edi). Shuning uchun Catbox.moe'ga o'tkazildi
 // — ro'yxatdan o'tish/API key shart emas. Catbox esa vaqti-vaqti bilan
 // "412 Invalid uploader" bilan vaqtincha rad etadi (doimiy blok emas —
-// qayta urinishda odatda o'tadi), shuning uchun bir necha marta qayta
-// urinib ko'ramiz.
-const MAX_ATTEMPTS = 3;
+// tekshirildi: bir necha daqiqadan keyin qayta urinishda odatda o'tadi),
+// shuning uchun bir necha marta, oralig'ini ortdirib borib qayta urinamiz
+// (2s, 4s, 8s, 16s — jami ~30s ichida 5 marta).
+const MAX_ATTEMPTS = 5;
 const RETRY_DELAY_MS = 2000;
 
 function sleep(ms) {
@@ -49,7 +50,7 @@ async function uploadImage(fileId) {
                 ? `HTTP ${error.response.status} ${JSON.stringify(error.response.data)?.slice(0, 300)}`
                 : error.message;
             console.error(`Rasm yuklash xato (Catbox, ${attempt}/${MAX_ATTEMPTS}):`, detail);
-            if (attempt < MAX_ATTEMPTS) await sleep(RETRY_DELAY_MS);
+            if (attempt < MAX_ATTEMPTS) await sleep(RETRY_DELAY_MS * Math.pow(2, attempt - 1));
         }
     }
     return null;
