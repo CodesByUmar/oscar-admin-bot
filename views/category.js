@@ -53,35 +53,4 @@ async function showCategoryView(chatId, categoryId, messageId) {
     }
 }
 
-async function showCategoryUpdateSelect(chatId, messageId = null) {
-    try {
-        const snapshot = await db.collection('categories').get();
-        if (snapshot.empty) {
-            const text = "Hech qanday subkategoriya topilmadi.";
-            if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId });
-            bot.sendMessage(chatId, "Bosh menyu.", getMainKeyboard(chatId));
-            return;
-        }
-        const cats = snapshot.docs.map(d => {
-            const x = d.data();
-            return { id: x.id, name: getStr(x.name), icon: x.icon || x.icon_url || '📁' };
-        });
-        const kb = { reply_markup: { inline_keyboard: [] } };
-        for (let i = 0; i < cats.length; i += 2) {
-            const label1 = `${cats[i].icon} ${cats[i].name}`.trim();
-            const row = [{ text: label1 || '?', callback_data: `cat_select_${cats[i].id}` }];
-            if (i + 1 < cats.length) {
-                const label2 = `${cats[i + 1].icon} ${cats[i + 1].name}`.trim();
-                row.push({ text: label2 || '?', callback_data: `cat_select_${cats[i + 1].id}` });
-            }
-            kb.reply_markup.inline_keyboard.push(row);
-        }
-        const text = "Qaysi subkategoriyani yangilashni xohlaysiz?";
-        if (messageId) bot.editMessageText(text, { chat_id: chatId, message_id: messageId, reply_markup: kb.reply_markup });
-        else bot.sendMessage(chatId, text, kb);
-    } catch (error) {
-        console.error("Kategoriyalarni olishda xato:", error);
-    }
-}
-
-module.exports = { showCategoryView, showCategoryUpdateSelect };
+module.exports = { showCategoryView };
