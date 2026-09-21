@@ -108,6 +108,9 @@ function registerCallbackHandler() {
                 // YANGI:
                 const msg = `📋 BUYURTMA\n\n🆔 ${orderId}\n🕐 Vaqt: ${formatDateTime(o.createdAt)}\n${customerBlock}${bonusText}${deliveryText}\n🛍 Mahsulotlar:\n${itemsText}\n\n💰 Jami: ${(o.totalUZS || 0).toLocaleString("uz-UZ")} so'm\n📊 Status: ${statusEmoji} ${statusText}`; const kb = { inline_keyboard: [] };
                 if (o.status === 'pending' && isSuperAdmin(chatId)) kb.inline_keyboard.push([{ text: "✅ Tasdiqlash", callback_data: `confirm_order_${orderId}` }, { text: "❌ Bekor", callback_data: `cancel_order_${orderId}` }]);
+                // "Buyurtmalar" ro'yxatidan qaytib ochilganda ham (tasdiqlagan
+                // zahoti emas, keyinroq ham) "Yetkazildi" deb belgilay olish uchun.
+                if (o.status === 'confirmed' && isSuperAdmin(chatId)) kb.inline_keyboard.push([{ text: "🚚 Yetkazildi deb belgilash", callback_data: `deliver_order_${orderId}` }]);
                 kb.inline_keyboard.push([{ text: "⬅️ Orqaga", callback_data: "back_to_orders" }]);
                 bot.editMessageText(msg, { chat_id: chatId, message_id: messageId, reply_markup: kb });
                 bot.answerCallbackQuery(cq.id);
